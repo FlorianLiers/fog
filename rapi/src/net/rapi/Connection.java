@@ -35,6 +35,13 @@ import java.util.LinkedList;
  */
 public interface Connection extends EventSource
 {
+	/**
+	 * Has to be called by a higher layer in order to accept or reestablish
+	 * a connection. In particular, it has to be called for incoming
+	 * connections received from {@link Binding#getIncomingConnection()}.
+	 * If a connection is already established or if the process for its
+	 * creation is running, the call is ignored.
+	 */
 	public void connect();
 	
 	/**

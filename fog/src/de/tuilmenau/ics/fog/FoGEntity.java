@@ -23,6 +23,7 @@ import net.rapi.Layer;
 import net.rapi.Name;
 import net.rapi.NeighborName;
 import net.rapi.NetworkException;
+import net.rapi.impl.base.BaseEventSource;
 import net.rapi.properties.CommunicationTypeProperty;
 import de.tuilmenau.ics.fog.authentication.IdentityManagement;
 import de.tuilmenau.ics.fog.facade.DescriptionHelper;
@@ -43,7 +44,6 @@ import de.tuilmenau.ics.fog.transfer.manager.Controller;
 import de.tuilmenau.ics.fog.transfer.manager.Process;
 import de.tuilmenau.ics.fog.transfer.manager.ProcessConnection;
 import de.tuilmenau.ics.fog.transfer.manager.ProcessRegister;
-import de.tuilmenau.ics.fog.util.EventSourceBase;
 import de.tuilmenau.ics.fog.util.Logger;
 import de.tuilmenau.ics.fog.util.SimpleName;
 import de.tuilmenau.ics.graph.GraphProvider;
@@ -53,7 +53,7 @@ import de.tuilmenau.ics.graph.RoutableGraph;
 /**
  * A FoGEntity represents an instance of a FoG layer on a node.
  */
-public class FoGEntity extends EventSourceBase implements Layer, GraphProvider, SimulationElement
+public class FoGEntity extends BaseEventSource implements Layer, GraphProvider, SimulationElement
 {
 	public FoGEntity(Node pNode)
 	{
@@ -491,6 +491,11 @@ public class FoGEntity extends EventSourceBase implements Layer, GraphProvider, 
 		multiplexgate = null;
 	}
 
+	@Override
+	protected void notifyFailure(Throwable failure, EventListener listener)
+	{
+		mNode.getLogger().warn(this, "Ignoring failure in event listener " +listener, failure);	
+	}
 	
 	private Node mNode;
 	private Controller controlgate;
@@ -501,5 +506,4 @@ public class FoGEntity extends EventSourceBase implements Layer, GraphProvider, 
 	private ProcessRegister processes;
 	
 	private LinkedList<Name> mRegisteredServers = new LinkedList<Name>();
-	
 }

@@ -13,6 +13,8 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.transfer.forwardingNodes;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.LinkedList;
 
 import net.rapi.Description;
@@ -132,7 +134,7 @@ public class ClientFN implements ForwardingNode
 
 		// check if route is really empty
 		if(packet.fetchNextGateID() == null) {
-			final Object data = packet.getData();
+			final Serializable data = packet.getData();
 			
 			// normal data or a signalling message?
 			if(data instanceof Signalling) {
@@ -144,7 +146,13 @@ public class ClientFN implements ForwardingNode
 			else {
 				// deliver data to application
 				if(mCEP != null) {
-					mCEP.receive(data);
+					try {
+						mCEP.storeDataForApp(data);
+					}
+					catch(IOException exc) {
+						getLogger().err(this, "Can not receive data '" +data +"'. Closing connection.", exc);
+						mCEP.close();
+					}
 				} else {
 					getLogger().warn(this, "Can not forward data '" +data +"' due to missing link to connection end point.");
 				}

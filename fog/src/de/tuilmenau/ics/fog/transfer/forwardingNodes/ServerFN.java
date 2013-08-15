@@ -14,22 +14,18 @@
 package de.tuilmenau.ics.fog.transfer.forwardingNodes;
 
 
-import java.util.LinkedList;
-
 import net.rapi.Binding;
 import net.rapi.Connection;
 import net.rapi.Description;
 import net.rapi.Identity;
 import net.rapi.Name;
-import net.rapi.events.NewConnectionEvent;
+import net.rapi.impl.base.BaseBinding;
 import net.rapi.properties.CommunicationTypeProperty;
-
 import de.tuilmenau.ics.fog.FoGEntity;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.packets.PleaseOpenConnection;
 import de.tuilmenau.ics.fog.routing.Route;
 import de.tuilmenau.ics.fog.transfer.TransferPlaneObserver.NamingLevel;
-import de.tuilmenau.ics.fog.util.EventSourceBase;
 
 
 /**
@@ -94,58 +90,35 @@ public class ServerFN extends Multiplexer
 	
 	public void addNewConnection(Connection conn)
 	{
-		binding.addNewConnection(conn);
+		binding.addIncomingConnection(conn);
 	}
 
-	class BindingImpl extends EventSourceBase implements Binding
+	class BindingImpl extends BaseBinding
 	{
-
-		@Override
-		public synchronized Connection getIncomingConnection()
+		public BindingImpl()
 		{
-			if(newConnections != null) {
-				if(!newConnections.isEmpty()) {
-					return newConnections.removeFirst();
-				}
-			}
-			return null;
+			super(ServerFN.this.getName(), description, null);
 		}
-
-		@Override
-		public synchronized int getNumberWaitingConnections()
-		{
-			if(newConnections != null) {
-				return newConnections.size();
-			} else {
-				return 0;
-			}
-		}
-
-		@Override
-		public Name getName()
-		{
-			return ServerFN.this.getName();
-		}
-
+		
 		@Override
 		public void close()
 		{
+			super.close();
+			
 			ServerFN.this.close();
 		}
 		
-		public synchronized void addNewConnection(Connection conn)
+		@Override
+		public boolean isActive()
 		{
-			if(newConnections == null) {
-				newConnections = new LinkedList<Connection>();
-			}
-			
-			newConnections.addLast(conn);
-			
-			// notify observer about new connection
-			notifyObservers(new NewConnectionEvent(this));
+			return true;
 		}
-		
-		private LinkedList<Connection> newConnections = null;
+
+		@Override
+		protected void notifyFailure(Throwable failure, EventListener listener)
+		{
+			getEntity().getLogger().warn(this, "Ignoring failure in event listener " +listener, failure);
+		}
 	}
 
 	private Description description;

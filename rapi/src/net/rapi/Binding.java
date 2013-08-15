@@ -28,6 +28,11 @@ package net.rapi;
 public interface Binding extends EventSource
 {
 	/**
+	 * @return If the binding is still valid and supported by the {@link Layer}
+	 */
+	public boolean isActive();
+	
+	/**
 	 * Requests the next new incoming connection for a binding.
 	 * The method does not block and will return null, if no connection is available. 
 	 * 
@@ -44,6 +49,16 @@ public interface Binding extends EventSource
 	 * @return Name used for this binding
 	 */
 	public Name getName();
+	
+	/**
+	 * @return Requirements for all {@link Connection}s to this binding (null if no additional requirements)
+	 */
+	public Description getRequirements();
+	
+	/**
+	 * @return Identity of creator of this binding (null if not known)
+	 */
+	public Identity getIdentity();
 	
 	/**
 	 * Closes registration and makes the binding unaccessible for peers.

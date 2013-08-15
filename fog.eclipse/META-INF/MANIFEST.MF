@@ -40,5 +40,6 @@ Import-Package: de.tuilmenau.ics.graph,
  edu.uci.ics.jung.visualization.util,
  net.rapi,
  net.rapi.events,
+ net.rapi.impl.base,
  net.rapi.properties,
  org.apache.commons.collections15

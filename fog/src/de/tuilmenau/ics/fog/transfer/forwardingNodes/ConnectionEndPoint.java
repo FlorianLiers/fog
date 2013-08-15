@@ -13,40 +13,37 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.transfer.forwardingNodes;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.LinkedList;
 
-import net.rapi.Connection;
 import net.rapi.Description;
 import net.rapi.Name;
 import net.rapi.NetworkException;
 import net.rapi.Signature;
 import net.rapi.events.ClosedEvent;
 import net.rapi.events.ConnectedEvent;
-import net.rapi.events.DataAvailableEvent;
-import net.rapi.events.ErrorEvent;
 import net.rapi.events.ServiceDegradationEvent;
-
+import net.rapi.impl.base.BaseConnectionEndPoint;
 import de.tuilmenau.ics.fog.Config;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.packets.PleaseCloseConnection;
 import de.tuilmenau.ics.fog.packets.PleaseUpdateRoute;
-import de.tuilmenau.ics.fog.util.EventSourceBase;
 import de.tuilmenau.ics.fog.util.Logger;
 
 
-public class ConnectionEndPoint extends EventSourceBase implements Connection
+public class ConnectionEndPoint extends BaseConnectionEndPoint
 {
 	public ConnectionEndPoint(Name bindingName, Logger logger, LinkedList<Signature> authentications)
 	{
+		super(bindingName);
+		
 		this.logger = logger;
-		this.bindingName = bindingName;
 		this.authentications = authentications;
+	}
+	
+	public ConnectionEndPoint(Exception error)
+	{
+		super(error);
 	}
 	
 	@Override
@@ -86,12 +83,6 @@ public class ConnectionEndPoint extends EventSourceBase implements Connection
 	}
 	
 	@Override
-	public Name getBindingName()
-	{
-		return bindingName;
-	}
-	
-	@Override
 	public Description getRequirements()
 	{
 		if(forwardingNode != null) {
@@ -102,7 +93,7 @@ public class ConnectionEndPoint extends EventSourceBase implements Connection
 	}
 	
 	@Override
-	public void write(Serializable data) throws NetworkException
+	public void sendDataToPeer(Serializable data) throws NetworkException
 	{
 		if(data != null) {
 			if(forwardingNode != null) {
@@ -119,110 +110,6 @@ public class ConnectionEndPoint extends EventSourceBase implements Connection
 				throw new NetworkException(this, "Connection end point is not connected. Write operation failed.");
 			}
 		}
-	}
-	
-	@Override
-	public Object read() throws NetworkException
-	{
-		//TODO blocking mode?
-		
-		if(mInputStream != null) {
-			throw new NetworkException(this, "Receiving is done via input stream. Do not call Connection.read."); 
-		}
-		
-		if(mReceiveBuffer != null) {
-			synchronized (this) {
-				if(!mReceiveBuffer.isEmpty()) {
-					return mReceiveBuffer.removeFirst();
-				}
-			}
-		}
-		
-		return null;
-	}
-	
-	@Override
-	public int available()
-	{
-		if(mInputStream != null) {
-			return mInputStream.available();
-		}
-		
-		if(mReceiveBuffer != null) {
-			return mReceiveBuffer.size();
-		}
-		
-		// no data or connection not open
-		return 0;
-	}
-	
-	@Override
-	public synchronized OutputStream getOutputStream() throws IOException
-	{
-		if(mOutputStream == null) {
-			mOutputStream = new OutputStream() {
-				@Override
-				public void write(int value) throws IOException
-				{
-					try {
-						ConnectionEndPoint.this.write(new byte[] { (byte)value });
-					}
-					catch(NetworkException exc) {
-						throw new IOException(exc);
-					}
-				}
-				
-				public synchronized void write(byte b[], int off, int len) throws IOException
-				{
-					if(b != null) {
-						try {
-							// Copy array since some apps will reuse b in order
-							// to send the next data chunk! That copy can only be
-							// avoided, if the calls behind "write" really do a
-							// deep copy of the packet. However, the payload will
-							// only be copied if the packet is send through a real
-							// lower layer. In pure simulation scenarios that never
-							// happens.
-							byte[] copyB = new byte[len];
-							System.arraycopy(b, off, copyB, 0, len);
-							
-							ConnectionEndPoint.this.write(copyB);
-						}
-						catch(NetworkException exc) {
-							throw new IOException(exc);
-						}
-					}
-				}
-				
-				@Override
-				public void flush() throws IOException
-				{
-					// nothing to do
-				}
-
-			};
-		}
-
-		return mOutputStream;
-	}
-	
-	public synchronized InputStream getInputStream() throws IOException
-	{
-		if(mInputStream == null) {
-			mInputStream = new CEPInputStream();
-			
-			// if there are already some data, copy it to stream
-			// and delete buffer
-			if(mReceiveBuffer != null) {
-				for(Object obj : mReceiveBuffer) {
-					mInputStream.addToBuffer(obj);
-				}
-				
-				mReceiveBuffer = null;
-			}
-		}
-
-		return mInputStream;
 	}
 	
 	/**
@@ -261,57 +148,9 @@ public class ConnectionEndPoint extends EventSourceBase implements Connection
 		notifyObservers(new ClosedEvent(this));
 	}
 	
-	public void setError(Exception exc)
-	{
-		notifyObservers(new ErrorEvent(exc, this));
-	}
-	
 	public void informAboutNetworkEvent()
 	{
 		notifyObservers(new ServiceDegradationEvent(this));
-	}
-	
-	private synchronized void cleanup()
-	{
-		try {
-			if(mOutputStream != null) mOutputStream.close();
-			if(mInputStream != null) mInputStream.close();
-			
-			mOutputStream = null;
-			mInputStream = null;
-		} catch (IOException tExc) {
-			// ignore exception
-			logger.warn(this, "Ignoring exception during closing operation.", tExc);
-		}
-		
-		mReceiveBuffer = null;
-	}
-	
-	/**
-	 * Called if FoG receives data for a connection end point.
-	 * The method delivers the data to the higher layer or buffers it.
-	 * 
-	 * @param data Received data for higher layer
-	 */
-	public synchronized void receive(Object data)
-	{
-		try {
-			if(mInputStream != null) {
-				mInputStream.addToBuffer(data);
-			} else {
-				if(mReceiveBuffer == null) {
-					mReceiveBuffer = new LinkedList<Object>();
-				}
-				
-				mReceiveBuffer.addLast(data);
-			}
-			
-			notifyObservers(new DataAvailableEvent(this));
-		}
-		catch(IOException exc) {
-			logger.err(this, "Can not receive data '" +data +"'. Closing connection.", exc);
-			close();
-		}
 	}
 	
 	@Override
@@ -323,138 +162,14 @@ public class ConnectionEndPoint extends EventSourceBase implements Connection
 			return super.toString();
 		}
 	}
-
-	private class CEPInputStream extends ByteArrayInputStream
+	
+	@Override
+	protected void notifyFailure(Throwable failure, EventListener listener)
 	{
-		public CEPInputStream()
-		{
-			super(new byte[0]);
-		}
-
-		@Override
-		public synchronized int read()
-		{
-			int res = super.read();
-			
-			// current buffer empty?
-			if(res < 0) {
-				// blocks until buffers changed
-				res = flipBuffers();
-				
-				// if no error occurred, read again
-				if(res >= 0) res = read();
-			}
-			
-			return res;
-		}
-		
-		@Override
-		public synchronized int read(byte recBuffer[], int offset, int length)
-		{
-			int res = super.read(recBuffer, offset, length);
-			
-			// current buffer empty?
-			if(res < 0) {
-				// blocks until buffers changed
-				res = flipBuffers();
-				
-				// if no error occurred, read again
-				if(res >= 0) res = read(recBuffer, offset, length);
-			}
-			
-			return res;
-		}
-		
-		@Override
-		public void close() throws IOException
-		{
-			super.close();
-			
-			synchronized (buffer) {
-				buffer.close();
-				buffer.notifyAll();
-			}
-		}
-		
-		/**
-		 * Replaces the current buffer of the input stream (which is empty)
-		 * with the current buffer of the output stream, which contains
-		 * the remaining data received via the connection.
-		 * 
-		 * @return number of new bytes; -1 on error
-		 */
-		private synchronized int flipBuffers()
-		{
-			if(isConnected()) {
-				synchronized (buffer) {
-					// wait until 
-					while(buffer.size() <= 0) {
-						try {
-							buffer.wait();
-						}
-						catch (InterruptedException exc) {
-							// ignore it
-						}
-						
-						if(!isConnected()) return -1;
-					}
-					
-					// reset read buffer with buffer from output stream
-					this.count = buffer.size();
-					this.buf = buffer.replaceBuffer();
-					this.pos = 0;
-					this.mark = 0;
-				}
-				return this.count;
-			} else {
-				return -1;
-			}
-		}
-		
-		public void addToBuffer(Object data) throws IOException
-		{
-			if(data != null) {
-				if(data instanceof byte[]) {
-					buffer.write((byte[]) data);
-				} else {
-					buffer.write(data.toString().getBytes());
-				}
-				
-				synchronized (buffer) {
-					buffer.notify();
-				}
-			}
-		}
-		
-		private class CEPByteArrayOutputStream extends ByteArrayOutputStream
-		{
-			/**
-			 * Extracts the current puffer from the output stream and replaces it
-			 * with a new empty one.
-			 * 
-			 * @return current buffer
-			 */
-			public synchronized byte[] replaceBuffer()
-			{
-				byte[] oldBuf = buf;
-				buf = new byte[Math.max(32, count)];
-				count = 0;
-				
-				return oldBuf;
-			}
-		}
-		
-		private CEPByteArrayOutputStream buffer = new CEPByteArrayOutputStream();
+		logger.warn(this, "Ignoring failure from event listener " +listener, failure);
 	}
-	
-	
-	private Name bindingName;
 	
 	private Logger logger;
 	private ClientFN forwardingNode;
 	private LinkedList<Signature> authentications;
-	
-	private OutputStream mOutputStream;
-	private CEPInputStream mInputStream;
-	private LinkedList<Object> mReceiveBuffer;
 }

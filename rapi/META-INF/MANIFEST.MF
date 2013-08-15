@@ -8,5 +8,6 @@ Bundle-License: Apache License 2.0 (details see about.html)
 Bundle-ClassPath: .
 Export-Package: net.rapi,
  net.rapi.events,
+ net.rapi.impl.base,
  net.rapi.properties
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

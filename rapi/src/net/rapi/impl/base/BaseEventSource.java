@@ -1,28 +1,31 @@
-/*******************************************************************************
- * Forwarding on Gates Simulator/Emulator
- * Copyright (C) 2012, Integrated Communication Systems Group, TU Ilmenau.
- * 
- * This program and the accompanying materials are dual-licensed under either
- * the terms of the Eclipse Public License v1.0 as published by the Eclipse
- * Foundation
- *  
- *   or (per the licensee's choosing)
- *  
- * under the terms of the GNU General Public License version 2 as published
- * by the Free Software Foundation.
- ******************************************************************************/
-package de.tuilmenau.ics.fog.util;
+/******************************************************************************
+ * Recursive API
+ * Copyright 2013 Integrated Communication Systems Group, TU Ilmenau.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *****************************************************************************/
+package net.rapi.impl.base;
 
 import java.util.LinkedList;
-import java.util.Observer;
 
 import net.rapi.EventSource;
 import net.rapi.events.Event;
 
-import de.tuilmenau.ics.fog.ui.Logging;
 
-
-public class EventSourceBase implements EventSource
+/**
+ * Base class that provides storing and retrieving of events.
+ */
+public abstract class BaseEventSource implements EventSource
 {
 	@Override
 	public synchronized void registerListener(EventListener observer)
@@ -85,10 +88,10 @@ public class EventSourceBase implements EventSource
 							obs.eventOccured(event);
 						}
 						catch(Error err) {
-							Logging.getInstance().err(this, "Error in observer '" +obs +"'.", err);
+							notifyFailure(err, obs);
 						}
 						catch(Exception exc) {
-							Logging.getInstance().err(this, "Exception in observer '" +obs +"'.", exc);
+							notifyFailure(exc, obs);
 						}
 					}
 					
@@ -112,6 +115,15 @@ public class EventSourceBase implements EventSource
 			storeEvent(event);
 		}
 	}
+	
+	/**
+	 * Method is called if an {@link EventListener} throws an exception or error.
+	 * Method can be used by derived classes to react on the error.
+	 * 
+	 * @param failure Thrown exception or error
+	 * @param listener Listener that throwed the error
+	 */
+	protected abstract void notifyFailure(Throwable failure, EventListener listener);
 	
 	/**
 	 * Stores events until listener is registered

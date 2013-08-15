@@ -42,4 +42,5 @@ Import-Package: de.tuilmenau.ics.CommonSim.datastream,
  de.tuilmenau.ics.middleware,
  net.rapi,
  net.rapi.events,
+ net.rapi.impl.base,
  net.rapi.properties
