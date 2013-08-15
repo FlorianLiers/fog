@@ -11,7 +11,7 @@ package de.tuilmenau.ics.fog.app.relayClient;
 
 import net.rapi.Description;
 import de.tuilmenau.ics.fog.application.InterOpIP;
-import de.tuilmenau.ics.fog.eclipse.ui.commands.HostApplication;
+import de.tuilmenau.ics.fog.eclipse.ui.commands.HostCommand;
 import de.tuilmenau.ics.fog.eclipse.ui.dialogs.EnterStringDialog;
 import de.tuilmenau.ics.fog.eclipse.ui.dialogs.SelectRequirementsDialog;
 import de.tuilmenau.ics.fog.util.Logger;
@@ -21,7 +21,7 @@ import de.tuilmenau.ics.fog.util.SimpleName;
 /**
  * Command for starting up a RelayClient at a host.
  */
-public class StartRelayClient extends HostApplication
+public class StartRelayClient extends HostCommand
 {
 	public StartRelayClient()
 	{

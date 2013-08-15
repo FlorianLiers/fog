@@ -23,12 +23,15 @@ import net.rapi.properties.Property;
 import net.rapi.properties.PropertyException;
 import net.rapi.properties.MinMaxProperty.Limit;
 
+import org.eclipse.swt.widgets.Shell;
+
+import de.tuilmenau.ics.fog.application.ThreadApplication;
 import de.tuilmenau.ics.fog.application.util.ReceiveCallback;
 import de.tuilmenau.ics.fog.application.util.Session;
 import de.tuilmenau.ics.fog.eclipse.console.EclipseConsoleLogObserver;
-import de.tuilmenau.ics.fog.eclipse.ui.commands.HostApplication;
 import de.tuilmenau.ics.fog.eclipse.ui.dialogs.SelectRequirementsDialog;
 import de.tuilmenau.ics.fog.exceptions.InvalidParameterException;
+import de.tuilmenau.ics.fog.facade.Host;
 import de.tuilmenau.ics.fog.facade.properties.PropertyFactoryContainer;
 import de.tuilmenau.ics.fog.ui.Logging;
 import de.tuilmenau.ics.fog.ui.Logging.Level;
@@ -37,7 +40,7 @@ import de.tuilmenau.ics.fog.util.SimpleName;
 
 
 
-public class ConsoleApp extends HostApplication implements ReceiveCallback
+public class ConsoleApp extends ThreadApplication implements ReceiveCallback
 {
 	private static final String EXIT_CMD = "exit";
 	private static final int EXIT_SLEEP_MSEC = 1000;
@@ -47,9 +50,15 @@ public class ConsoleApp extends HostApplication implements ReceiveCallback
 	// counter after how many messages the console should print message (MUST be > 1)
 	private static final int NUMBER_MSG_LOOP_COUNTER = 1000;
 	
+	public ConsoleApp(Host host, Shell shell)
+	{
+		super(host, null);
+		
+		this.shell = shell;
+	}
 	
 	@Override
-	public void main()
+	public void execute()
 	{
 		if(getHost() != null) {
 			boolean exit = false;
@@ -163,7 +172,7 @@ public class ConsoleApp extends HostApplication implements ReceiveCallback
 				tOk = true;
 			}
 			else if (tCommand.equals("requirements") || tCommand.equals("requ")) {
-				requirements = SelectRequirementsDialog.open(getSite().getShell(), null, null, requirements);
+				requirements = SelectRequirementsDialog.open(shell, null, null, requirements);
 				log(Level.INFO, "Set requirements for connection to: " +requirements);
 				tOk = true;
 			}
@@ -332,5 +341,6 @@ public class ConsoleApp extends HostApplication implements ReceiveCallback
 	private int loopCounter = -1;
 	private double loopTime = 0;
 	private Description requirements = null;
+	private Shell shell = null;
 }
 
