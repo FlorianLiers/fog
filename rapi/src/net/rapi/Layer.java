@@ -16,8 +16,6 @@
  *****************************************************************************/
 package net.rapi;
 
-import java.util.LinkedList;
-
 
 /**
  * A layer offers the possibility to announce own services to other peers of
@@ -89,6 +87,6 @@ public interface Layer extends EventSource
 	 * @param namePrefix Optional filter for the request. If present, only neighbors with a name having this prefix will be listed.
 	 * @return List of reachable neighbors or null if lower layer is broken
 	 */
-	public LinkedList<NeighborName> getNeighbors(Name namePrefix) throws NetworkException;
+	public Iterable<NeighborName> getNeighbors(Name namePrefix) throws NetworkException;
 
 }
