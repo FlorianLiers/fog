@@ -9,7 +9,7 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.video.ui;
 
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.Host;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;

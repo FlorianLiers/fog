@@ -28,6 +28,7 @@ import net.rapi.properties.Property;
 import net.rapi.properties.PropertyException;
 
 import de.tuilmenau.ics.fog.Config;
+import de.tuilmenau.ics.fog.facade.DescriptionHelper;
 import de.tuilmenau.ics.fog.facade.properties.IgnoreDestinationProperty;
 import de.tuilmenau.ics.fog.routing.Route;
 import de.tuilmenau.ics.fog.routing.RouteSegmentAddress;
@@ -166,9 +167,9 @@ public class RoutingServiceSimulated implements RoutingService
 						
 						if(tCapabilities != null) {
 							try {
-								tGateRequ = tCapabilities.deriveRequirements(tNonFunDesc);
+								tGateRequ = DescriptionHelper.deriveRequirements(tCapabilities, tNonFunDesc);
 								
-								tRemainingRequ = tNonFunDesc.removeCapabilities(tGateRequ);
+								tRemainingRequ = DescriptionHelper.removeCapabilities(tNonFunDesc, tGateRequ);
 							}
 							catch(PropertyException tExc) {
 								throw new RoutingException(this, "Requirements " +tNonFunDesc +" can not be fullfilled.", tExc);

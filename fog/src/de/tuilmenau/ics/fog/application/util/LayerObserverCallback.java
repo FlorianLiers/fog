@@ -18,6 +18,8 @@ import java.rmi.RemoteException;
 
 import de.tuilmenau.ics.fog.topology.NeighborInformation;
 
+
+
 /**
  * Inferface for observer of the neighbor list
  */

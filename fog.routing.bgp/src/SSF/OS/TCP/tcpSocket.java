@@ -21,6 +21,7 @@ import SSF.OS.BGP4.Comm.Message;
 import SSF.OS.BGP4.Comm.TransportMessage;
 import SSF.OS.Socket.socketMaster;
 import de.tuilmenau.ics.fog.application.util.Session;
+import de.tuilmenau.ics.fog.facade.DescriptionHelper;
 import de.tuilmenau.ics.fog.routing.bgp.Config;
 
 /** 
@@ -98,7 +99,7 @@ public class tcpSocket extends Session
 	  
 	  Description requ = null;
 	  if(Config.USE_REAL_REQUIREMENTS) {
-		  requ = Description.createTCPlike();
+		  requ = DescriptionHelper.createTCPlike();
 	  }
 	  
 	  // ... connect ...

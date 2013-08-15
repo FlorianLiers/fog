@@ -25,7 +25,7 @@ import java.util.HashMap;
 
 import net.rapi.Connection;
 import net.rapi.Description;
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.Host;
 import net.rapi.NetworkException;
 
 import de.tuilmenau.ics.fog.application.util.ReceiveCallback;

@@ -23,6 +23,7 @@ import net.rapi.NetworkException;
 
 import de.tuilmenau.ics.fog.Config;
 import de.tuilmenau.ics.fog.FoGEntity;
+import de.tuilmenau.ics.fog.facade.DescriptionHelper;
 import de.tuilmenau.ics.fog.routing.Route;
 import de.tuilmenau.ics.fog.routing.RouteSegment;
 import de.tuilmenau.ics.fog.routing.RouteSegmentPath;
@@ -303,7 +304,7 @@ public class PleaseOpenConnection extends SignallingRequest
 			// Socket-path will not be created before next handshake arrives. 
 			
 			// Send an answer.
-			Description tReturnDescription = getDescription().calculateDescrForRemoteSystem();
+			Description tReturnDescription = DescriptionHelper.calculateDescrForRemoteSystem(getDescription());
 
 			Packet packet = new Packet(mReturnRouteFromBaseFN, new PleaseOpenConnection(this, tReceiversProcess, tReturnDescription));
 			
@@ -405,7 +406,7 @@ public class PleaseOpenConnection extends SignallingRequest
 			 * -> Reply with an additional PleaseOpenConnection.
 			 ******************************************************************/
 
-			Description tReturnDescription = getDescription().calculateDescrForRemoteSystem();
+			Description tReturnDescription = DescriptionHelper.calculateDescrForRemoteSystem(getDescription());
 
 			Packet packet = new Packet(mReturnRouteFromBaseFN, new PleaseOpenConnection(this, pReceiversProcess, tReturnDescription));
 			return packet;

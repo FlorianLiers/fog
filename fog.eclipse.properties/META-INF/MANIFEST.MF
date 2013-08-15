@@ -13,4 +13,6 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: de.tuilmenau.ics.fog.eclipse.properties
-Import-Package: de.tuilmenau.ics.graph
+Import-Package: de.tuilmenau.ics.graph,
+ net.rapi,
+ net.rapi.properties

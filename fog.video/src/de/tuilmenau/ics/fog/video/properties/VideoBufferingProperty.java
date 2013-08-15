@@ -22,7 +22,6 @@ package de.tuilmenau.ics.fog.video.properties;
 import java.io.Serializable;
 import java.util.HashMap;
 
-
 import de.tuilmenau.ics.fog.facade.properties.DirectionPair;
 import de.tuilmenau.ics.fog.facade.properties.FunctionalRequirementProperty;
 import de.tuilmenau.ics.fog.facade.properties.IDirectionPair;
@@ -68,7 +67,7 @@ public class VideoBufferingProperty extends FunctionalRequirementProperty
 	/**
 	 * @return The direction-pair of encoding and decoding relative to the
 	 * direction of the data-flow.
-	 * @see de.tuilmenau.ics.fog.facade.properties.FunctionalRequirementProperty#getDirectionPair()
+	 * @see net.rapi.properties.FunctionalRequirementProperty#getDirectionPair()
 	 */
 	@Override
 	public IDirectionPair getDirectionPair()
@@ -91,7 +90,7 @@ public class VideoBufferingProperty extends FunctionalRequirementProperty
 	/**
 	 * @return A {@link VideoBufferingProperty} with reverse {@link DirectionPair}.
 	 * 
-	 * @see de.tuilmenau.ics.fog.facade.properties.FunctionalRequirementProperty#getRemoteProperty()
+	 * @see net.rapi.properties.FunctionalRequirementProperty#getRemoteProperty()
 	 */
 	@Override
 	public FunctionalRequirementProperty getRemoteProperty()

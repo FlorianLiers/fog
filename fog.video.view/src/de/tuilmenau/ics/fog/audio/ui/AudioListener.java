@@ -9,12 +9,13 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.audio.ui;
 
-import net.rapi.*;
+import net.rapi.Connection;
 
 import org.eclipse.ui.PlatformUI;
 
 import de.tuilmenau.ics.fog.application.util.Session;
 import de.tuilmenau.ics.fog.exceptions.InvalidParameterException;
+import de.tuilmenau.ics.fog.facade.Host;
 import de.tuilmenau.ics.fog.ui.Logging;
 import de.tuilmenau.ics.fog.util.SimpleName;
 import de.tuilmenau.ics.fog.audio.UDPServerAudioProxy;

@@ -12,7 +12,7 @@ package de.tuilmenau.ics.fog.eclipse.ui.menu;
 import java.awt.Menu;
 import java.util.LinkedList;
 
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.Host;
 
 import de.tuilmenau.ics.fog.application.Application;
 import de.tuilmenau.ics.fog.ui.Logging;

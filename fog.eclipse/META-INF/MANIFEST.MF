@@ -38,4 +38,7 @@ Import-Package: de.tuilmenau.ics.graph,
  edu.uci.ics.jung.visualization.transform,
  edu.uci.ics.jung.visualization.transform.shape,
  edu.uci.ics.jung.visualization.util,
+ net.rapi,
+ net.rapi.events,
+ net.rapi.properties,
  org.apache.commons.collections15

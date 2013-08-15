@@ -15,7 +15,7 @@ package de.tuilmenau.ics.fog.application;
 
 import net.rapi.Connection;
 import net.rapi.Description;
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.Host;
 import net.rapi.Identity;
 import net.rapi.Name;
 import de.tuilmenau.ics.fog.application.util.Session;

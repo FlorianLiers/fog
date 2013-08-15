@@ -9,7 +9,7 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.encryption;
 
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.Host;
 import de.tuilmenau.ics.fog.ui.commands.Command;
 
 

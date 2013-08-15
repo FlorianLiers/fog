@@ -13,7 +13,7 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.application;
 
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.Host;
 import net.rapi.Identity;
 import de.tuilmenau.ics.fog.ui.Viewable;
 import de.tuilmenau.ics.fog.util.Logger;

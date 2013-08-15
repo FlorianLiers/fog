@@ -26,6 +26,7 @@ import net.rapi.properties.PropertyException;
 import de.tuilmenau.ics.fog.Config;
 import de.tuilmenau.ics.fog.IEvent;
 import de.tuilmenau.ics.fog.exceptions.CreationException;
+import de.tuilmenau.ics.fog.facade.DescriptionHelper;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.packets.PleaseOpenConnection;
 import de.tuilmenau.ics.fog.routing.Route;
@@ -82,7 +83,7 @@ public class ProcessGateCollectionConstruction extends ProcessConstruction
 		Description tRequestDescription = getDescription();
 		if(tRequestDescription != null) {
 			if(calculateDescrForRemoteSystem) {
-				tRequestDescription = tRequestDescription.calculateDescrForRemoteSystem();
+				tRequestDescription = DescriptionHelper.calculateDescrForRemoteSystem(tRequestDescription);
 			}
 		} else {
 			// avoid null pointer; use empty description

@@ -27,7 +27,7 @@ import java.util.LinkedList;
 
 import net.rapi.Connection;
 import net.rapi.Description;
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.Host;
 
 import de.tuilmenau.ics.fog.application.util.ReceiveCallback;
 import de.tuilmenau.ics.fog.application.util.Session;

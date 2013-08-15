@@ -18,6 +18,7 @@ import de.tuilmenau.ics.fog.application.InterOpIP;
 import de.tuilmenau.ics.fog.application.InterOpIP.Transport;
 import de.tuilmenau.ics.fog.application.util.Session;
 import de.tuilmenau.ics.fog.exceptions.InvalidParameterException;
+import de.tuilmenau.ics.fog.facade.DescriptionHelper;
 import de.tuilmenau.ics.fog.util.SimpleName;
 
 
@@ -89,7 +90,7 @@ public class ConnectionEndPointInterOpIP extends Session
 					
 					
 					// parse QoS value
-					tDescription = Description.createQoS(Boolean.parseBoolean(tTokenList[7]), Integer.parseInt(tTokenList[6]), Integer.parseInt(tTokenList[5]));
+					tDescription = DescriptionHelper.createQoS(Boolean.parseBoolean(tTokenList[7]), Integer.parseInt(tTokenList[6]), Integer.parseInt(tTokenList[5]));
 						
 					tServerPort = Integer.parseInt(tTokenList[4]);
 					mInterOpApp.addIpListener(tServerName, tDescription, tTransport, tServerPort);					

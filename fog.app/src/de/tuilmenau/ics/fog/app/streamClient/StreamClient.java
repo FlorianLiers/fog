@@ -10,7 +10,7 @@
 package de.tuilmenau.ics.fog.app.streamClient;
 
 import net.rapi.Description;
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.Host;
 import net.rapi.Identity;
 import net.rapi.Name;
 import net.rapi.NetworkException;

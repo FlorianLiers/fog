@@ -18,6 +18,8 @@ import java.util.HashMap;
 
 import net.rapi.properties.AbstractProperty;
 
+
+
 /**
  * Base-class for all functional requirements.
  */

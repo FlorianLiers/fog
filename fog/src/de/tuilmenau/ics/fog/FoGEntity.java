@@ -18,20 +18,19 @@ import java.util.LinkedList;
 import net.rapi.Binding;
 import net.rapi.Connection;
 import net.rapi.Description;
-import net.rapi.Host;
 import net.rapi.Identity;
 import net.rapi.Layer;
 import net.rapi.Name;
+import net.rapi.NeighborName;
 import net.rapi.NetworkException;
 import net.rapi.properties.CommunicationTypeProperty;
-
-import de.tuilmenau.ics.fog.application.util.LayerObserverCallback;
 import de.tuilmenau.ics.fog.authentication.IdentityManagement;
+import de.tuilmenau.ics.fog.facade.DescriptionHelper;
+import de.tuilmenau.ics.fog.facade.Host;
 import de.tuilmenau.ics.fog.packets.statistics.ReroutingExperiment;
 import de.tuilmenau.ics.fog.routing.Route;
 import de.tuilmenau.ics.fog.routing.RoutingService;
 import de.tuilmenau.ics.fog.routing.RoutingServiceMultiplexer;
-import de.tuilmenau.ics.fog.topology.NeighborList;
 import de.tuilmenau.ics.fog.topology.Node;
 import de.tuilmenau.ics.fog.topology.SimulationElement;
 import de.tuilmenau.ics.fog.transfer.TransferPlane;
@@ -72,7 +71,7 @@ public class FoGEntity extends EventSourceBase implements Layer, GraphProvider, 
 	public Binding bind(Connection pParentSocket, Name pName, Description pDescription, Identity pIdentity)
 	{
 		// make sure there is no null point in
-		if(pDescription == null) pDescription = Description.createEmpty();
+		if(pDescription == null) pDescription = DescriptionHelper.createEmpty();
 		
 		// Create named server forwarding node
 		ServerFN tAppFN = new ServerFN(this, pName, NamingLevel.NAMES, pDescription, pIdentity);
@@ -161,7 +160,7 @@ public class FoGEntity extends EventSourceBase implements Layer, GraphProvider, 
 		}
 		
 		// make sure there is no null pointer
-		if(pDescription == null) pDescription = Description.createEmpty();
+		if(pDescription == null) pDescription = DescriptionHelper.createEmpty();
 		
 		// in which name do we start the creation and the signaling?
 		if(pRequester == null) {
@@ -372,26 +371,12 @@ public class FoGEntity extends EventSourceBase implements Layer, GraphProvider, 
 	}
 
 	@Override
-	public NeighborList getNeighbors(Name namePrefix) throws NetworkException
+	public LinkedList<NeighborName> getNeighbors(Name namePrefix) throws NetworkException
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public void registerObserverNeighborList(LayerObserverCallback observer)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean unregisterObserverNeighborList(LayerObserverCallback observer)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
 	/**
 	 * @return Reference to routing service of node (!= null)
 	 */

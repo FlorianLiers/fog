@@ -25,7 +25,7 @@ import java.util.LinkedList;
 import net.rapi.Binding;
 import net.rapi.Connection;
 import net.rapi.Description;
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.Host;
 import net.rapi.Identity;
 import net.rapi.Name;
 import net.rapi.Namespace;

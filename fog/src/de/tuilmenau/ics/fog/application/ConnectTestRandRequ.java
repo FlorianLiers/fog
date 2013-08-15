@@ -19,7 +19,7 @@ import de.tuilmenau.ics.fog.facade.properties.PropertyFactoryContainer;
 import de.tuilmenau.ics.fog.facade.properties.TransportProperty;
 
 import net.rapi.Description;
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.Host;
 import net.rapi.Identity;
 import net.rapi.properties.DatarateProperty;
 import net.rapi.properties.DelayProperty;

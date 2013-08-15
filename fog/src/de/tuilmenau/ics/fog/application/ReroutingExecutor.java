@@ -34,6 +34,7 @@ import net.rapi.properties.MinMaxProperty.Limit;
 
 import de.tuilmenau.ics.fog.application.util.Service;
 import de.tuilmenau.ics.fog.application.util.Session;
+import de.tuilmenau.ics.fog.facade.DescriptionHelper;
 import de.tuilmenau.ics.fog.Config;
 import de.tuilmenau.ics.fog.packets.statistics.ReroutingTestAgent;
 import de.tuilmenau.ics.fog.scripts.RerouteScript;
@@ -58,7 +59,7 @@ public class ReroutingExecutor extends Application
 	@Override
 	public Description getDescription()
 	{
-		Description tDescription = Description.createBE(false);
+		Description tDescription = DescriptionHelper.createBE(false);
 		
 		if(Config.Routing.REROUTING_EXECUTOR_ALLOCATES_BANDWIDTH) {
 			DatarateProperty tDatarateProperty = null;

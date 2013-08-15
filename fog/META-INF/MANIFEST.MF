@@ -16,6 +16,8 @@ Export-Package: de.tuilmenau.ics.fog,
  de.tuilmenau.ics.fog.exceptions,
  de.tuilmenau.ics.fog.ipv4,
  de.tuilmenau.ics.fog.ipv4.helper,
+ de.tuilmenau.ics.fog.facade,
+ de.tuilmenau.ics.fog.facade.properties,
  de.tuilmenau.ics.fog.packets,
  de.tuilmenau.ics.fog.routing,
  de.tuilmenau.ics.fog.routing.naming,
@@ -30,14 +32,14 @@ Export-Package: de.tuilmenau.ics.fog,
  de.tuilmenau.ics.fog.transfer.gates.roles,
  de.tuilmenau.ics.fog.transfer.manager,
  de.tuilmenau.ics.fog.ui,
- de.tuilmenau.ics.fog.util,
- net.rapi,
- net.rapi.events,
- net.rapi.properties
+ de.tuilmenau.ics.fog.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: de.tuilmenau.ics.CommonSim.datastream,
  de.tuilmenau.ics.CommonSim.datastream.annotations,
  de.tuilmenau.ics.CommonSim.datastream.numeric,
  de.tuilmenau.ics.extensionpoint,
  de.tuilmenau.ics.graph,
- de.tuilmenau.ics.middleware
+ de.tuilmenau.ics.middleware,
+ net.rapi,
+ net.rapi.events,
+ net.rapi.properties

@@ -16,7 +16,6 @@ package de.tuilmenau.ics.fog.application;
 import java.lang.reflect.Constructor;
 
 import net.rapi.Description;
-import net.rapi.Host;
 import net.rapi.Identity;
 import net.rapi.Layer;
 
@@ -25,6 +24,8 @@ import de.tuilmenau.ics.fog.application.observer.ApplicationObservable;
 import de.tuilmenau.ics.fog.application.observer.IApplicationEventObserver;
 import de.tuilmenau.ics.fog.exceptions.CreationException;
 import de.tuilmenau.ics.fog.exceptions.InvalidParameterException;
+import de.tuilmenau.ics.fog.facade.DescriptionHelper;
+import de.tuilmenau.ics.fog.facade.Host;
 import de.tuilmenau.ics.fog.ui.Viewable;
 import de.tuilmenau.ics.fog.util.Logger;
 
@@ -267,7 +268,7 @@ public abstract class Application
 	
 	public Description getDescription()
 	{
-		return Description.createBE(true);
+		return DescriptionHelper.createBE(true);
 	}
 	
 	/**

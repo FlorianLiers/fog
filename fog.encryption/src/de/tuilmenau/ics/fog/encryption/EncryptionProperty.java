@@ -12,7 +12,6 @@ package de.tuilmenau.ics.fog.encryption;
 import java.io.Serializable;
 import java.util.HashMap;
 
-
 import de.tuilmenau.ics.fog.encryption.gates.role.Encryption;
 import de.tuilmenau.ics.fog.facade.properties.FunctionalRequirementProperty;
 import de.tuilmenau.ics.fog.facade.properties.IDirectionPair;
@@ -116,7 +115,7 @@ public class EncryptionProperty extends FunctionalRequirementProperty
 	/**
 	 * @return The direction-pair of encoding and decoding relative to the direction of the data-flow.
 	 * 
-	 * @see de.tuilmenau.ics.fog.facade.properties.FunctionalRequirementProperty#getDirectionPair()
+	 * @see net.rapi.properties.FunctionalRequirementProperty#getDirectionPair()
 	 */
 	@Override
 	public IDirectionPair getDirectionPair()
@@ -142,7 +141,7 @@ public class EncryptionProperty extends FunctionalRequirementProperty
 	/**
 	 * @return A {@link EncryptionProperty} with reverse {@link EncryptionDirectionPair}.
 	 * 
-	 * @see de.tuilmenau.ics.fog.facade.properties.FunctionalRequirementProperty#getRemoteProperty()
+	 * @see net.rapi.properties.FunctionalRequirementProperty#getRemoteProperty()
 	 */
 	@Override
 	public FunctionalRequirementProperty getRemoteProperty()

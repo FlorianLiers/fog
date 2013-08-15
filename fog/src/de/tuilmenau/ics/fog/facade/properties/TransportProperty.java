@@ -16,6 +16,7 @@ package de.tuilmenau.ics.fog.facade.properties;
 import java.io.Serializable;
 import java.util.HashMap;
 
+
 import de.tuilmenau.ics.fog.transfer.gates.roles.Numbering;
 import de.tuilmenau.ics.fog.transfer.gates.roles.OrderAndCheck;
 

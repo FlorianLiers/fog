@@ -17,7 +17,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.Host;
 import net.rapi.Identity;
 import net.rapi.Signature;
 

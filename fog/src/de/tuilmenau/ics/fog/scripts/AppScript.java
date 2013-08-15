@@ -13,7 +13,7 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.scripts;
 
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.Host;
 import net.rapi.Identity;
 import de.tuilmenau.ics.fog.application.Application;
 import de.tuilmenau.ics.fog.exceptions.InvalidParameterException;

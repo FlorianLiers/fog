@@ -12,7 +12,6 @@ package de.tuilmenau.ics.fog.virusscan;
 import java.io.Serializable;
 import java.util.HashMap;
 
-
 import de.tuilmenau.ics.fog.facade.properties.DirectionPair;
 import de.tuilmenau.ics.fog.facade.properties.FunctionalRequirementProperty;
 import de.tuilmenau.ics.fog.facade.properties.IDirectionPair;

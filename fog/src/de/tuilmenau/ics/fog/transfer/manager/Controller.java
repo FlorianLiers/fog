@@ -30,12 +30,12 @@ import net.rapi.properties.NonFunctionalRequirementsProperty;
 import net.rapi.properties.PriorityProperty;
 import net.rapi.properties.Property;
 import net.rapi.properties.PropertyException;
-
 import de.tuilmenau.ics.fog.Config;
 import de.tuilmenau.ics.fog.FoGEntity;
 import de.tuilmenau.ics.fog.IContinuation;
 import de.tuilmenau.ics.fog.IEvent;
 import de.tuilmenau.ics.fog.exceptions.TransferServiceException;
+import de.tuilmenau.ics.fog.facade.DescriptionHelper;
 import de.tuilmenau.ics.fog.facade.properties.FunctionalRequirementProperty;
 import de.tuilmenau.ics.fog.facade.properties.IDirectionPair;
 import de.tuilmenau.ics.fog.facade.properties.TransportProperty;
@@ -66,7 +66,6 @@ import de.tuilmenau.ics.fog.transfer.gates.DownGate;
 import de.tuilmenau.ics.fog.transfer.gates.ErrorReflectorGate;
 import de.tuilmenau.ics.fog.transfer.gates.GateID;
 import de.tuilmenau.ics.fog.transfer.gates.GateIterator;
-import de.tuilmenau.ics.fog.transfer.gates.HorizontalGate;
 import de.tuilmenau.ics.fog.transfer.gates.ReroutingGate;
 import de.tuilmenau.ics.fog.transfer.gates.TransparentGate;
 import de.tuilmenau.ics.fog.transfer.gates.roles.GateClass;
@@ -676,7 +675,7 @@ public class Controller
 
 		synchronized(tFN) { synchronized(tFN.getEntity()) {
 			ReroutingGate[] backup = new ReroutingGate[1];
-			Description requ = Description.createBE(false);
+			Description requ = DescriptionHelper.createBE(false);
 			DownGate downGate = checkDownGateAvailable(tFN, pNeighborLLID, null, requ, backup);
 			
 			// check, if DownGate already available
@@ -1167,7 +1166,7 @@ public class Controller
 			// Is one gate with requirements broken? Maybe the best effort does not work either.
 			if(tRouteRequirements != null) {
 				if(!tRouteRequirements.isBestEffort()) {
-					DownGate tBEGate = checkDownGateAvailable(pNetworkInterface.getMultiplexerGate(), pFrom.getToLowerLayerID(), null, Description.createBE(false), null);
+					DownGate tBEGate = checkDownGateAvailable(pNetworkInterface.getMultiplexerGate(), pFrom.getToLowerLayerID(), null, DescriptionHelper.createBE(false), null);
 					
 					if(tBEGate != null) {
 						mLogger.log(this, "Gate with requirements failed. Check best effort gate " +tBEGate);

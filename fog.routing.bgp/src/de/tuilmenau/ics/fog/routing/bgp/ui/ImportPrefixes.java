@@ -24,7 +24,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.Host;
 
 import SSF.OS.BGP4.Util.IPaddress;
 import de.tuilmenau.ics.fog.ui.Logging;

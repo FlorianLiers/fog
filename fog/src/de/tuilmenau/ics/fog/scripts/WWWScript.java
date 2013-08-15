@@ -13,7 +13,7 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.scripts;
 
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.Host;
 import de.tuilmenau.ics.fog.application.TCPProxy;
 import de.tuilmenau.ics.fog.topology.AutonomousSystem;
 import de.tuilmenau.ics.fog.ui.Logging;

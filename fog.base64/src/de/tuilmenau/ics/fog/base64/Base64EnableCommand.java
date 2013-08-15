@@ -9,7 +9,7 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.base64;
 
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.Host;
 import de.tuilmenau.ics.fog.ui.commands.Command;
 
 

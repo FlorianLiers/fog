@@ -9,7 +9,7 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.video.ui.commands;
 
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.Host;
 import de.tuilmenau.ics.fog.ui.commands.Command;
 import de.tuilmenau.ics.fog.audio.UDPServerAudioProxy;
 

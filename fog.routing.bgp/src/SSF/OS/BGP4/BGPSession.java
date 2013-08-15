@@ -14,7 +14,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.Host;
 
 import com.renesys.raceway.DML.Configuration;
 import com.renesys.raceway.DML.configException;

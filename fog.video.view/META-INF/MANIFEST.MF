@@ -11,3 +11,5 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: ICS group of TU Ilmenau
+Import-Package: net.rapi,
+ net.rapi.properties

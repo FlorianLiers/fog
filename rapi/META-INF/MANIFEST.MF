@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Application programming interface for recursive layers
+Bundle-SymbolicName: net.rapi;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: ICS group of TU Ilmenau
+Bundle-License: Apache License 2.0 (details see about.html)
+Bundle-ClassPath: .
+Export-Package: net.rapi,
+ net.rapi.events,
+ net.rapi.properties
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

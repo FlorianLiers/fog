@@ -8,4 +8,6 @@ Require-Bundle: de.tuilmenau.ics.fog;bundle-version="1.0.2",
  de.tuilmenau.ics.fog.eclipse;bundle-version="1.0.2"
 Export-Package: de.tuilmenau.ics.fog.emulator.ethernet
 Bundle-Vendor: ICS group of TU Ilmenau
-Import-Package: de.tuilmenau.ics.middleware
+Import-Package: de.tuilmenau.ics.middleware,
+ net.rapi,
+ net.rapi.properties

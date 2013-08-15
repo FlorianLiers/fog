@@ -10,7 +10,9 @@ Require-Bundle: de.tuilmenau.ics.fog;bundle-version="1.0.1",
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: de.tuilmenau.ics.CommonSim.datastream,
- de.tuilmenau.ics.CommonSim.datastream.numeric
+ de.tuilmenau.ics.CommonSim.datastream.numeric,
+ net.rapi,
+ net.rapi.events
 Export-Package: SSF.Net,
  SSF.Net.Util,
  SSF.OS.BGP4,

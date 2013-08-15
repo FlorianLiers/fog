@@ -19,7 +19,8 @@ import java.util.LinkedList;
 
 import net.rapi.Connection;
 import net.rapi.Description;
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.DescriptionHelper;
+import de.tuilmenau.ics.fog.facade.Host;
 import net.rapi.Identity;
 import net.rapi.Name;
 import net.rapi.Namespace;
@@ -116,7 +117,7 @@ public class RoutingServiceIP implements RoutingService
 							tRes.addFirst(new RouteSegmentAddress(new SimpleName(IPv4Address.NAMESPACE_IP)));
 						
 							// store IP address in connection description
-							Description tIpDestinationDescription = Description.createIpDestination(tDestinationIpAddress.getAddress(), tDestPort, tDestTransport);
+							Description tIpDestinationDescription = DescriptionHelper.createIpDestination(tDestinationIpAddress.getAddress(), tDestPort, tDestTransport);
 							tRes.addLast(new RouteSegmentDescription(tIpDestinationDescription));
 							return tRes;
 						} catch (UnknownHostException tExc) {
@@ -202,7 +203,7 @@ public class RoutingServiceIP implements RoutingService
 		}
 			
 		//TODO: rauswerfen, wenn getestet
-		pDescription = Description.createQoS(true, 100, 2000);
+		pDescription = DescriptionHelper.createQoS(true, 100, 2000);
 		
 		if(tFoundMapping) {
 			// look for QoS parameters

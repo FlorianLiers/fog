@@ -12,7 +12,6 @@ package de.tuilmenau.ics.fog.base64;
 import java.io.Serializable;
 import java.util.HashMap;
 
-
 import de.tuilmenau.ics.fog.base64.gates.role.Base64;
 import de.tuilmenau.ics.fog.facade.properties.FunctionalRequirementProperty;
 import de.tuilmenau.ics.fog.facade.properties.IDirectionPair;
@@ -120,7 +119,7 @@ public class Base64Property extends FunctionalRequirementProperty
 	/**
 	 * @return The direction-pair of encoding and decoding relative to the
 	 * direction of the data-flow.
-	 * @see de.tuilmenau.ics.fog.facade.properties.FunctionalRequirementProperty#getDirectionPair()
+	 * @see net.rapi.properties.FunctionalRequirementProperty#getDirectionPair()
 	 */
 	@Override
 	public IDirectionPair getDirectionPair()
@@ -146,7 +145,7 @@ public class Base64Property extends FunctionalRequirementProperty
 	/**
 	 * @return A {@link Base64Property} with reverse {@link Base64DirectionPair}.
 	 * 
-	 * @see de.tuilmenau.ics.fog.facade.properties.FunctionalRequirementProperty#getRemoteProperty()
+	 * @see net.rapi.properties.FunctionalRequirementProperty#getRemoteProperty()
 	 */
 	@Override
 	public FunctionalRequirementProperty getRemoteProperty()

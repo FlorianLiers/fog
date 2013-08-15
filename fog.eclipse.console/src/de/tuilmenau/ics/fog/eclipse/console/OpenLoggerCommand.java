@@ -11,7 +11,7 @@ package de.tuilmenau.ics.fog.eclipse.console;
 
 import java.rmi.RemoteException;
 
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.Host;
 
 import de.tuilmenau.ics.fog.topology.AutonomousSystem;
 import de.tuilmenau.ics.fog.topology.ILowerLayer;

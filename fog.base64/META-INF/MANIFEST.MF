@@ -11,4 +11,6 @@ Require-Bundle: org.eclipse.ui,
  de.tuilmenau.ics.fog.ui;bundle-version="1.0.2"
 Export-Package: de.tuilmenau.ics.fog.base64
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: de.tuilmenau.ics.middleware
+Import-Package: de.tuilmenau.ics.middleware,
+ net.rapi,
+ net.rapi.properties

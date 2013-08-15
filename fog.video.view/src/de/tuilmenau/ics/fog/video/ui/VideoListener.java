@@ -24,6 +24,7 @@ import de.tuilmenau.ics.fog.application.util.Session;
 import de.tuilmenau.ics.fog.eclipse.ui.dialogs.MessageBoxDialog;
 import de.tuilmenau.ics.fog.eclipse.ui.dialogs.SelectRequirementsDialog;
 import de.tuilmenau.ics.fog.exceptions.InvalidParameterException;
+import de.tuilmenau.ics.fog.facade.Host;
 import de.tuilmenau.ics.fog.facade.properties.PropertyFactoryContainer;
 import de.tuilmenau.ics.fog.ui.Logging;
 import de.tuilmenau.ics.fog.util.SimpleName;

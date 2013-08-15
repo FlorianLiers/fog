@@ -19,7 +19,8 @@ import java.util.LinkedList;
 import java.util.Observable;
 
 import net.rapi.Description;
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.DescriptionHelper;
+import de.tuilmenau.ics.fog.facade.Host;
 import net.rapi.Identity;
 import net.rapi.Layer;
 import net.rapi.Name;
@@ -63,10 +64,10 @@ public class Node extends Observable implements Host, SimulationElement, Breakab
 		// set capabilities of the node
 		String tCap = getParameter().get(Cap, null);
 		if((tCap == null) || "all".equalsIgnoreCase(tCap)) {
-			capabilities = Description.createHostExtended();
+			capabilities = DescriptionHelper.createHostExtended();
 		}
 		else if("half".equalsIgnoreCase(tCap)) {
-			capabilities = Description.createHostBasic();
+			capabilities = DescriptionHelper.createHostBasic();
 		}
 		else if("none".equalsIgnoreCase(tCap)) {
 			capabilities = new Description();
@@ -139,7 +140,7 @@ public class Node extends Observable implements Host, SimulationElement, Breakab
 		
 		Packet newpacket = null;
 		try {
-			Route route = mFoG.getTransferPlane().getRoute(mFoG.getCentralFN(), new SimpleName(NAMESPACE_HOST, target), Description.createBE(false), mFoG.getIdentity());
+			Route route = mFoG.getTransferPlane().getRoute(mFoG.getCentralFN(), new SimpleName(NAMESPACE_HOST, target), DescriptionHelper.createBE(false), mFoG.getIdentity());
 			newpacket = new Packet(route, data);
 			newpacket.setSourceNode(name);
 			newpacket.setTargetNode(target);

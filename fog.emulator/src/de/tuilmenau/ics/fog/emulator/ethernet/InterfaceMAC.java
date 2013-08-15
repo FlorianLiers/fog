@@ -19,7 +19,6 @@ import java.util.LinkedList;
 import net.rapi.NetworkException;
 import net.rapi.Signature;
 
-
 import jniImports.PacketFoG;
 
 import de.tuilmenau.ics.fog.eclipse.utils.Resources;

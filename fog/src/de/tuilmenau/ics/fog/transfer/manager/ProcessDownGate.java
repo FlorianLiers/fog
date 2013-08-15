@@ -24,6 +24,7 @@ import net.rapi.properties.DatarateProperty;
 import de.tuilmenau.ics.fog.Config;
 import de.tuilmenau.ics.fog.FoGEntity;
 import de.tuilmenau.ics.fog.IEvent;
+import de.tuilmenau.ics.fog.facade.DescriptionHelper;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.packets.PleaseOpenDownGate;
 import de.tuilmenau.ics.fog.packets.SignallingRequest;
@@ -104,7 +105,7 @@ public class ProcessDownGate extends ProcessGateConstruction
 			Description tBusCapab = mInterface.getBus().getDescription();
 			
 			if(tBusCapab != null) {
-				mRequirements = tBusCapab.deriveRequirements(mRequirements);
+				mRequirements = DescriptionHelper.deriveRequirements(tBusCapab, mRequirements);
 			}
 			// else stick to the original requirements
 		}

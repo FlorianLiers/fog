@@ -9,7 +9,7 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.video;
 
-import net.rapi.Host;
+import de.tuilmenau.ics.fog.facade.Host;
 import net.rapi.Identity;
 import de.tuilmenau.ics.fog.application.ThreadApplication;
 
