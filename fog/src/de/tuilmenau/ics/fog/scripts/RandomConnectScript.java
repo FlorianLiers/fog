@@ -13,9 +13,9 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.scripts;
 
+import net.rapi.NetworkException;
 import de.tuilmenau.ics.fog.IEvent;
 import de.tuilmenau.ics.fog.application.ConnectTest;
-import de.tuilmenau.ics.fog.facade.NetworkException;
 import de.tuilmenau.ics.fog.topology.AutonomousSystem;
 import de.tuilmenau.ics.fog.topology.IAutonomousSystem;
 import de.tuilmenau.ics.fog.topology.Simulation;

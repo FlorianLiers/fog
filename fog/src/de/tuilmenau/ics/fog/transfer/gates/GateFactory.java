@@ -16,8 +16,9 @@ package de.tuilmenau.ics.fog.transfer.gates;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import net.rapi.Identity;
+
 import de.tuilmenau.ics.fog.FoGEntity;
-import de.tuilmenau.ics.fog.facade.Identity;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;
 
 

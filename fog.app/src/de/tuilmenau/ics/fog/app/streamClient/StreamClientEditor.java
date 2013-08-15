@@ -9,6 +9,10 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.app.streamClient;
 
+import net.rapi.NetworkException;
+import net.rapi.RequirementsException;
+import net.rapi.RoutingException;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -26,9 +30,6 @@ import de.tuilmenau.ics.fog.application.observer.IApplicationEventObserver;
 import de.tuilmenau.ics.fog.eclipse.ui.EditorRowComposite;
 import de.tuilmenau.ics.fog.eclipse.ui.dialogs.MessageBoxDialog;
 import de.tuilmenau.ics.fog.eclipse.utils.*;
-import de.tuilmenau.ics.fog.facade.NetworkException;
-import de.tuilmenau.ics.fog.facade.RequirementsException;
-import de.tuilmenau.ics.fog.facade.RoutingException;
 
 /**
  * Editor showing the internal parameters of a stream client.

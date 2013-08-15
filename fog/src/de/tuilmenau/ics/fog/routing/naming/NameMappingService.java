@@ -17,7 +17,8 @@ import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-import de.tuilmenau.ics.fog.facade.Name;
+import net.rapi.Name;
+
 import de.tuilmenau.ics.fog.transfer.TransferPlaneObserver.NamingLevel;
 
 

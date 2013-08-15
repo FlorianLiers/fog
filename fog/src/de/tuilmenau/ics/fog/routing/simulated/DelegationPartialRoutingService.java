@@ -16,8 +16,9 @@ package de.tuilmenau.ics.fog.routing.simulated;
 import java.rmi.RemoteException;
 import java.util.LinkedList;
 
+import net.rapi.Description;
+
 import de.tuilmenau.ics.fog.EventHandler;
-import de.tuilmenau.ics.fog.facade.Description;
 import de.tuilmenau.ics.fog.topology.Simulation;
 import de.tuilmenau.ics.fog.transfer.gates.GateID;
 import de.tuilmenau.ics.fog.util.Logger;

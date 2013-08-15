@@ -9,9 +9,10 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.eclipse.ui.dialogs;
 
+import net.rapi.Description;
+
 import org.eclipse.swt.widgets.Shell;
 
-import de.tuilmenau.ics.fog.facade.Description;
 
 
 public class SelectRequirementsDialogThread implements Runnable

@@ -13,9 +13,9 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.transfer;
 
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.NetworkException;
+import net.rapi.Description;
+import net.rapi.Name;
+import net.rapi.NetworkException;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;
 import de.tuilmenau.ics.fog.transfer.ForwardingNode;
 import de.tuilmenau.ics.fog.transfer.gates.AbstractGate;

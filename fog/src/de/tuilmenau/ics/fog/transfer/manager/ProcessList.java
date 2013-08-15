@@ -16,7 +16,8 @@ package de.tuilmenau.ics.fog.transfer.manager;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import de.tuilmenau.ics.fog.facade.Identity;
+import net.rapi.Identity;
+
 
 
 /**

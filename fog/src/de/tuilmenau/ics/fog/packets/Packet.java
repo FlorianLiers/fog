@@ -17,9 +17,10 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.LinkedList;
 
+import net.rapi.Description;
+import net.rapi.Signature;
+
 import de.tuilmenau.ics.fog.Config;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Signature;
 import de.tuilmenau.ics.fog.packets.statistics.IPacketStatistics;
 import de.tuilmenau.ics.fog.routing.Route;
 import de.tuilmenau.ics.fog.routing.RouteSegment;

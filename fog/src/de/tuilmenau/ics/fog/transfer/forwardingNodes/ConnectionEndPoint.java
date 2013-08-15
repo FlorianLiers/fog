@@ -21,17 +21,18 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.LinkedList;
 
+import net.rapi.Connection;
+import net.rapi.Description;
+import net.rapi.Name;
+import net.rapi.NetworkException;
+import net.rapi.Signature;
+import net.rapi.events.ClosedEvent;
+import net.rapi.events.ConnectedEvent;
+import net.rapi.events.DataAvailableEvent;
+import net.rapi.events.ErrorEvent;
+import net.rapi.events.ServiceDegradationEvent;
+
 import de.tuilmenau.ics.fog.Config;
-import de.tuilmenau.ics.fog.facade.Connection;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.NetworkException;
-import de.tuilmenau.ics.fog.facade.Signature;
-import de.tuilmenau.ics.fog.facade.events.ClosedEvent;
-import de.tuilmenau.ics.fog.facade.events.ConnectedEvent;
-import de.tuilmenau.ics.fog.facade.events.DataAvailableEvent;
-import de.tuilmenau.ics.fog.facade.events.ErrorEvent;
-import de.tuilmenau.ics.fog.facade.events.ServiceDegradationEvent;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.packets.PleaseCloseConnection;
 import de.tuilmenau.ics.fog.packets.PleaseUpdateRoute;

@@ -17,17 +17,18 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.List;
 
+import net.rapi.Description;
+import net.rapi.Identity;
+import net.rapi.Name;
+import net.rapi.NetworkException;
+import net.rapi.RequirementsException;
+import net.rapi.RoutingException;
+
 import de.tuilmenau.ics.CommonSim.datastream.numeric.IDoubleWriter;
 import de.tuilmenau.ics.CommonSim.datastream.numeric.SumNode;
 import de.tuilmenau.ics.fog.Config;
 import de.tuilmenau.ics.fog.EventHandler;
 import de.tuilmenau.ics.fog.FoGEntity;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.NetworkException;
-import de.tuilmenau.ics.fog.facade.RequirementsException;
-import de.tuilmenau.ics.fog.facade.RoutingException;
 import de.tuilmenau.ics.fog.routing.Route;
 import de.tuilmenau.ics.fog.routing.RoutingService;
 import de.tuilmenau.ics.fog.topology.Simulation;

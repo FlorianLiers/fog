@@ -9,13 +9,14 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.videoOSD;
 
+import net.rapi.properties.Property;
+import net.rapi.properties.PropertyException;
+
 import org.eclipse.swt.widgets.Composite;
 
 import de.tuilmenau.ics.fog.eclipse.ui.PropertyGUIFactory;
 import de.tuilmenau.ics.fog.eclipse.ui.PropertyParameterWidget;
 import de.tuilmenau.ics.fog.eclipse.widget.StringPropertyParameterWidget;
-import de.tuilmenau.ics.fog.facade.properties.Property;
-import de.tuilmenau.ics.fog.facade.properties.PropertyException;
 import de.tuilmenau.ics.fog.facade.properties.PropertyFactory;
 
 public class VideoOSDPropertyFactory implements PropertyFactory, PropertyGUIFactory

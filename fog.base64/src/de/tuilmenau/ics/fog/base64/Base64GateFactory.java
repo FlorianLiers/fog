@@ -12,10 +12,11 @@ package de.tuilmenau.ics.fog.base64;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import net.rapi.Identity;
+
 import de.tuilmenau.ics.fog.FoGEntity;
 import de.tuilmenau.ics.fog.base64.gates.Base64DecoderGate;
 import de.tuilmenau.ics.fog.base64.gates.Base64EncoderGate;
-import de.tuilmenau.ics.fog.facade.Identity;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;
 import de.tuilmenau.ics.fog.transfer.gates.AbstractGate;
 import de.tuilmenau.ics.fog.transfer.gates.GateFactory;

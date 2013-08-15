@@ -13,12 +13,12 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.application;
 
+import net.rapi.Host;
+import net.rapi.Identity;
+import net.rapi.NetworkException;
 import de.tuilmenau.ics.fog.IEvent;
 import de.tuilmenau.ics.fog.IEventRef;
 import de.tuilmenau.ics.fog.application.util.Session;
-import de.tuilmenau.ics.fog.facade.Host;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.NetworkException;
 import de.tuilmenau.ics.fog.util.Logger;
 
 

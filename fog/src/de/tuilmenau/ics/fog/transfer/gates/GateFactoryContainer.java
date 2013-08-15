@@ -17,11 +17,12 @@ import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 
+import net.rapi.Identity;
+
 import de.tuilmenau.ics.extensionpoint.Extension;
 import de.tuilmenau.ics.extensionpoint.ExtensionRegistry;
 import de.tuilmenau.ics.fog.FoGEntity;
 import de.tuilmenau.ics.fog.exceptions.CreationException;
-import de.tuilmenau.ics.fog.facade.Identity;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;
 import de.tuilmenau.ics.fog.transfer.gates.roles.GateClass;
 import de.tuilmenau.ics.fog.transfer.gates.roles.Horizontal;

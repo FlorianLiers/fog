@@ -11,7 +11,8 @@ package de.tuilmenau.ics.fog.packets.hierarchical;
 
 import java.io.Serializable;
 
-import de.tuilmenau.ics.fog.facade.Name;
+import net.rapi.Name;
+
 
 /**
  * 

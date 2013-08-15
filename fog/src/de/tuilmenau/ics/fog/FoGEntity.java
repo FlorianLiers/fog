@@ -15,17 +15,18 @@ package de.tuilmenau.ics.fog;
 
 import java.util.LinkedList;
 
+import net.rapi.Binding;
+import net.rapi.Connection;
+import net.rapi.Description;
+import net.rapi.Host;
+import net.rapi.Identity;
+import net.rapi.Layer;
+import net.rapi.Name;
+import net.rapi.NetworkException;
+import net.rapi.properties.CommunicationTypeProperty;
+
 import de.tuilmenau.ics.fog.application.util.LayerObserverCallback;
 import de.tuilmenau.ics.fog.authentication.IdentityManagement;
-import de.tuilmenau.ics.fog.facade.Binding;
-import de.tuilmenau.ics.fog.facade.Connection;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Host;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Layer;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.NetworkException;
-import de.tuilmenau.ics.fog.facade.properties.CommunicationTypeProperty;
 import de.tuilmenau.ics.fog.packets.statistics.ReroutingExperiment;
 import de.tuilmenau.ics.fog.routing.Route;
 import de.tuilmenau.ics.fog.routing.RoutingService;

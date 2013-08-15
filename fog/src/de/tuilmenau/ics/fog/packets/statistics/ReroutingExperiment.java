@@ -18,12 +18,13 @@ import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.Random;
 
+import net.rapi.Name;
+import net.rapi.NetworkException;
+import net.rapi.Signature;
+
 import de.tuilmenau.ics.fog.Config;
 import de.tuilmenau.ics.fog.IEvent;
 import de.tuilmenau.ics.fog.application.ReroutingExecutor.ReroutingSession;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.NetworkException;
-import de.tuilmenau.ics.fog.facade.Signature;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.routing.naming.HierarchicalNameMappingService;
 import de.tuilmenau.ics.fog.routing.naming.NameMappingService;

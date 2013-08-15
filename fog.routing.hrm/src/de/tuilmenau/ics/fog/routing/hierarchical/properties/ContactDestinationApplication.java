@@ -9,9 +9,9 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.routing.hierarchical.properties;
 
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.Namespace;
-import de.tuilmenau.ics.fog.facade.properties.AbstractProperty;
+import net.rapi.Name;
+import net.rapi.Namespace;
+import net.rapi.properties.AbstractProperty;
 
 /**
  * FoG consists of a partial routing service. It is possible to utilize source routing in order to signalize the

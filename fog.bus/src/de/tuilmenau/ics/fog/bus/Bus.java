@@ -18,6 +18,13 @@ import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Random;
 
+import net.rapi.Description;
+import net.rapi.properties.DatarateProperty;
+import net.rapi.properties.DelayProperty;
+import net.rapi.properties.LossRateProperty;
+import net.rapi.properties.Property;
+import net.rapi.properties.MinMaxProperty.Limit;
+
 import de.tuilmenau.ics.CommonSim.datastream.DatastreamManager;
 import de.tuilmenau.ics.CommonSim.datastream.StreamTime;
 import de.tuilmenau.ics.CommonSim.datastream.annotations.AutoWire;
@@ -28,12 +35,6 @@ import de.tuilmenau.ics.fog.EventHandler;
 import de.tuilmenau.ics.fog.IEvent;
 import de.tuilmenau.ics.fog.Config.Simulator.SimulatorMode;
 import de.tuilmenau.ics.fog.application.util.LayerObserverCallback;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.properties.DatarateProperty;
-import de.tuilmenau.ics.fog.facade.properties.DelayProperty;
-import de.tuilmenau.ics.fog.facade.properties.Property;
-import de.tuilmenau.ics.fog.facade.properties.LossRateProperty;
-import de.tuilmenau.ics.fog.facade.properties.MinMaxProperty.Limit;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.topology.AutonomousSystem;
 import de.tuilmenau.ics.fog.topology.ILowerLayer;

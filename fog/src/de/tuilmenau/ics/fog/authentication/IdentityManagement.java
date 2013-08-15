@@ -17,10 +17,11 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import net.rapi.Host;
+import net.rapi.Identity;
+import net.rapi.Signature;
+
 import de.tuilmenau.ics.fog.exceptions.AuthenticationException;
-import de.tuilmenau.ics.fog.facade.Host;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Signature;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.topology.AutonomousSystem;
 import de.tuilmenau.ics.fog.util.Logger;

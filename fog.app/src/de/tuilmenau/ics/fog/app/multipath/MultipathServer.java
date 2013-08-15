@@ -15,6 +15,17 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.LinkedList;
 
+import net.rapi.Binding;
+import net.rapi.Connection;
+import net.rapi.Description;
+import net.rapi.Host;
+import net.rapi.Identity;
+import net.rapi.Name;
+import net.rapi.Namespace;
+import net.rapi.NetworkException;
+import net.rapi.Signature;
+import net.rapi.events.ErrorEvent;
+
 import de.tuilmenau.ics.fog.application.Application;
 import de.tuilmenau.ics.fog.application.InterOpIP;
 import de.tuilmenau.ics.fog.application.InterOpIP.Transport;
@@ -22,16 +33,6 @@ import de.tuilmenau.ics.fog.application.interop.ConnectionEndPointUDPProxy;
 import de.tuilmenau.ics.fog.application.util.Service;
 import de.tuilmenau.ics.fog.application.util.Session;
 import de.tuilmenau.ics.fog.exceptions.InvalidParameterException;
-import de.tuilmenau.ics.fog.facade.Binding;
-import de.tuilmenau.ics.fog.facade.Connection;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Host;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.Namespace;
-import de.tuilmenau.ics.fog.facade.NetworkException;
-import de.tuilmenau.ics.fog.facade.Signature;
-import de.tuilmenau.ics.fog.facade.events.ErrorEvent;
 import de.tuilmenau.ics.fog.ui.Viewable;
 import de.tuilmenau.ics.fog.util.SimpleName;
 

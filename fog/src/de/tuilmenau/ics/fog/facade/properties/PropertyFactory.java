@@ -13,8 +13,8 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.facade.properties;
 
-import de.tuilmenau.ics.fog.facade.properties.Property;
-import de.tuilmenau.ics.fog.facade.properties.PropertyException;
+import net.rapi.properties.Property;
+import net.rapi.properties.PropertyException;
 
 
 /**

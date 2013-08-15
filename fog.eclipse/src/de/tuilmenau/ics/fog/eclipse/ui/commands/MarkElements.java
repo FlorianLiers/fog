@@ -9,10 +9,11 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.eclipse.ui.commands;
 
+import net.rapi.NetworkException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 
-import de.tuilmenau.ics.fog.facade.NetworkException;
 import de.tuilmenau.ics.fog.packets.InvisibleMarker;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.packets.InvisibleMarker.Operation;

@@ -9,6 +9,10 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.app.relayClient;
 
+import net.rapi.NetworkException;
+import net.rapi.RequirementsException;
+import net.rapi.RoutingException;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -30,9 +34,6 @@ import de.tuilmenau.ics.fog.eclipse.ui.EditorRowComposite;
 import de.tuilmenau.ics.fog.eclipse.ui.dialogs.MessageBoxDialog;
 import de.tuilmenau.ics.fog.eclipse.ui.editors.EditorInput;
 import de.tuilmenau.ics.fog.eclipse.utils.*;
-import de.tuilmenau.ics.fog.facade.NetworkException;
-import de.tuilmenau.ics.fog.facade.RequirementsException;
-import de.tuilmenau.ics.fog.facade.RoutingException;
 import de.tuilmenau.ics.fog.ui.Logging;
 
 /**

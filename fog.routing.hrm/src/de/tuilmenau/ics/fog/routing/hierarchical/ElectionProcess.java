@@ -17,11 +17,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import net.rapi.Name;
+import net.rapi.RequirementsException;
+import net.rapi.RoutingException;
+
 import de.tuilmenau.ics.fog.IEvent;
 import de.tuilmenau.ics.fog.exceptions.AuthenticationException;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.RequirementsException;
-import de.tuilmenau.ics.fog.facade.RoutingException;
 import de.tuilmenau.ics.fog.packets.hierarchical.BullyAnnounce;
 import de.tuilmenau.ics.fog.packets.hierarchical.BullyElect;
 import de.tuilmenau.ics.fog.packets.hierarchical.RequestCoordinator;

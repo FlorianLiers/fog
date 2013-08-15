@@ -18,7 +18,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-import de.tuilmenau.ics.fog.facade.Identity;
+import net.rapi.Identity;
+
 
 
 /**

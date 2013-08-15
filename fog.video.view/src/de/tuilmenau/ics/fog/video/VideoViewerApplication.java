@@ -9,9 +9,9 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.video;
 
+import net.rapi.Host;
+import net.rapi.Identity;
 import de.tuilmenau.ics.fog.application.ThreadApplication;
-import de.tuilmenau.ics.fog.facade.Host;
-import de.tuilmenau.ics.fog.facade.Identity;
 
 /**
  *  Implements pseudo video viewer which can be listed in the GUI as place holder for the video editor instance

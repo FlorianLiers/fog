@@ -31,9 +31,10 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
+import net.rapi.Namespace;
+
 import SSF.OS.BGP4.Util.IPaddress;
 import de.tuilmenau.ics.fog.FoGEntity;
-import de.tuilmenau.ics.fog.facade.Namespace;
 import de.tuilmenau.ics.fog.routing.RoutingService;
 import de.tuilmenau.ics.fog.routing.naming.NameMappingService;
 import de.tuilmenau.ics.fog.topology.Node;

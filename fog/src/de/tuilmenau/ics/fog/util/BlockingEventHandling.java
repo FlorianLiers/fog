@@ -15,10 +15,11 @@ package de.tuilmenau.ics.fog.util;
 
 import java.util.LinkedList;
 
-import de.tuilmenau.ics.fog.facade.EventSource;
-import de.tuilmenau.ics.fog.facade.NetworkException;
-import de.tuilmenau.ics.fog.facade.EventSource.EventListener;
-import de.tuilmenau.ics.fog.facade.events.Event;
+import net.rapi.EventSource;
+import net.rapi.NetworkException;
+import net.rapi.EventSource.EventListener;
+import net.rapi.events.Event;
+
 
 
 public class BlockingEventHandling implements EventListener

@@ -16,12 +16,13 @@ package de.tuilmenau.ics.fog.topology;
 import java.rmi.RemoteException;
 import java.util.LinkedList;
 
+import net.rapi.Name;
+import net.rapi.NetworkException;
+
 import de.tuilmenau.ics.fog.Config;
 import de.tuilmenau.ics.fog.FoGEntity;
 import de.tuilmenau.ics.fog.IEvent;
 import de.tuilmenau.ics.fog.application.util.LayerObserverCallback;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.NetworkException;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.topology.ILowerLayer.SendResult;
 import de.tuilmenau.ics.fog.transfer.DummyForwardingElement;

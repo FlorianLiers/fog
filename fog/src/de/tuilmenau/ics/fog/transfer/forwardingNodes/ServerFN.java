@@ -16,14 +16,15 @@ package de.tuilmenau.ics.fog.transfer.forwardingNodes;
 
 import java.util.LinkedList;
 
+import net.rapi.Binding;
+import net.rapi.Connection;
+import net.rapi.Description;
+import net.rapi.Identity;
+import net.rapi.Name;
+import net.rapi.events.NewConnectionEvent;
+import net.rapi.properties.CommunicationTypeProperty;
+
 import de.tuilmenau.ics.fog.FoGEntity;
-import de.tuilmenau.ics.fog.facade.Binding;
-import de.tuilmenau.ics.fog.facade.Connection;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.events.NewConnectionEvent;
-import de.tuilmenau.ics.fog.facade.properties.CommunicationTypeProperty;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.packets.PleaseOpenConnection;
 import de.tuilmenau.ics.fog.routing.Route;

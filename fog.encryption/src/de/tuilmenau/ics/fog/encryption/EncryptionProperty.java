@@ -12,6 +12,7 @@ package de.tuilmenau.ics.fog.encryption;
 import java.io.Serializable;
 import java.util.HashMap;
 
+
 import de.tuilmenau.ics.fog.encryption.gates.role.Encryption;
 import de.tuilmenau.ics.fog.facade.properties.FunctionalRequirementProperty;
 import de.tuilmenau.ics.fog.facade.properties.IDirectionPair;

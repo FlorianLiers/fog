@@ -25,11 +25,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import net.rapi.Connection;
+import net.rapi.Description;
+import net.rapi.Host;
+
 import de.tuilmenau.ics.fog.application.util.ReceiveCallback;
 import de.tuilmenau.ics.fog.application.util.Session;
-import de.tuilmenau.ics.fog.facade.Connection;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Host;
 import de.tuilmenau.ics.fog.util.Logger;
 import de.tuilmenau.ics.fog.util.SimpleName;
 

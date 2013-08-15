@@ -9,16 +9,16 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.app.relayClient;
 
+import net.rapi.Description;
+import net.rapi.Host;
+import net.rapi.Identity;
+import net.rapi.Name;
 import de.tuilmenau.ics.fog.application.ApplicationClient;
 import de.tuilmenau.ics.fog.application.InterOpIP;
 import de.tuilmenau.ics.fog.application.InterOpIP.Transport;
 import de.tuilmenau.ics.fog.application.interop.ConnectionEndPointTCPProxy;
 import de.tuilmenau.ics.fog.application.interop.ConnectionEndPointUDPProxy;
 import de.tuilmenau.ics.fog.application.util.Session;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Host;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Name;
 import de.tuilmenau.ics.fog.ui.Viewable;
 import de.tuilmenau.ics.fog.util.Logger;
 import de.tuilmenau.ics.fog.util.Size;

@@ -13,8 +13,8 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.packets;
 
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.NetworkException;
+import net.rapi.Identity;
+import net.rapi.NetworkException;
 import de.tuilmenau.ics.fog.transfer.ForwardingNode;
 import de.tuilmenau.ics.fog.transfer.forwardingNodes.ClientFN;
 import de.tuilmenau.ics.fog.transfer.manager.Process;

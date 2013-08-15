@@ -15,10 +15,11 @@ package de.tuilmenau.ics.fog.facade.properties;
 
 import java.util.HashMap;
 
+import net.rapi.properties.Property;
+import net.rapi.properties.PropertyException;
+
 import de.tuilmenau.ics.extensionpoint.Extension;
 import de.tuilmenau.ics.extensionpoint.ExtensionRegistry;
-import de.tuilmenau.ics.fog.facade.properties.Property;
-import de.tuilmenau.ics.fog.facade.properties.PropertyException;
 import de.tuilmenau.ics.fog.ui.Logging;
 
 

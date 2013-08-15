@@ -9,6 +9,8 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.video.ui;
 
+import net.rapi.Host;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -27,7 +29,6 @@ import org.eclipse.ui.part.EditorPart;
 import de.tuilmenau.ics.fog.audio.ui.AudioListener;
 import de.tuilmenau.ics.fog.eclipse.ui.editors.EditorInput;
 import de.tuilmenau.ics.fog.eclipse.utils.EditorUtils;
-import de.tuilmenau.ics.fog.facade.Host;
 import de.tuilmenau.ics.fog.ui.Logging;
 import de.tuilmenau.ics.fog.video.VideoViewerApplication;
 

@@ -15,6 +15,15 @@ package de.tuilmenau.ics.fog.application;
 
 import java.util.LinkedList;
 
+import net.rapi.Binding;
+import net.rapi.Connection;
+import net.rapi.Description;
+import net.rapi.Host;
+import net.rapi.Identity;
+import net.rapi.Name;
+import net.rapi.Signature;
+import net.rapi.events.ErrorEvent;
+
 import de.tuilmenau.ics.fog.FoGEntity;
 import de.tuilmenau.ics.fog.application.interop.ConnectionEndPointInterOpIP;
 import de.tuilmenau.ics.fog.application.interop.ConnectionEndPointTCPProxy;
@@ -22,14 +31,6 @@ import de.tuilmenau.ics.fog.application.interop.ConnectionEndPointUDPProxy;
 import de.tuilmenau.ics.fog.application.util.ServerCallback;
 import de.tuilmenau.ics.fog.application.util.Service;
 import de.tuilmenau.ics.fog.exceptions.InvalidParameterException;
-import de.tuilmenau.ics.fog.facade.Binding;
-import de.tuilmenau.ics.fog.facade.Connection;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Host;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.Signature;
-import de.tuilmenau.ics.fog.facade.events.ErrorEvent;
 import de.tuilmenau.ics.fog.facade.properties.IpDestinationProperty;
 import de.tuilmenau.ics.fog.routing.ip.RoutingServiceIP;
 import de.tuilmenau.ics.fog.util.SimpleName;

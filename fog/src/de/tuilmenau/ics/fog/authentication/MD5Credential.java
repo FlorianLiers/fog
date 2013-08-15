@@ -15,7 +15,8 @@ package de.tuilmenau.ics.fog.authentication;
 
 import java.io.Serializable;
 
-import de.tuilmenau.ics.fog.facade.Signature;
+import net.rapi.Signature;
+
 
 
 public class MD5Credential extends SimpleCredential

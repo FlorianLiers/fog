@@ -18,8 +18,9 @@ import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.Arrays;
 
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.Namespace;
+import net.rapi.Name;
+import net.rapi.Namespace;
+
 import de.tuilmenau.ics.fog.util.Size;
 
 /**

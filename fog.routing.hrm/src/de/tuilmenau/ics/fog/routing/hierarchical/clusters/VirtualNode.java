@@ -9,7 +9,7 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.routing.hierarchical.clusters;
 
-import de.tuilmenau.ics.fog.facade.Name;
+import net.rapi.Name;
 import de.tuilmenau.ics.fog.routing.naming.hierarchical.HRMID;
 
 /**

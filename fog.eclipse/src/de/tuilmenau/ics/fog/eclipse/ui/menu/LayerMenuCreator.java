@@ -11,8 +11,9 @@ package de.tuilmenau.ics.fog.eclipse.ui.menu;
 
 import java.awt.Menu;
 
-import de.tuilmenau.ics.fog.facade.Host;
-import de.tuilmenau.ics.fog.facade.Layer;
+import net.rapi.Host;
+import net.rapi.Layer;
+
 import de.tuilmenau.ics.fog.ui.Logging;
 
 

@@ -13,12 +13,12 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.bus;
 
+import net.rapi.Description;
+import net.rapi.properties.DatarateProperty;
+import net.rapi.properties.DelayProperty;
+import net.rapi.properties.LossRateProperty;
+import net.rapi.properties.MinMaxProperty.Limit;
 import de.tuilmenau.ics.fog.commands.CreateCommand;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.properties.DatarateProperty;
-import de.tuilmenau.ics.fog.facade.properties.DelayProperty;
-import de.tuilmenau.ics.fog.facade.properties.LossRateProperty;
-import de.tuilmenau.ics.fog.facade.properties.MinMaxProperty.Limit;
 import de.tuilmenau.ics.fog.topology.AutonomousSystem;
 
 

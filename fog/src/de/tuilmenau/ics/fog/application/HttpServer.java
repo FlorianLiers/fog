@@ -13,7 +13,7 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.application;
 
-import de.tuilmenau.ics.fog.facade.Namespace;
+import net.rapi.Namespace;
 
 /**
  * Dummy class for storing the namespace.

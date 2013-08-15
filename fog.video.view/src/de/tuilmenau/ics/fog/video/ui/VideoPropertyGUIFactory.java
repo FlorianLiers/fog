@@ -13,6 +13,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import net.rapi.properties.Property;
+import net.rapi.properties.PropertyException;
+
 import org.eclipse.swt.widgets.Composite;
 
 import de.tuilmenau.ics.fog.eclipse.ui.PropertyGUIFactory;
@@ -21,8 +24,6 @@ import de.tuilmenau.ics.fog.eclipse.widget.ComboPropertyParameterWidget;
 import de.tuilmenau.ics.fog.eclipse.widget.DoubleComboPropertyParameterWidget;
 import de.tuilmenau.ics.fog.eclipse.widget.SpinnerPropertyParameterWidget;
 import de.tuilmenau.ics.fog.facade.properties.FunctionalRequirementProperty;
-import de.tuilmenau.ics.fog.facade.properties.Property;
-import de.tuilmenau.ics.fog.facade.properties.PropertyException;
 import de.tuilmenau.ics.fog.facade.properties.PropertyFactoryContainer;
 import de.tuilmenau.ics.fog.ui.Logging;
 

@@ -13,7 +13,7 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.routing;
 
-import de.tuilmenau.ics.fog.facade.Description;
+import net.rapi.Description;
 import de.tuilmenau.ics.fog.util.Size;
 
 

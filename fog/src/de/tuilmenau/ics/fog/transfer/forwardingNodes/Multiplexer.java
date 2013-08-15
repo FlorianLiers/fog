@@ -13,11 +13,11 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.transfer.forwardingNodes;
 
+import net.rapi.Description;
+import net.rapi.Identity;
+import net.rapi.Name;
 import de.tuilmenau.ics.fog.FoGEntity;
 import de.tuilmenau.ics.fog.authentication.IdentityManagement;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Name;
 import de.tuilmenau.ics.fog.packets.Invisible;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.packets.Signalling;

@@ -11,6 +11,8 @@ package de.tuilmenau.ics.fog.eclipse.ui.editors;
 
 import java.util.LinkedList;
 
+import net.rapi.Layer;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
@@ -24,7 +26,6 @@ import org.eclipse.ui.part.EditorPart;
 import de.tuilmenau.ics.fog.eclipse.ui.EditorRowComposite;
 import de.tuilmenau.ics.fog.eclipse.ui.menu.MenuCreator;
 import de.tuilmenau.ics.fog.eclipse.utils.Action;
-import de.tuilmenau.ics.fog.facade.Layer;
 import de.tuilmenau.ics.fog.topology.Node;
 
 

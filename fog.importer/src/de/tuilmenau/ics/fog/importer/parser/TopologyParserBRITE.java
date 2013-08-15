@@ -17,7 +17,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import de.tuilmenau.ics.fog.facade.properties.DatarateProperty;
+import net.rapi.properties.DatarateProperty;
+
 import de.tuilmenau.ics.fog.tools.CSVReaderNamedCol;
 import de.tuilmenau.ics.fog.util.Logger;
 

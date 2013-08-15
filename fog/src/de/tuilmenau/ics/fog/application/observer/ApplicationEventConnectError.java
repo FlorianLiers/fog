@@ -13,7 +13,7 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.application.observer;
 
-import de.tuilmenau.ics.fog.facade.NetworkException;
+import net.rapi.NetworkException;
 
 public class ApplicationEventConnectError extends ApplicationEvent
 {

@@ -16,6 +16,8 @@ package de.tuilmenau.ics.fog.facade.properties;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import net.rapi.properties.AbstractProperty;
+
 /**
  * Base-class for all functional requirements.
  */

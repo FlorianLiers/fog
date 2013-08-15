@@ -11,10 +11,11 @@ package de.tuilmenau.ics.fog.emulator;
 
 import java.io.IOException;
 
+import net.rapi.NetworkException;
+
 import de.tuilmenau.ics.fog.emulator.ethernet.InterfaceMAC;
 import de.tuilmenau.ics.fog.emulator.ethernet.MACAddress;
 import de.tuilmenau.ics.fog.emulator.localLoop.InterfaceLocalTest;
-import de.tuilmenau.ics.fog.facade.NetworkException;
 import de.tuilmenau.ics.fog.util.Logger;
 import de.tuilmenau.ics.middleware.Serializer;
 

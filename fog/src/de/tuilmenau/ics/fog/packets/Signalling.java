@@ -15,9 +15,10 @@ package de.tuilmenau.ics.fog.packets;
 
 import java.io.Serializable;
 
+import net.rapi.Identity;
+import net.rapi.Signature;
+
 import de.tuilmenau.ics.fog.authentication.IdentityManagement;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Signature;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;
 import de.tuilmenau.ics.fog.transfer.ForwardingNode;
 import de.tuilmenau.ics.fog.ui.Viewable;

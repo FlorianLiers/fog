@@ -13,14 +13,14 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.transfer.manager;
 
+import net.rapi.Identity;
+import net.rapi.NetworkException;
 import de.tuilmenau.ics.fog.Config;
 import de.tuilmenau.ics.fog.ContinuationHandler;
 import de.tuilmenau.ics.fog.EventHandler;
 import de.tuilmenau.ics.fog.IContinuation;
 import de.tuilmenau.ics.fog.IEvent;
 import de.tuilmenau.ics.fog.authentication.IdentityManagement;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.NetworkException;
 import de.tuilmenau.ics.fog.transfer.ForwardingNode;
 import de.tuilmenau.ics.fog.ui.Viewable;
 import de.tuilmenau.ics.fog.util.Logger;

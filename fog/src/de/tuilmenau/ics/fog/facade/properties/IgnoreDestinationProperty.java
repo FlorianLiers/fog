@@ -13,10 +13,11 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.facade.properties;
 
-import de.tuilmenau.ics.fog.facade.Binding;
-import de.tuilmenau.ics.fog.facade.Connection;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.NetworkException;
+import net.rapi.Binding;
+import net.rapi.Connection;
+import net.rapi.Name;
+import net.rapi.NetworkException;
+import net.rapi.properties.AbstractProperty;
 import de.tuilmenau.ics.fog.transfer.forwardingNodes.ClientFN;
 import de.tuilmenau.ics.fog.transfer.forwardingNodes.ServerFN;
 

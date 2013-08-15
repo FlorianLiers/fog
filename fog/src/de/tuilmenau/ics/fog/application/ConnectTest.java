@@ -13,18 +13,18 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.application;
 
+import net.rapi.Description;
+import net.rapi.Host;
+import net.rapi.Identity;
+import net.rapi.NetworkException;
+import net.rapi.properties.DatarateProperty;
+import net.rapi.properties.LossRateProperty;
+import net.rapi.properties.MinMaxProperty.Limit;
 import de.tuilmenau.ics.CommonSim.datastream.numeric.CounterNode;
 import de.tuilmenau.ics.CommonSim.datastream.numeric.IDoubleWriter;
 import de.tuilmenau.ics.fog.IEvent;
 import de.tuilmenau.ics.fog.application.util.Session;
 import de.tuilmenau.ics.fog.exceptions.InvalidParameterException;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Host;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.NetworkException;
-import de.tuilmenau.ics.fog.facade.properties.DatarateProperty;
-import de.tuilmenau.ics.fog.facade.properties.LossRateProperty;
-import de.tuilmenau.ics.fog.facade.properties.MinMaxProperty.Limit;
 import de.tuilmenau.ics.fog.util.Logger;
 
 

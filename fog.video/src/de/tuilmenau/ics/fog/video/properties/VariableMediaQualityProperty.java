@@ -19,7 +19,7 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.video.properties;
 
-import de.tuilmenau.ics.fog.facade.properties.AbstractProperty;
+import net.rapi.properties.AbstractProperty;
 
 
 public class VariableMediaQualityProperty extends AbstractProperty

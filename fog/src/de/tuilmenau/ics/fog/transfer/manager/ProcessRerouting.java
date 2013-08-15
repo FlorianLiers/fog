@@ -13,15 +13,15 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.transfer.manager;
 
+import net.rapi.Description;
+import net.rapi.Identity;
+import net.rapi.Name;
+import net.rapi.NetworkException;
+import net.rapi.properties.Property;
 import de.tuilmenau.ics.fog.Config;
 import de.tuilmenau.ics.fog.IEvent;
 import de.tuilmenau.ics.fog.IEventRef;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.NetworkException;
 import de.tuilmenau.ics.fog.facade.properties.FunctionalRequirementProperty;
-import de.tuilmenau.ics.fog.facade.properties.Property;
 import de.tuilmenau.ics.fog.facade.properties.PropertyFactoryContainer;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.packets.PleaseOpenUnicast;

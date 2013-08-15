@@ -13,13 +13,13 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.application.util;
 
+import net.rapi.Connection;
+import net.rapi.events.ClosedEvent;
+import net.rapi.events.ConnectedEvent;
+import net.rapi.events.DataAvailableEvent;
+import net.rapi.events.ErrorEvent;
+import net.rapi.events.Event;
 import de.tuilmenau.ics.fog.application.ApplicationEventHandler;
-import de.tuilmenau.ics.fog.facade.Connection;
-import de.tuilmenau.ics.fog.facade.events.ClosedEvent;
-import de.tuilmenau.ics.fog.facade.events.ConnectedEvent;
-import de.tuilmenau.ics.fog.facade.events.DataAvailableEvent;
-import de.tuilmenau.ics.fog.facade.events.ErrorEvent;
-import de.tuilmenau.ics.fog.facade.events.Event;
 import de.tuilmenau.ics.fog.ui.Logging;
 import de.tuilmenau.ics.fog.util.Logger;
 

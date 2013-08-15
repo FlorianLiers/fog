@@ -16,13 +16,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import net.rapi.NetworkException;
+import net.rapi.Signature;
+
 
 import jniImports.PacketFoG;
 
 import de.tuilmenau.ics.fog.eclipse.utils.Resources;
 import de.tuilmenau.ics.fog.emulator.Interface;
-import de.tuilmenau.ics.fog.facade.NetworkException;
-import de.tuilmenau.ics.fog.facade.Signature;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.routing.Route;
 import de.tuilmenau.ics.fog.topology.NeighborInformation;

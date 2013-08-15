@@ -11,6 +11,8 @@ package SSF.OS.BGP4;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import net.rapi.Identity;
+
 import SSF.Net.Net;
 import SSF.OS.Continuation;
 import SSF.OS.ProtocolException;
@@ -26,7 +28,6 @@ import SSF.OS.BGP4.Util.IPaddress;
 import SSF.OS.BGP4.Util.Pair;
 import SSF.OS.Socket.socketMaster;
 import SSF.OS.TCP.tcpSocket;
-import de.tuilmenau.ics.fog.facade.Identity;
 import de.tuilmenau.ics.fog.routing.bgp.FoGNextHopInfo;
 import de.tuilmenau.ics.fog.routing.bgp.ui.BGPApplication;
 import de.tuilmenau.ics.fog.util.SimpleName;

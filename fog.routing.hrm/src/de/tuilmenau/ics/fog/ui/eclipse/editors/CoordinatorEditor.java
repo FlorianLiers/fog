@@ -13,6 +13,12 @@ import java.rmi.RemoteException;
 import java.text.Collator;
 import java.util.Locale;
 
+import net.rapi.Description;
+import net.rapi.Name;
+import net.rapi.RequirementsException;
+import net.rapi.RoutingException;
+import net.rapi.Signature;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
@@ -37,11 +43,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
 import de.tuilmenau.ics.fog.eclipse.ui.editors.EditorInput;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.RequirementsException;
-import de.tuilmenau.ics.fog.facade.RoutingException;
-import de.tuilmenau.ics.fog.facade.Signature;
 import de.tuilmenau.ics.fog.packets.hierarchical.TopologyEnvelope.FIBEntry;
 import de.tuilmenau.ics.fog.routing.Route;
 import de.tuilmenau.ics.fog.routing.hierarchical.Coordinator;

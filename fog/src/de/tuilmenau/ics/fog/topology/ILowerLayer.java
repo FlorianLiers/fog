@@ -16,8 +16,9 @@ package de.tuilmenau.ics.fog.topology;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+import net.rapi.Description;
+
 import de.tuilmenau.ics.fog.application.util.LayerObserverCallback;
-import de.tuilmenau.ics.fog.facade.Description;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.util.Logger;
 

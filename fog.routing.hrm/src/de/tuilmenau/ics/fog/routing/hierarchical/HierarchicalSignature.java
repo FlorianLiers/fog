@@ -9,10 +9,10 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.routing.hierarchical;
 
+import net.rapi.Identity;
+import net.rapi.Signature;
 import de.tuilmenau.ics.fog.authentication.SimpleSignature;
 import de.tuilmenau.ics.fog.exceptions.AuthenticationException;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Signature;
 
 public class HierarchicalSignature extends SimpleSignature
 {

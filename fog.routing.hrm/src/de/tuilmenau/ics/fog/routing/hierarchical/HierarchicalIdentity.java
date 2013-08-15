@@ -9,9 +9,9 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.routing.hierarchical;
 
+import net.rapi.Name;
 import de.tuilmenau.ics.fog.authentication.SimpleIdentity;
 import de.tuilmenau.ics.fog.exceptions.AuthenticationException;
-import de.tuilmenau.ics.fog.facade.Name;
 
 public class HierarchicalIdentity extends SimpleIdentity
 {

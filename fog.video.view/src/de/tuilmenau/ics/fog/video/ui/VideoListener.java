@@ -11,6 +11,10 @@ package de.tuilmenau.ics.fog.video.ui;
 
 import java.util.LinkedList;
 
+import net.rapi.*;
+import net.rapi.properties.Property;
+import net.rapi.properties.PropertyException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
@@ -20,9 +24,6 @@ import de.tuilmenau.ics.fog.application.util.Session;
 import de.tuilmenau.ics.fog.eclipse.ui.dialogs.MessageBoxDialog;
 import de.tuilmenau.ics.fog.eclipse.ui.dialogs.SelectRequirementsDialog;
 import de.tuilmenau.ics.fog.exceptions.InvalidParameterException;
-import de.tuilmenau.ics.fog.facade.*;
-import de.tuilmenau.ics.fog.facade.properties.Property;
-import de.tuilmenau.ics.fog.facade.properties.PropertyException;
 import de.tuilmenau.ics.fog.facade.properties.PropertyFactoryContainer;
 import de.tuilmenau.ics.fog.ui.Logging;
 import de.tuilmenau.ics.fog.util.SimpleName;

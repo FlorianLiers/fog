@@ -9,8 +9,8 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.video.ui;
 
-import de.tuilmenau.ics.fog.facade.Host;
-import de.tuilmenau.ics.fog.facade.properties.PropertyException;
+import net.rapi.Host;
+import net.rapi.properties.PropertyException;
 import de.tuilmenau.ics.fog.facade.properties.PropertyFactoryContainer;
 import de.tuilmenau.ics.fog.ui.Logging;
 import de.tuilmenau.ics.fog.ui.commands.Command;

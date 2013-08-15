@@ -12,6 +12,7 @@ package de.tuilmenau.ics.fog.base64;
 import java.io.Serializable;
 import java.util.HashMap;
 
+
 import de.tuilmenau.ics.fog.base64.gates.role.Base64;
 import de.tuilmenau.ics.fog.facade.properties.FunctionalRequirementProperty;
 import de.tuilmenau.ics.fog.facade.properties.IDirectionPair;

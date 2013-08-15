@@ -9,12 +9,12 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.video;
 
+import net.rapi.Host;
+import net.rapi.Identity;
+import net.rapi.Name;
+import net.rapi.Namespace;
 import de.tuilmenau.ics.fog.application.UDPServerProxy;
 import de.tuilmenau.ics.fog.exceptions.InvalidParameterException;
-import de.tuilmenau.ics.fog.facade.Host;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.Namespace;
 import de.tuilmenau.ics.fog.util.SimpleName;
 
 

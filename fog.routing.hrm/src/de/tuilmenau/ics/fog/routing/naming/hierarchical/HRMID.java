@@ -11,9 +11,10 @@ package de.tuilmenau.ics.fog.routing.naming.hierarchical;
 
 import java.math.BigInteger;
 
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.Namespace;
+import net.rapi.Description;
+import net.rapi.Name;
+import net.rapi.Namespace;
+
 import de.tuilmenau.ics.fog.routing.hierarchical.HierarchicalConfig;
 import de.tuilmenau.ics.fog.routing.hierarchical.clusters.VirtualNode;
 

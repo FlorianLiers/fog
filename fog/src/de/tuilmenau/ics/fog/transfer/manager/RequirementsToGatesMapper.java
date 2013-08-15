@@ -22,11 +22,12 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
 
+import net.rapi.Description;
+import net.rapi.properties.Property;
+
 import de.tuilmenau.ics.fog.Config;
 import de.tuilmenau.ics.fog.FoGEntity;
-import de.tuilmenau.ics.fog.facade.Description;
 import de.tuilmenau.ics.fog.facade.properties.FunctionalRequirementProperty;
-import de.tuilmenau.ics.fog.facade.properties.Property;
 import de.tuilmenau.ics.fog.ui.Logging;
 import de.tuilmenau.ics.fog.util.Logger;
 import de.tuilmenau.ics.middleware.Serializer;

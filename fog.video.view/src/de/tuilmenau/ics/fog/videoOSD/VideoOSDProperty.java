@@ -17,6 +17,8 @@ import de.tuilmenau.ics.fog.facade.properties.FunctionalRequirementProperty;
 import de.tuilmenau.ics.fog.facade.properties.IDirectionPair;
 
 
+
+
 /**
  * Property to request OSD text messages within a video data stream.
  */

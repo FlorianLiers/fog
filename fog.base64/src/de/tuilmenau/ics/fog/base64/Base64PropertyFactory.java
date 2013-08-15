@@ -9,9 +9,9 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.base64;
 
+import net.rapi.properties.Property;
+import net.rapi.properties.PropertyException;
 import de.tuilmenau.ics.fog.base64.Base64Property.Base64DirectionPair;
-import de.tuilmenau.ics.fog.facade.properties.Property;
-import de.tuilmenau.ics.fog.facade.properties.PropertyException;
 import de.tuilmenau.ics.fog.facade.properties.PropertyFactory;
 
 

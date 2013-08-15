@@ -18,7 +18,8 @@ import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import de.tuilmenau.ics.fog.facade.Name;
+import net.rapi.Name;
+
 import de.tuilmenau.ics.fog.topology.Simulation;
 import de.tuilmenau.ics.fog.transfer.TransferPlaneObserver.NamingLevel;
 import de.tuilmenau.ics.fog.ui.Logging;

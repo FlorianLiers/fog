@@ -15,18 +15,20 @@ package de.tuilmenau.ics.fog.application;
 
 import java.util.Random;
 
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Host;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.properties.DatarateProperty;
-import de.tuilmenau.ics.fog.facade.properties.DelayProperty;
-import de.tuilmenau.ics.fog.facade.properties.Property;
-import de.tuilmenau.ics.fog.facade.properties.LossRateProperty;
-import de.tuilmenau.ics.fog.facade.properties.OrderedProperty;
-import de.tuilmenau.ics.fog.facade.properties.PropertyException;
 import de.tuilmenau.ics.fog.facade.properties.PropertyFactoryContainer;
 import de.tuilmenau.ics.fog.facade.properties.TransportProperty;
-import de.tuilmenau.ics.fog.facade.properties.MinMaxProperty.Limit;
+
+import net.rapi.Description;
+import net.rapi.Host;
+import net.rapi.Identity;
+import net.rapi.properties.DatarateProperty;
+import net.rapi.properties.DelayProperty;
+import net.rapi.properties.LossRateProperty;
+import net.rapi.properties.OrderedProperty;
+import net.rapi.properties.Property;
+import net.rapi.properties.PropertyException;
+import net.rapi.properties.MinMaxProperty.Limit;
+
 
 /**
  * Connect Test with random chosen Requirements.

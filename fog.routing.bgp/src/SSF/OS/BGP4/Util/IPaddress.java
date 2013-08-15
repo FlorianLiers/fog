@@ -9,10 +9,10 @@
 package SSF.OS.BGP4.Util;
 
 
+import net.rapi.Name;
+import net.rapi.Namespace;
 import SSF.OS.BGP4.BGPSession;
 import SSF.OS.BGP4.Debug;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.Namespace;
 
 
 // ===== class IPaddress =================================================== //

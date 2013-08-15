@@ -15,13 +15,14 @@ import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import net.rapi.Description;
+import net.rapi.NetworkException;
+
 import de.tuilmenau.ics.fog.IEvent;
 import de.tuilmenau.ics.fog.IEventRef;
 import de.tuilmenau.ics.fog.application.util.LayerObserverCallback;
 import de.tuilmenau.ics.fog.emulator.Interface.ReceiveResult;
 import de.tuilmenau.ics.fog.emulator.ethernet.MACAddress;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.NetworkException;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.topology.AutonomousSystem;
 import de.tuilmenau.ics.fog.topology.ILowerLayer;

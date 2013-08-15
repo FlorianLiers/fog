@@ -15,14 +15,15 @@ package de.tuilmenau.ics.fog.topology;
 
 import java.rmi.RemoteException;
 
+import net.rapi.Connection;
+import net.rapi.Namespace;
+
 import de.tuilmenau.ics.fog.EventHandler;
 import de.tuilmenau.ics.fog.FoGEntity;
 import de.tuilmenau.ics.fog.application.Application;
 import de.tuilmenau.ics.fog.application.ReroutingExecutor;
 import de.tuilmenau.ics.fog.application.ReroutingExecutor.ReroutingSession;
 import de.tuilmenau.ics.fog.commands.CommandParsing;
-import de.tuilmenau.ics.fog.facade.Connection;
-import de.tuilmenau.ics.fog.facade.Namespace;
 import de.tuilmenau.ics.fog.routing.RoutingServiceInstanceRegister;
 import de.tuilmenau.ics.fog.routing.simulated.RemoteRoutingService;
 import de.tuilmenau.ics.fog.routing.simulated.RoutingServiceSimulated;

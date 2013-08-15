@@ -9,10 +9,11 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.eclipse.ui;
 
+import net.rapi.properties.Property;
+import net.rapi.properties.PropertyException;
+
 import org.eclipse.swt.widgets.Composite;
 
-import de.tuilmenau.ics.fog.facade.properties.Property;
-import de.tuilmenau.ics.fog.facade.properties.PropertyException;
 
 
 /**

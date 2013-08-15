@@ -17,7 +17,8 @@ package de.tuilmenau.ics.fog.packets.statistics;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-import de.tuilmenau.ics.fog.facade.NetworkException;
+import net.rapi.NetworkException;
+
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;
 

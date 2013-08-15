@@ -15,11 +15,12 @@ package de.tuilmenau.ics.fog.commands;
 
 import java.util.HashMap;
 
+import net.rapi.NetworkException;
+
 import de.tuilmenau.ics.extensionpoint.Extension;
 import de.tuilmenau.ics.extensionpoint.ExtensionRegistry;
 import de.tuilmenau.ics.fog.Config;
 import de.tuilmenau.ics.fog.FoGEntity;
-import de.tuilmenau.ics.fog.facade.NetworkException;
 import de.tuilmenau.ics.fog.routing.Route;
 import de.tuilmenau.ics.fog.scripts.IScript;
 import de.tuilmenau.ics.fog.scripts.Script;

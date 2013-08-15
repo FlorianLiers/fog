@@ -9,8 +9,8 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.eclipse.ui.commands;
 
+import net.rapi.Description;
 import de.tuilmenau.ics.fog.FoGEntity;
-import de.tuilmenau.ics.fog.facade.Description;
 import de.tuilmenau.ics.fog.facade.properties.InvalidProperty;
 import de.tuilmenau.ics.fog.transfer.manager.RequirementsToGatesMapper;
 import de.tuilmenau.ics.fog.ui.Logging;

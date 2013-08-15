@@ -14,6 +14,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import net.rapi.Host;
+
 import com.renesys.raceway.DML.Configuration;
 import com.renesys.raceway.DML.configException;
 
@@ -55,7 +57,6 @@ import SSF.OS.TCP.tcpSocket;
 import SSF.Util.Random.RandomStream;
 
 import de.tuilmenau.ics.fog.IEvent;
-import de.tuilmenau.ics.fog.facade.Host;
 import de.tuilmenau.ics.fog.util.Logger;
 
 

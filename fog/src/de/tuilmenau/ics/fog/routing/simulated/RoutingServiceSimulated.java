@@ -17,17 +17,18 @@ import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import net.rapi.Description;
+import net.rapi.Identity;
+import net.rapi.Name;
+import net.rapi.Namespace;
+import net.rapi.NetworkException;
+import net.rapi.RequirementsException;
+import net.rapi.RoutingException;
+import net.rapi.properties.Property;
+import net.rapi.properties.PropertyException;
+
 import de.tuilmenau.ics.fog.Config;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.Namespace;
-import de.tuilmenau.ics.fog.facade.NetworkException;
-import de.tuilmenau.ics.fog.facade.RequirementsException;
-import de.tuilmenau.ics.fog.facade.RoutingException;
-import de.tuilmenau.ics.fog.facade.properties.Property;
 import de.tuilmenau.ics.fog.facade.properties.IgnoreDestinationProperty;
-import de.tuilmenau.ics.fog.facade.properties.PropertyException;
 import de.tuilmenau.ics.fog.routing.Route;
 import de.tuilmenau.ics.fog.routing.RouteSegmentAddress;
 import de.tuilmenau.ics.fog.routing.RouteSegmentDescription;

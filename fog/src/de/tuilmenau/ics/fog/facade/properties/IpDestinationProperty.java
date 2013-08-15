@@ -17,6 +17,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 
+import net.rapi.properties.AbstractProperty;
+
 import de.tuilmenau.ics.fog.application.InterOpIP;
 
 

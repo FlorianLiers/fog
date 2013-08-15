@@ -15,12 +15,13 @@ package de.tuilmenau.ics.fog.transfer.manager;
 
 import java.util.LinkedList;
 
+import net.rapi.Connection;
+import net.rapi.Description;
+import net.rapi.Identity;
+import net.rapi.Name;
+
 import de.tuilmenau.ics.fog.Config;
 import de.tuilmenau.ics.fog.IEvent;
-import de.tuilmenau.ics.fog.facade.Connection;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Name;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.packets.PleaseKeepAlive;
 import de.tuilmenau.ics.fog.routing.Route;

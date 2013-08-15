@@ -9,10 +9,10 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.app.streamClient;
 
+import net.rapi.Description;
 import de.tuilmenau.ics.fog.eclipse.ui.commands.HostApplication;
 import de.tuilmenau.ics.fog.eclipse.ui.dialogs.EnterStringDialog;
 import de.tuilmenau.ics.fog.eclipse.ui.dialogs.SelectRequirementsDialog;
-import de.tuilmenau.ics.fog.facade.Description;
 import de.tuilmenau.ics.fog.util.SimpleName;
 
 

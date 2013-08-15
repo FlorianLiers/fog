@@ -12,6 +12,17 @@ package de.tuilmenau.ics.fog.eclipse.ui.dialogs;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import net.rapi.Description;
+import net.rapi.properties.CommunicationTypeProperty;
+import net.rapi.properties.DatarateProperty;
+import net.rapi.properties.DelayProperty;
+import net.rapi.properties.LossRateProperty;
+import net.rapi.properties.OrderedProperty;
+import net.rapi.properties.PriorityProperty;
+import net.rapi.properties.Property;
+import net.rapi.properties.PropertyException;
+import net.rapi.properties.MinMaxProperty.Limit;
+
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
@@ -20,18 +31,8 @@ import org.eclipse.swt.widgets.*;
 import de.tuilmenau.ics.fog.eclipse.ui.PropertyGUIFactoryContainer;
 import de.tuilmenau.ics.fog.eclipse.ui.PropertyParameterWidget;
 import de.tuilmenau.ics.fog.eclipse.widget.EmptyPropertyParameterWidget;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.properties.CommunicationTypeProperty;
-import de.tuilmenau.ics.fog.facade.properties.DatarateProperty;
-import de.tuilmenau.ics.fog.facade.properties.DelayProperty;
-import de.tuilmenau.ics.fog.facade.properties.Property;
-import de.tuilmenau.ics.fog.facade.properties.LossRateProperty;
-import de.tuilmenau.ics.fog.facade.properties.OrderedProperty;
-import de.tuilmenau.ics.fog.facade.properties.PriorityProperty;
-import de.tuilmenau.ics.fog.facade.properties.PropertyException;
 import de.tuilmenau.ics.fog.facade.properties.PropertyFactoryContainer;
 import de.tuilmenau.ics.fog.facade.properties.TransportProperty;
-import de.tuilmenau.ics.fog.facade.properties.MinMaxProperty.Limit;
 import de.tuilmenau.ics.fog.ui.Logging;
 
 

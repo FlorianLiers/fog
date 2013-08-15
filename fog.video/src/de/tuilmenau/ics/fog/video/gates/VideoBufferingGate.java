@@ -28,10 +28,11 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import net.rapi.Identity;
+
 import de.tuilmenau.ics.fog.Config;
 import de.tuilmenau.ics.fog.FoGEntity;
 import de.tuilmenau.ics.fog.Config.Simulator.SimulatorMode;
-import de.tuilmenau.ics.fog.facade.Identity;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.routing.Route;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;

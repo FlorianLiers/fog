@@ -16,10 +16,11 @@ package de.tuilmenau.ics.fog.scripts;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 
+import net.rapi.NetworkException;
+
 import de.tuilmenau.ics.extensionpoint.Extension;
 import de.tuilmenau.ics.extensionpoint.ExtensionRegistry;
 import de.tuilmenau.ics.fog.exceptions.CreationException;
-import de.tuilmenau.ics.fog.facade.NetworkException;
 import de.tuilmenau.ics.fog.topology.AutonomousSystem;
 import de.tuilmenau.ics.fog.topology.Node;
 import de.tuilmenau.ics.fog.topology.Simulation;

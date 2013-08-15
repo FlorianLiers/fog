@@ -17,9 +17,10 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 
+import net.rapi.Description;
+
 import de.tuilmenau.ics.fog.EventHandler;
 import de.tuilmenau.ics.fog.application.util.LayerObserverCallback;
-import de.tuilmenau.ics.fog.facade.Description;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.topology.ILowerLayer;
 import de.tuilmenau.ics.fog.topology.ILowerLayerReceive;

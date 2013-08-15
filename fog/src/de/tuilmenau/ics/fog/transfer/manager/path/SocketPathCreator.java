@@ -23,13 +23,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import net.rapi.Binding;
+import net.rapi.Connection;
+import net.rapi.Identity;
+import net.rapi.Name;
+
 import de.tuilmenau.ics.fog.Config;
 import de.tuilmenau.ics.fog.FoGEntity;
 import de.tuilmenau.ics.fog.exceptions.CreationException;
-import de.tuilmenau.ics.fog.facade.Binding;
-import de.tuilmenau.ics.fog.facade.Connection;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Name;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;
 import de.tuilmenau.ics.fog.transfer.ForwardingNode;
 import de.tuilmenau.ics.fog.transfer.TransferPlane;

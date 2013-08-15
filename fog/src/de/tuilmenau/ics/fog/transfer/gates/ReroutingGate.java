@@ -13,9 +13,9 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.transfer.gates;
 
+import net.rapi.Description;
+import net.rapi.Identity;
 import de.tuilmenau.ics.fog.FoGEntity;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Identity;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.topology.NeighborInformation;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;

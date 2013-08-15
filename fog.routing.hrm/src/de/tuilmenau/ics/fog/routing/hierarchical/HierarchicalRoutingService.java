@@ -17,16 +17,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import net.rapi.Description;
+import net.rapi.Identity;
+import net.rapi.Name;
+import net.rapi.Namespace;
+import net.rapi.NetworkException;
+import net.rapi.RequirementsException;
+import net.rapi.RoutingException;
+import net.rapi.properties.Property;
+
 import de.tuilmenau.ics.fog.FoGEntity;
 import de.tuilmenau.ics.fog.IEvent;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.Namespace;
-import de.tuilmenau.ics.fog.facade.NetworkException;
-import de.tuilmenau.ics.fog.facade.RequirementsException;
-import de.tuilmenau.ics.fog.facade.RoutingException;
-import de.tuilmenau.ics.fog.facade.properties.Property;
 import de.tuilmenau.ics.fog.facade.properties.IgnoreDestinationProperty;
 import de.tuilmenau.ics.fog.packets.hierarchical.RouteRequest;
 import de.tuilmenau.ics.fog.packets.hierarchical.RouteRequest.ResultType;

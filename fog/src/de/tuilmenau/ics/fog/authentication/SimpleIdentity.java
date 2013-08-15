@@ -13,7 +13,7 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.authentication;
 
-import de.tuilmenau.ics.fog.facade.Identity;
+import net.rapi.Identity;
 
 
 /**

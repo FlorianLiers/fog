@@ -12,7 +12,8 @@ package de.tuilmenau.ics.fog.routing.naming.hierarchical;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import de.tuilmenau.ics.fog.facade.Name;
+import net.rapi.Name;
+
 import de.tuilmenau.ics.fog.routing.hierarchical.clusters.Cluster;
 import de.tuilmenau.ics.fog.ui.Logging;
 

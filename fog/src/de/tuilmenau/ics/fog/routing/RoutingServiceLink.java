@@ -13,8 +13,8 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.routing;
 
+import net.rapi.Description;
 import de.tuilmenau.ics.fog.IEventRef;
-import de.tuilmenau.ics.fog.facade.Description;
 import de.tuilmenau.ics.fog.transfer.gates.GateID;
 import de.tuilmenau.ics.fog.ui.Viewable;
 

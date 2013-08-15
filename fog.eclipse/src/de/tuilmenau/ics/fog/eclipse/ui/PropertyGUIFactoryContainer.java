@@ -11,12 +11,13 @@ package de.tuilmenau.ics.fog.eclipse.ui;
 
 import java.util.HashMap;
 
+import net.rapi.properties.Property;
+import net.rapi.properties.PropertyException;
+
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.widgets.Composite;
 
-import de.tuilmenau.ics.fog.facade.properties.Property;
-import de.tuilmenau.ics.fog.facade.properties.PropertyException;
 import de.tuilmenau.ics.fog.ui.Logging;
 
 

@@ -16,16 +16,17 @@ package de.tuilmenau.ics.fog.application;
 import java.io.Serializable;
 import java.util.LinkedList;
 
+import net.rapi.Binding;
+import net.rapi.Connection;
+import net.rapi.Description;
+import net.rapi.Host;
+import net.rapi.Identity;
+import net.rapi.NetworkException;
+import net.rapi.properties.CommunicationTypeProperty;
+
 import de.tuilmenau.ics.fog.application.util.Service;
 import de.tuilmenau.ics.fog.application.util.Session;
 import de.tuilmenau.ics.fog.exceptions.InvalidParameterException;
-import de.tuilmenau.ics.fog.facade.Binding;
-import de.tuilmenau.ics.fog.facade.Connection;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Host;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.NetworkException;
-import de.tuilmenau.ics.fog.facade.properties.CommunicationTypeProperty;
 import de.tuilmenau.ics.fog.util.SimpleName;
 import de.tuilmenau.ics.fog.util.RateLimitedAction;
 

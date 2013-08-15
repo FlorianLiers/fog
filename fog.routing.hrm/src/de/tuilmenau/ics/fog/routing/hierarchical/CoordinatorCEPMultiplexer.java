@@ -14,13 +14,14 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.rapi.Connection;
+import net.rapi.Description;
+import net.rapi.Identity;
+import net.rapi.Name;
+import net.rapi.NetworkException;
+import net.rapi.RoutingException;
+
 import de.tuilmenau.ics.fog.application.util.BlockingCalls;
-import de.tuilmenau.ics.fog.facade.Connection;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.NetworkException;
-import de.tuilmenau.ics.fog.facade.RoutingException;
 import de.tuilmenau.ics.fog.packets.hierarchical.ClusterDiscovery;
 import de.tuilmenau.ics.fog.packets.hierarchical.DiscoveryEntry;
 import de.tuilmenau.ics.fog.packets.hierarchical.MultiplexedPackage;

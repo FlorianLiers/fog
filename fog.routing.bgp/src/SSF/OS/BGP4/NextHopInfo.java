@@ -1,6 +1,6 @@
 package SSF.OS.BGP4;
 
-import de.tuilmenau.ics.fog.facade.Name;
+import net.rapi.Name;
 
 /**
  * Outgoing interface and next hop name for a routing table entry

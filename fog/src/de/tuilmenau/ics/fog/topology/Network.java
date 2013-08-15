@@ -18,8 +18,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import net.rapi.Host;
+
 import de.tuilmenau.ics.fog.EventHandler;
-import de.tuilmenau.ics.fog.facade.Host;
 import de.tuilmenau.ics.fog.routing.simulated.RemoteRoutingService;
 import de.tuilmenau.ics.fog.util.Logger;
 import de.tuilmenau.ics.graph.GraphProvider;

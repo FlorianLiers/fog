@@ -20,13 +20,14 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import net.rapi.Description;
+import net.rapi.Name;
+import net.rapi.Namespace;
+import net.rapi.RequirementsException;
+import net.rapi.RoutingException;
+import net.rapi.properties.PropertyException;
+
 import de.tuilmenau.ics.fog.exceptions.AuthenticationException;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.Namespace;
-import de.tuilmenau.ics.fog.facade.RequirementsException;
-import de.tuilmenau.ics.fog.facade.RoutingException;
-import de.tuilmenau.ics.fog.facade.properties.PropertyException;
 import de.tuilmenau.ics.fog.packets.hierarchical.BullyAnnounce;
 import de.tuilmenau.ics.fog.packets.hierarchical.DiscoveryEntry;
 import de.tuilmenau.ics.fog.packets.hierarchical.NeighborZoneAnnounce;

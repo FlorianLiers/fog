@@ -13,8 +13,9 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.facade.properties;
 
-import de.tuilmenau.ics.fog.facade.Connection;
-import de.tuilmenau.ics.fog.facade.NetworkException;
+import net.rapi.Connection;
+import net.rapi.NetworkException;
+import net.rapi.properties.AbstractProperty;
 import de.tuilmenau.ics.fog.routing.Route;
 import de.tuilmenau.ics.fog.transfer.forwardingNodes.ClientFN;
 import de.tuilmenau.ics.fog.transfer.forwardingNodes.ConnectionEndPoint;

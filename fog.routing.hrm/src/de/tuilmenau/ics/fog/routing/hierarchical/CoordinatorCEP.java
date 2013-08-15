@@ -11,11 +11,12 @@ package de.tuilmenau.ics.fog.routing.hierarchical;
 
 import java.io.Serializable;
 
+import net.rapi.Description;
+import net.rapi.NetworkException;
+import net.rapi.RequirementsException;
+import net.rapi.RoutingException;
+
 import de.tuilmenau.ics.fog.application.util.Session;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.NetworkException;
-import de.tuilmenau.ics.fog.facade.RequirementsException;
-import de.tuilmenau.ics.fog.facade.RoutingException;
 import de.tuilmenau.ics.fog.packets.hierarchical.ClusterDiscovery;
 import de.tuilmenau.ics.fog.packets.hierarchical.ClusterDiscovery.NestedDiscovery;
 import de.tuilmenau.ics.fog.packets.hierarchical.MultiplexedPackage;

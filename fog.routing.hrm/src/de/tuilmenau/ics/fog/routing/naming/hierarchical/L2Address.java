@@ -11,7 +11,8 @@ package de.tuilmenau.ics.fog.routing.naming.hierarchical;
 
 import java.math.BigInteger;
 
-import de.tuilmenau.ics.fog.facade.Description;
+import net.rapi.Description;
+
 import de.tuilmenau.ics.fog.routing.hierarchical.RoutingServiceLinkVector;
 
 public class L2Address extends HRMName

@@ -12,12 +12,13 @@ package de.tuilmenau.ics.fog.eclipse.properties;
 import java.util.Observable;
 import java.util.Observer;
 
+import net.rapi.Description;
+import net.rapi.properties.Property;
+
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.properties.Property;
 import de.tuilmenau.ics.fog.packets.Packet;
 
 

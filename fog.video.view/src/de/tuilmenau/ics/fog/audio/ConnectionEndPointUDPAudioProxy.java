@@ -17,8 +17,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import net.rapi.Connection;
+
 import de.tuilmenau.ics.fog.application.util.Session;
-import de.tuilmenau.ics.fog.facade.Connection;
 import de.tuilmenau.ics.fog.ui.Logging;
 import de.tuilmenau.ics.fog.util.Logger;
 

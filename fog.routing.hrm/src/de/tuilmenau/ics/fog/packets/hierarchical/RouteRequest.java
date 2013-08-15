@@ -12,8 +12,9 @@ package de.tuilmenau.ics.fog.packets.hierarchical;
 import java.io.Serializable;
 import java.util.LinkedList;
 
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.properties.Property;
+import net.rapi.Description;
+import net.rapi.properties.Property;
+
 import de.tuilmenau.ics.fog.routing.Route;
 import de.tuilmenau.ics.fog.routing.hierarchical.RoutingServiceLinkVector;
 import de.tuilmenau.ics.fog.routing.hierarchical.clusters.ClusterDummy;

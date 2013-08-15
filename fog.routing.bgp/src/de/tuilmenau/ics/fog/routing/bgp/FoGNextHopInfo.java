@@ -19,7 +19,7 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.routing.bgp;
 
-import de.tuilmenau.ics.fog.facade.Name;
+import net.rapi.Name;
 import SSF.OS.BGP4.NextHopInfo;
 import SSF.OS.BGP4.PeerEntry;
 import SSF.OS.BGP4.Util.IPaddress;

@@ -17,6 +17,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import net.rapi.Identity;
+
 import de.tuilmenau.ics.CommonSim.datastream.DatastreamManager;
 import de.tuilmenau.ics.CommonSim.datastream.StreamTime;
 import de.tuilmenau.ics.CommonSim.datastream.annotations.AutoWire;
@@ -26,7 +28,6 @@ import de.tuilmenau.ics.fog.Config;
 import de.tuilmenau.ics.fog.FoGEntity;
 import de.tuilmenau.ics.fog.IEvent;
 import de.tuilmenau.ics.fog.Config.Simulator.SimulatorMode;
-import de.tuilmenau.ics.fog.facade.Identity;
 import de.tuilmenau.ics.fog.facade.properties.TransportProperty;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;

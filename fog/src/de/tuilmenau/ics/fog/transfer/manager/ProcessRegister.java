@@ -15,7 +15,8 @@ package de.tuilmenau.ics.fog.transfer.manager;
 
 import java.util.HashMap;
 
-import de.tuilmenau.ics.fog.facade.Identity;
+import net.rapi.Identity;
+
 import de.tuilmenau.ics.fog.transfer.ForwardingNode;
 
 

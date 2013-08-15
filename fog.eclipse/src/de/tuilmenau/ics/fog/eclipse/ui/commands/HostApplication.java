@@ -11,8 +11,9 @@ package de.tuilmenau.ics.fog.eclipse.ui.commands;
 
 import java.awt.event.ActionListener;
 
+import net.rapi.Host;
+
 import de.tuilmenau.ics.fog.eclipse.ui.menu.MenuCreator;
-import de.tuilmenau.ics.fog.facade.Host;
 import de.tuilmenau.ics.fog.ui.Logging;
 
 

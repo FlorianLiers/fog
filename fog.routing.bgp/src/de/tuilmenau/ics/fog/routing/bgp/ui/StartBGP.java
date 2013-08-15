@@ -19,7 +19,7 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.routing.bgp.ui;
 
-import de.tuilmenau.ics.fog.facade.Host;
+import net.rapi.Host;
 import de.tuilmenau.ics.fog.ui.commands.Command;
 
 

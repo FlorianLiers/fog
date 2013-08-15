@@ -13,15 +13,15 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.application.util;
 
-import de.tuilmenau.ics.fog.facade.Connection;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Layer;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.NetworkException;
-import de.tuilmenau.ics.fog.facade.events.ConnectedEvent;
-import de.tuilmenau.ics.fog.facade.events.ErrorEvent;
-import de.tuilmenau.ics.fog.facade.events.Event;
+import net.rapi.Connection;
+import net.rapi.Description;
+import net.rapi.Identity;
+import net.rapi.Layer;
+import net.rapi.Name;
+import net.rapi.NetworkException;
+import net.rapi.events.ConnectedEvent;
+import net.rapi.events.ErrorEvent;
+import net.rapi.events.Event;
 import de.tuilmenau.ics.fog.util.BlockingEventHandling;
 
 /**

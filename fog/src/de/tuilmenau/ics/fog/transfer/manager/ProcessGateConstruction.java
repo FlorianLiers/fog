@@ -13,10 +13,10 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.transfer.manager;
 
+import net.rapi.Identity;
+import net.rapi.Name;
+import net.rapi.NetworkException;
 import de.tuilmenau.ics.fog.FoGEntity;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.NetworkException;
 import de.tuilmenau.ics.fog.transfer.ForwardingNode;
 import de.tuilmenau.ics.fog.transfer.Gate;
 import de.tuilmenau.ics.fog.transfer.Gate.GateState;

@@ -373,7 +373,7 @@ public class Config
 		
 		/**
 		 * Indicates whether initial request sender initialy only creates an
-		 * {@link de.tuilmenau.ics.fog.facade.Binding} but socket-path
+		 * {@link net.rapi.Binding} but socket-path
 		 * will not be created before a handshake arrives to be sure effort is
 		 * worth it.
 		 * 

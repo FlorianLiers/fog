@@ -23,8 +23,9 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Signature;
+import net.rapi.Identity;
+import net.rapi.Signature;
+
 
 
 /**

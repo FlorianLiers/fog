@@ -16,9 +16,10 @@ package de.tuilmenau.ics.fog.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.rapi.Name;
+import net.rapi.Namespace;
+
 import de.tuilmenau.ics.fog.exceptions.InvalidParameterException;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.Namespace;
 
 
 /**

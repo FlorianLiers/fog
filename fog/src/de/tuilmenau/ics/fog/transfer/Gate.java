@@ -15,8 +15,9 @@ package de.tuilmenau.ics.fog.transfer;
 
 import java.io.Serializable;
 
+import net.rapi.Name;
+
 import de.tuilmenau.ics.fog.IContinuation;
-import de.tuilmenau.ics.fog.facade.Name;
 import de.tuilmenau.ics.fog.transfer.gates.GateID;
 
 /**

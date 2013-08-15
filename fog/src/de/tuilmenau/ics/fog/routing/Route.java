@@ -17,7 +17,8 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import de.tuilmenau.ics.fog.facade.Description;
+import net.rapi.Description;
+
 import de.tuilmenau.ics.fog.transfer.gates.GateID;
 import de.tuilmenau.ics.fog.util.SimpleName;
 

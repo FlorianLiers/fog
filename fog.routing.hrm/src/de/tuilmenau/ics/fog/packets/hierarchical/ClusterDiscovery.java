@@ -13,7 +13,8 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Random;
 
-import de.tuilmenau.ics.fog.facade.Name;
+import net.rapi.Name;
+
 import de.tuilmenau.ics.fog.routing.hierarchical.clusters.ClusterDummy;
 import de.tuilmenau.ics.fog.util.Tuple;
 

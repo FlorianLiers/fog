@@ -15,9 +15,10 @@ package de.tuilmenau.ics.fog.application;
 
 import java.util.LinkedList;
 
-import de.tuilmenau.ics.fog.facade.EventSource;
-import de.tuilmenau.ics.fog.facade.EventSource.EventListener;
-import de.tuilmenau.ics.fog.facade.events.Event;
+import net.rapi.EventSource;
+import net.rapi.EventSource.EventListener;
+import net.rapi.events.Event;
+
 import de.tuilmenau.ics.fog.ui.Logging;
 
 

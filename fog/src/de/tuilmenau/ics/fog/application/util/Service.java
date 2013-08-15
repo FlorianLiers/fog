@@ -15,15 +15,16 @@ package de.tuilmenau.ics.fog.application.util;
 
 import java.util.LinkedList;
 
+import net.rapi.Binding;
+import net.rapi.Connection;
+import net.rapi.Description;
+import net.rapi.Name;
+import net.rapi.Signature;
+import net.rapi.events.ErrorEvent;
+import net.rapi.events.Event;
+import net.rapi.events.NewConnectionEvent;
+
 import de.tuilmenau.ics.fog.application.ApplicationEventHandler;
-import de.tuilmenau.ics.fog.facade.Binding;
-import de.tuilmenau.ics.fog.facade.Connection;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.Signature;
-import de.tuilmenau.ics.fog.facade.events.ErrorEvent;
-import de.tuilmenau.ics.fog.facade.events.Event;
-import de.tuilmenau.ics.fog.facade.events.NewConnectionEvent;
 
 
 /**

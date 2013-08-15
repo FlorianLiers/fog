@@ -8,6 +8,11 @@ package SSF.OS.TCP;
 
 import java.util.LinkedList;
 
+import net.rapi.Connection;
+import net.rapi.Description;
+import net.rapi.Name;
+import net.rapi.NetworkException;
+
 import SSF.OS.Continuation;
 import SSF.OS.ProtocolException;
 import SSF.OS.BGP4.BGPSession;
@@ -16,10 +21,6 @@ import SSF.OS.BGP4.Comm.Message;
 import SSF.OS.BGP4.Comm.TransportMessage;
 import SSF.OS.Socket.socketMaster;
 import de.tuilmenau.ics.fog.application.util.Session;
-import de.tuilmenau.ics.fog.facade.Connection;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.NetworkException;
 import de.tuilmenau.ics.fog.routing.bgp.Config;
 
 /** 

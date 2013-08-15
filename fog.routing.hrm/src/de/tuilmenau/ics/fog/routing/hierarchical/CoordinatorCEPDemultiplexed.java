@@ -15,11 +15,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.Namespace;
-import de.tuilmenau.ics.fog.facade.NetworkException;
-import de.tuilmenau.ics.fog.facade.properties.PropertyException;
+import net.rapi.Description;
+import net.rapi.Name;
+import net.rapi.Namespace;
+import net.rapi.NetworkException;
+import net.rapi.properties.PropertyException;
+
 import de.tuilmenau.ics.fog.packets.hierarchical.BullyAlive;
 import de.tuilmenau.ics.fog.packets.hierarchical.BullyAnnounce;
 import de.tuilmenau.ics.fog.packets.hierarchical.BullyElect;

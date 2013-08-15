@@ -16,7 +16,8 @@ package de.tuilmenau.ics.fog.transfer.manager.path;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import de.tuilmenau.ics.fog.facade.Name;
+import net.rapi.Name;
+
 import de.tuilmenau.ics.fog.transfer.ForwardingNode;
 import de.tuilmenau.ics.fog.transfer.gates.AbstractGate;
 import de.tuilmenau.ics.fog.transfer.gates.GateID;

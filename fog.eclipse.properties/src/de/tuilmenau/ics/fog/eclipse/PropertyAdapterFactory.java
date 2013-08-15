@@ -11,6 +11,8 @@ package de.tuilmenau.ics.fog.eclipse;
 
 import java.util.LinkedList;
 
+import net.rapi.Description;
+
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.ui.views.properties.IPropertySource;
 
@@ -35,7 +37,6 @@ import de.tuilmenau.ics.fog.eclipse.properties.ProtocolHeaderPropertySource;
 import de.tuilmenau.ics.fog.eclipse.properties.RoutingServicePropertySource;
 import de.tuilmenau.ics.fog.eclipse.properties.SignallingPropertySource;
 import de.tuilmenau.ics.fog.eclipse.properties.WorkerPropertySource;
-import de.tuilmenau.ics.fog.facade.Description;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.packets.Signalling;
 import de.tuilmenau.ics.fog.routing.RoutingServiceLink;

@@ -13,6 +13,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 
+import net.rapi.Identity;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -23,7 +25,6 @@ import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.widgets.Display;
 
 import de.tuilmenau.ics.fog.FoGEntity;
-import de.tuilmenau.ics.fog.facade.Identity;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;
 import de.tuilmenau.ics.fog.transfer.gates.FunctionalGate;

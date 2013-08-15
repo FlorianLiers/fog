@@ -9,8 +9,8 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.routing.hierarchical.properties;
 
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.properties.AbstractProperty;
+import net.rapi.Name;
+import net.rapi.properties.AbstractProperty;
 import de.tuilmenau.ics.fog.routing.simulated.RoutingServiceAddress;
 import de.tuilmenau.ics.fog.ui.Logging;
 

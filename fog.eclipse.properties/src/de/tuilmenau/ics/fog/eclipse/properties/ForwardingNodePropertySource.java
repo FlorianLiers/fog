@@ -11,10 +11,11 @@ package de.tuilmenau.ics.fog.eclipse.properties;
 
 import java.util.LinkedList;
 
+import net.rapi.Description;
+
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
-import de.tuilmenau.ics.fog.facade.Description;
 import de.tuilmenau.ics.fog.transfer.ForwardingNode;
 import de.tuilmenau.ics.fog.transfer.forwardingNodes.GateContainer;
 import de.tuilmenau.ics.fog.transfer.manager.ProcessList;

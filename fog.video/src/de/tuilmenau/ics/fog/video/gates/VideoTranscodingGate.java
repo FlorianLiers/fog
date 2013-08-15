@@ -22,12 +22,13 @@ package de.tuilmenau.ics.fog.video.gates;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
+
+import net.rapi.Identity;
+import net.rapi.NetworkException;
 import jniImports.VideoTranscoder;
 
 
 import de.tuilmenau.ics.fog.FoGEntity;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.NetworkException;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.routing.Route;
 import de.tuilmenau.ics.fog.streaming.RTP;

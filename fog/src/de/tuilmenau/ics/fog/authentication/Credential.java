@@ -15,8 +15,9 @@ package de.tuilmenau.ics.fog.authentication;
 
 import java.io.Serializable;
 
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Signature;
+import net.rapi.Identity;
+import net.rapi.Signature;
+
 
 
 public interface Credential

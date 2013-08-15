@@ -13,6 +13,10 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.transfer.gates;
 
+import net.rapi.Description;
+import net.rapi.Identity;
+import net.rapi.Name;
+import net.rapi.NetworkException;
 import de.tuilmenau.ics.CommonSim.datastream.numeric.CounterNode;
 import de.tuilmenau.ics.CommonSim.datastream.numeric.IDoubleWriter;
 import de.tuilmenau.ics.fog.Config;
@@ -20,10 +24,6 @@ import de.tuilmenau.ics.fog.ContinuationHandler;
 import de.tuilmenau.ics.fog.FoGEntity;
 import de.tuilmenau.ics.fog.IContinuation;
 import de.tuilmenau.ics.fog.IEvent;
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.NetworkException;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;
 import de.tuilmenau.ics.fog.transfer.Gate;
 import de.tuilmenau.ics.fog.ui.Viewable;

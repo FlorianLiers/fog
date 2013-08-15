@@ -13,7 +13,7 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.exceptions;
 
-import de.tuilmenau.ics.fog.facade.NetworkException;
+import net.rapi.NetworkException;
 
 public class AuthenticationException extends NetworkException
 {

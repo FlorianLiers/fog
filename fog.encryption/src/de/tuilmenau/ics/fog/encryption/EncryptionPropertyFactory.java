@@ -9,9 +9,9 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.encryption;
 
+import net.rapi.properties.Property;
+import net.rapi.properties.PropertyException;
 import de.tuilmenau.ics.fog.encryption.EncryptionProperty.EncryptionDirectionPair;
-import de.tuilmenau.ics.fog.facade.properties.Property;
-import de.tuilmenau.ics.fog.facade.properties.PropertyException;
 import de.tuilmenau.ics.fog.facade.properties.PropertyFactory;
 
 

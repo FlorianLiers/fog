@@ -11,7 +11,8 @@ package de.tuilmenau.ics.fog.routing.hierarchical.properties;
 
 import java.util.LinkedList;
 
-import de.tuilmenau.ics.fog.facade.properties.AbstractProperty;
+import net.rapi.properties.AbstractProperty;
+
 import de.tuilmenau.ics.fog.routing.hierarchical.HierarchyLevelLimitationEntry;
 import de.tuilmenau.ics.fog.ui.Logging;
 

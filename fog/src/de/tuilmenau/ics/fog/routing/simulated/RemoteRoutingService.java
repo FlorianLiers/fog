@@ -16,11 +16,12 @@ package de.tuilmenau.ics.fog.routing.simulated;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-import de.tuilmenau.ics.fog.facade.Description;
-import de.tuilmenau.ics.fog.facade.Identity;
-import de.tuilmenau.ics.fog.facade.Name;
-import de.tuilmenau.ics.fog.facade.RequirementsException;
-import de.tuilmenau.ics.fog.facade.RoutingException;
+import net.rapi.Description;
+import net.rapi.Identity;
+import net.rapi.Name;
+import net.rapi.RequirementsException;
+import net.rapi.RoutingException;
+
 import de.tuilmenau.ics.fog.routing.Route;
 import de.tuilmenau.ics.fog.transfer.gates.GateID;
 
