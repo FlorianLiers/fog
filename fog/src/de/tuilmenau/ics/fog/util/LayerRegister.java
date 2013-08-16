@@ -7,7 +7,7 @@ import de.tuilmenau.ics.fog.topology.Medium;
 
 import net.rapi.Layer;
 import net.rapi.LayerContainer;
-import net.rapi.events.PeerInformationEvent;
+import net.rapi.events.LayerSetEvent;
 import net.rapi.impl.base.BaseEventSource;
 
 
@@ -31,7 +31,7 @@ public class LayerRegister extends BaseEventSource implements LayerContainer
 			
 			layerList.addLast(new MediumLayerRelation(medium, layer));
 			
-			notifyObservers(new PeerInformationEvent(this, null, true));
+			notifyObservers(new LayerSetEvent(this, layer, true));
 		}
 	}
 	
@@ -101,7 +101,7 @@ public class LayerRegister extends BaseEventSource implements LayerContainer
 				if(mlr.layer == layer) {
 					iter.remove();
 					
-					notifyObservers(new PeerInformationEvent(this, null, false));
+					notifyObservers(new LayerSetEvent(this, mlr.layer, false));
 					
 					return true;
 				}
@@ -132,6 +132,8 @@ public class LayerRegister extends BaseEventSource implements LayerContainer
 			if(found != null) {
 				for(MediumLayerRelation mlr : found) {
 					if(layerList.remove(mlr)) {
+						notifyObservers(new LayerSetEvent(this, mlr.layer, false));
+						
 						deletedCounter++;
 					}
 				}
