@@ -21,11 +21,11 @@ import net.rapi.Signature;
 
 import jniImports.PacketFoG;
 
+import de.tuilmenau.ics.fog.bus.NeighborInformation;
 import de.tuilmenau.ics.fog.eclipse.utils.Resources;
 import de.tuilmenau.ics.fog.emulator.Interface;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.routing.Route;
-import de.tuilmenau.ics.fog.topology.NeighborInformation;
 import de.tuilmenau.ics.fog.ui.Logging;
 import de.tuilmenau.ics.fog.util.ARCHDetector;
 import de.tuilmenau.ics.fog.util.Logger;

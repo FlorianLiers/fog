@@ -112,6 +112,19 @@ public class Session extends ApplicationEventHandler<Connection> implements Rece
 	{
 		getLogger().trace(this, "Ignoring unknown event: " +event);
 	}
+
+	/**
+	 * @return If the underlying connection is set up
+	 */
+	public boolean isConnected()
+	{
+		Connection conn = getConnection();
+		if(conn != null) {
+			return conn.isConnected();
+		} else {
+			return false;
+		}
+	}
 	
 	/**
 	 * A helper method for avoiding the method name <code>getEventSource()</code>, which

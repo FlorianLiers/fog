@@ -23,6 +23,8 @@ import net.rapi.Layer;
 import net.rapi.Name;
 import net.rapi.NeighborName;
 import net.rapi.NetworkException;
+import net.rapi.events.Event;
+import net.rapi.events.LayerSetEvent;
 import net.rapi.impl.base.BaseEventSource;
 import net.rapi.properties.CommunicationTypeProperty;
 import de.tuilmenau.ics.fog.authentication.IdentityManagement;
@@ -44,6 +46,7 @@ import de.tuilmenau.ics.fog.transfer.manager.Controller;
 import de.tuilmenau.ics.fog.transfer.manager.Process;
 import de.tuilmenau.ics.fog.transfer.manager.ProcessConnection;
 import de.tuilmenau.ics.fog.transfer.manager.ProcessRegister;
+import de.tuilmenau.ics.fog.ui.Viewable;
 import de.tuilmenau.ics.fog.util.Logger;
 import de.tuilmenau.ics.fog.util.SimpleName;
 import de.tuilmenau.ics.graph.GraphProvider;
@@ -65,6 +68,32 @@ public class FoGEntity extends BaseEventSource implements Layer, GraphProvider, 
 		// Note: Do not create central FN here, because we do not have
 		//       a routing service available.
 		multiplexgate = null;
+		
+		// setup reaction for added/removed lower layers
+		mNode.getLayerContainer().registerListener(new EventListener() {
+			@Override
+			public void eventOccured(Event event) throws Exception
+			{
+				if(event instanceof LayerSetEvent) {
+					LayerSetEvent layerEvent = (LayerSetEvent) event;
+					
+					// ignore events from own entity
+					if(layerEvent.getLayer() != FoGEntity.this) {
+						if(layerEvent.isAppeared()) {
+							getController().addLink(layerEvent.getLayer());
+						} else {
+							getController().removeLink(layerEvent.getLayer());
+						}
+					}
+				}
+			}
+		});
+	}
+	
+	@Override
+	public LayerStatus getStatus()
+	{
+		return LayerStatus.OPERATING;
 	}
 	
 	@Override
@@ -499,11 +528,16 @@ public class FoGEntity extends BaseEventSource implements Layer, GraphProvider, 
 	
 	private Node mNode;
 	private Controller controlgate;
+	
+	@Viewable("Central forwarding node")
 	private Multiplexer multiplexgate;
+	@Viewable("Transfer plane")
 	private TransferPlane transferPlane;
+	@Viewable("Routing service")
 	private RoutingService routingService;
 
 	private ProcessRegister processes;
 	
+	@Viewable("Registered servers")
 	private LinkedList<Name> mRegisteredServers = new LinkedList<Name>();
 }

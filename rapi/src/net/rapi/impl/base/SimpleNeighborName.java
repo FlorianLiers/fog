@@ -14,31 +14,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *****************************************************************************/
-package net.rapi.events;
+package net.rapi.impl.base;
 
-import net.rapi.EventSource;
+import net.rapi.Name;
+import net.rapi.Namespace;
 import net.rapi.NeighborName;
 
-public class PeerInformationEvent extends Event
+/**
+ * Simple implementation of NeighborName for biunique binding names. 
+ */
+public class SimpleNeighborName implements NeighborName
 {
-	public PeerInformationEvent(EventSource source, NeighborName peer, boolean appeared)
+	public SimpleNeighborName(Name bindingName)
 	{
-		super(source);
-		
-		this.peer = peer;
-		this.appeared = appeared;
+		this.bindingName = bindingName;
 	}
 	
-	public NeighborName getPeerName()
+	@Override
+	public Namespace getNamespace()
 	{
-		return peer;
+		return bindingName.getNamespace();
 	}
-	
-	public boolean isAppeared()
+
+	@Override
+	public int getSerialisedSize()
 	{
-		return appeared;
+		return bindingName.getSerialisedSize();
 	}
-	
-	private NeighborName peer;
-	private boolean appeared;
+
+	@Override
+	public Name getBindingName()
+	{
+		return bindingName;
+	}
+
+	private Name bindingName;
 }

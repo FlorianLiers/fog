@@ -17,8 +17,11 @@ import net.rapi.Identity;
 import net.rapi.Name;
 import net.rapi.NetworkException;
 import de.tuilmenau.ics.fog.FoGEntity;
+import de.tuilmenau.ics.fog.authentication.IdentityManagement;
+import de.tuilmenau.ics.fog.packets.Packet;
+import de.tuilmenau.ics.fog.packets.Signalling;
+import de.tuilmenau.ics.fog.routing.Route;
 import de.tuilmenau.ics.fog.transfer.ForwardingNode;
-import de.tuilmenau.ics.fog.transfer.Gate;
 import de.tuilmenau.ics.fog.transfer.Gate.GateState;
 import de.tuilmenau.ics.fog.transfer.gates.AbstractGate;
 import de.tuilmenau.ics.fog.transfer.gates.GateID;
@@ -36,50 +39,54 @@ public abstract class ProcessGateConstruction extends Process
 	
 	protected abstract AbstractGate newGate(FoGEntity entity) throws NetworkException;
 	
-	public Gate create() throws NetworkException
+	public AbstractGate create() throws NetworkException
 	{
-		ForwardingNode tBase = getBase();
-		
-		// synch for test&set of down gates
-		synchronized(tBase) {
-			// create gate
-			mGate = newGate(getBase().getEntity());
+		// avoid duplicate creation if called for more than one time
+		if(mGate == null) {
+			ForwardingNode tBase = getBase();
 			
-			// assign gate a local ID
-			if(mReplacementFor != null) {
-				// check if gate is still available
-				if(mReplacementFor.isOperational() || (mReplacementFor.getState() == GateState.INIT)) {
-					if(tBase.replaceGate(mReplacementFor, mGate)) {
-						mLogger.log(this, "Gate " +mGate +" created at " +tBase +" as replacement for " +mReplacementFor);
-						mReplacementFor.shutdown();
+			// synch for test&set of down gates
+			synchronized(tBase) {
+				// create gate
+				mGate = newGate(getBase().getEntity());
+				
+				// assign gate a local ID
+				if(mReplacementFor != null) {
+					// check if gate is still available
+					if(mReplacementFor.isOperational() || (mReplacementFor.getState() == GateState.INIT)) {
+						if(tBase.replaceGate(mReplacementFor, mGate)) {
+							mLogger.log(this, "Gate " +mGate +" created at " +tBase +" as replacement for " +mReplacementFor);
+							mReplacementFor.shutdown();
+						} else {
+							mLogger.err(this, "Was not able to replace " +mReplacementFor +". Register it as new gate.");
+							
+							tBase.registerGate(mGate);
+						}
 					} else {
-						mLogger.err(this, "Was not able to replace " +mReplacementFor +". Register it as new gate.");
+						// init in order to be able to switch to delete
+						mGate.initialise();
+						mGate.shutdown();
+						mGate = null;
 						
-						tBase.registerGate(mGate);
+						// invalidate the process
+						mReplacementFor = null;
+						
+						throw new NetworkException(this, "Gate " +mReplacementFor +" that should be replaced is not operational. Terminating the construction of a replacement.");
 					}
 				} else {
-					// init in order to be able to switch to delete
-					mGate.initialise();
-					mGate.shutdown();
-					mGate = null;
+					tBase.registerGate(mGate);
 					
-					// invalidate the process
-					mReplacementFor = null;
-					
-					throw new NetworkException(this, "Gate " +mReplacementFor +" that should be replaced is not operational. Terminating the construction of a replacement.");
+					mLogger.log(this, "gate " +mGate +" created at " +tBase);
 				}
-			} else {
-				tBase.registerGate(mGate);
-				
-				mLogger.log(this, "gate " +mGate +" created at " +tBase);
 			}
+			
+			// switch it to init state
+			mGate.initialise();
+			
+			// start terminate timer for timeout till update
+			restartTimer();
 		}
 		
-		// switch it to init state
-		mGate.initialise();
-		
-		// start terminate timer for timeout till update
-		restartTimer();
 		return mGate;
 	}
 	
@@ -176,15 +183,38 @@ public abstract class ProcessGateConstruction extends Process
 		}
 	}
 	
-	public GateID getGateNumber() throws NetworkException
+	protected boolean sendToPeer(Signalling answer)
 	{
-		if(mGate != null) return mGate.getGateID();
-		else {
-			if(mReplacementFor != null) return mReplacementFor.getGateID();
-			else throw new NetworkException(this, "No gate number available. Call create before.");
-		}
-	}
+		Route route = getRequesterRoute();
+		Packet packet = new Packet(route, answer);
 
+		if(route == null) {
+			// Reverse route is broken because there was no gate for the
+			// connection via the lower layer. User lower layer directly for
+			// answer.
+			if(mGate != null) {
+				if(getOwner() != null) {
+					IdentityManagement authService = getBase().getEntity().getAuthenticationService();
+					
+					// create and add own signature
+					authService.sign(packet, getBase().getOwner());
+				} else {
+					mLogger.warn(this, "Can not sign signaling message since owner not known.");
+				}
+				
+				mGate.handlePacket(packet, null);
+			} else {
+				getLogger().err(this, "Can not send answer " +answer +" for " +packet +" due to missing reverse route and gate.");
+				return false;
+			}
+		} else {
+			// Return route was valid. Send answer back over the normal return route.
+			getBase().handlePacket(packet, null);
+		}
+		
+		return true;
+	}
+	
 	@Override
 	protected void finished()
 	{

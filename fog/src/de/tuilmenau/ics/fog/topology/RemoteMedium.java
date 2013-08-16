@@ -16,18 +16,17 @@ package de.tuilmenau.ics.fog.topology;
 import java.io.Serializable;
 
 import de.tuilmenau.ics.fog.EventHandler;
-import de.tuilmenau.ics.fog.topology.ILowerLayer;
 import de.tuilmenau.ics.fog.util.Logger;
 
 
 public interface RemoteMedium extends Serializable
 {
 	/**
-	 * Activates a remote medium on the local OS process.
+	 * Activates a remote medium for the local OS process.
 	 * 
 	 * @param timeBase Time base of the local OS process
 	 * @param logger Logger for local output
-	 * @return Reference to lower layer (!= null)
+	 * @return Reference to medium (!= null)
 	 */
-	public ILowerLayer activate(EventHandler timeBase, Logger logger);
+	public Medium activate(EventHandler timeBase, Logger logger);
 }

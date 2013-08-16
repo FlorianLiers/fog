@@ -106,7 +106,7 @@ public class AutonomousSystem extends Network implements IAutonomousSystem
 	public boolean attach(String pNode, String pBus)
 	{
 		Node tNode = getNodeByName(pNode);
-		ILowerLayer tBus = getBusByName(pBus);
+		Medium tBus = getBusByName(pBus);
 		
 		if((tNode != null) && (tBus != null)) {
 			return attach(tNode, tBus);
@@ -119,7 +119,7 @@ public class AutonomousSystem extends Network implements IAutonomousSystem
 	public boolean detach(String pNode, String pBus)
 	{
 		Node tNode = getNodeByName(pNode);
-		ILowerLayer tBus = getBusByName(pBus);
+		Medium tBus = getBusByName(pBus);
 		
 		if((tNode != null) && (tBus != null)) {
 			return detach(tNode, tBus);

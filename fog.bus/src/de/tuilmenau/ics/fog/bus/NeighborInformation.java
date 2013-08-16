@@ -11,7 +11,7 @@
  * under the terms of the GNU General Public License version 2 as published
  * by the Free Software Foundation.
  ******************************************************************************/
-package de.tuilmenau.ics.fog.topology;
+package de.tuilmenau.ics.fog.bus;
 
 import java.io.Serializable;
 

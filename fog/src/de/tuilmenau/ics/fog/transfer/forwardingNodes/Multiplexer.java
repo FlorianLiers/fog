@@ -150,16 +150,8 @@ public class Multiplexer extends GateContainer
 		
 		// add signature
 		// if packet already authenticated and multiplexer has the possibility to add a signature
-		if(packet.pleaseAuthenticate() && (mOwner != null)) {
-			IdentityManagement authService = mEntity.getAuthenticationService();
-			
-			// check, if the existing signatures are acceptable
-			if(authService.check(packet)) {
-				// create and add own signature
-				authService.sign(packet, mOwner);
-			} else {
-				mLogger.warn(this, "Signature not matching packet: " +packet);
-			}
+		if(packet.pleaseAuthenticate()) {
+			signPacket(packet);
 		}
 		
 		// handle invisible packets
@@ -221,6 +213,32 @@ public class Multiplexer extends GateContainer
 				// else: suppress error handling
 			}
 		}
+	}
+
+	/**
+	 * @param packet Packet that should be signed
+	 * @return If packet was signed or not
+	 */
+	public boolean signPacket(Packet packet)
+	{
+		boolean signed = false;
+		
+		if(mOwner != null) {
+			IdentityManagement authService = mEntity.getAuthenticationService();
+			
+			// check, if the existing signatures are acceptable
+			if(authService.check(packet)) {
+				// create and add own signature
+				authService.sign(packet, mOwner);
+				
+				signed = true;
+			} else {
+				mLogger.warn(this, "Signature not matching packet: " +packet);
+			}
+		}
+		// else: no suitable identity
+		
+		return signed;
 	}
 
 	/**

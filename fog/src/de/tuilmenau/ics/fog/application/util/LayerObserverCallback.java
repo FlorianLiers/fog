@@ -16,8 +16,7 @@ package de.tuilmenau.ics.fog.application.util;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-import de.tuilmenau.ics.fog.topology.NeighborInformation;
-
+import net.rapi.NeighborName;
 
 
 /**
@@ -32,7 +31,7 @@ public interface LayerObserverCallback extends Remote
 	 * @param newNeighbor New neighbor attached to the bus.
 	 * @throws RemoteException On error.
 	 */
-	public void neighborDiscovered(NeighborInformation newNeighbor) throws RemoteException;
+	public void neighborDiscovered(NeighborName newNeighbor) throws RemoteException;
 	
 	/**
 	 * Called if a neighbor disappears from the lower layer.
@@ -41,14 +40,15 @@ public interface LayerObserverCallback extends Remote
 	 * @param oldNeighbor Neighbor disconnected from bus.
 	 * @throws RemoteException On error.
 	 */
-	public void neighborDisappeared(NeighborInformation oldNeighbor) throws RemoteException;
+	public void neighborDisappeared(NeighborName oldNeighbor) throws RemoteException;
 	
 	/**
 	 * Called after lower layer was broken. The attached objects
 	 * should check, if all there gates using this lower layer are
 	 * ok.
 	 * 
+	 * @return If the check was successful
 	 * @throws RemoteException On error.
 	 */
-	public void neighborCheck() throws RemoteException;
+	public boolean neighborCheck() throws RemoteException;
 }

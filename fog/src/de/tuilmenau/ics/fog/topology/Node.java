@@ -22,6 +22,7 @@ import net.rapi.Description;
 import de.tuilmenau.ics.fog.facade.DescriptionHelper;
 import de.tuilmenau.ics.fog.facade.Host;
 import net.rapi.Identity;
+import net.rapi.Layer;
 import net.rapi.LayerContainer;
 import net.rapi.Name;
 import net.rapi.Namespace;
@@ -77,6 +78,9 @@ public class Node extends Observable implements Host, SimulationElement, Breakab
 		authenticationService = IdentityManagement.getInstance(pAS, this);
 		ownIdentity = getAuthenticationService().createIdentity(toString());
 		mFoG = new FoGEntity(this);
+		
+		// add default layer
+		layerRegister.register(mFoG);
 		
 		// TEST:
 //		routingService = new RoutingServiceMultiplexer();
@@ -159,24 +163,23 @@ public class Node extends Observable implements Host, SimulationElement, Breakab
 		}
 
 	}
-
-	public NetworkInterface attach(ILowerLayer lowerLayer)
-	{
-		return mFoG.getController().addLink(lowerLayer);
-	}
 	
-	public NetworkInterface detach(ILowerLayer lowerLayer)
+	/**
+	 * Adds a point-of-attachment to a node
+	 */
+	public void attach(Layer layer)
 	{
-		if(mFoG != null) {
-			return mFoG.getController().removeLink(lowerLayer);
+		if(layer != null) {
+			layerRegister.register(layer);
 		}
-		
-		return null;
 	}
 	
-	public int getNumberLowerLayers()
+	/**
+	 * Removes a point-of-attachments from a node
+	 */
+	public boolean detach(Layer layer)
 	{
-		return mFoG.getController().getNumberLowerLayers();
+		return layerRegister.unregister(layer);
 	}
 	
 	public boolean isGateway()
@@ -359,7 +362,7 @@ public class Node extends Observable implements Host, SimulationElement, Breakab
 		if(name == null) return null;
 		else return name.toString();
 	}
-
+	
 	@Override
 	public LinkedList<Name> getServerNames()
 	{

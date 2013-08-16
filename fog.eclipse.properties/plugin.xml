@@ -20,20 +20,6 @@
          </adapter>
       </factory>
       <factory
-            adaptableType="de.tuilmenau.ics.fog.topology.ILowerLayer"
-            class="de.tuilmenau.ics.fog.eclipse.PropertyAdapterFactory">
-         <adapter
-               type="org.eclipse.ui.views.properties.IPropertySource">
-         </adapter>
-      </factory>
-      <factory
-            adaptableType="de.tuilmenau.ics.fog.topology.NeighborList"
-            class="de.tuilmenau.ics.fog.eclipse.PropertyAdapterFactory">
-         <adapter
-               type="org.eclipse.ui.views.properties.IPropertySource">
-         </adapter>
-      </factory>
-      <factory
             adaptableType="de.tuilmenau.ics.fog.transfer.gates.AbstractGate"
             class="de.tuilmenau.ics.fog.eclipse.PropertyAdapterFactory">
          <adapter
@@ -97,7 +83,7 @@
          </adapter>
       </factory>
       <factory
-            adaptableType="de.tuilmenau.ics.fog.facade.Description"
+            adaptableType="net.rapi.Description"
             class="de.tuilmenau.ics.fog.eclipse.PropertyAdapterFactory">
          <adapter
                type="org.eclipse.ui.views.properties.IPropertySource">
@@ -159,6 +145,13 @@
                type="org.eclipse.ui.views.properties.IPropertySource">
          </adapter>
       </factory>
+      <factory
+            adaptableType="de.tuilmenau.ics.fog.FoGEntity"
+            class="de.tuilmenau.ics.fog.eclipse.PropertyAdapterFactory">
+         <adapter
+               type="org.eclipse.ui.views.properties.IPropertySource">
+         </adapter>
+      </factory>
 	</extension>
 
 
@@ -166,14 +159,14 @@
          point="org.eclipse.core.runtime.adapters">
       
       <factory
-            adaptableType="de.tuilmenau.ics.fog.routing.GlobalRoutingService"
+            adaptableType="de.tuilmenau.ics.fog.routing.simulated.RootRoutingService"
             class="de.tuilmenau.ics.fog.eclipse.OutlineAdapterFactory">
          <adapter
                type="org.eclipse.ui.views.contentoutline.IContentOutlinePage">
          </adapter>
       </factory>
       <factory
-            adaptableType="de.tuilmenau.ics.fog.routing.PartialRoutingService"
+            adaptableType="de.tuilmenau.ics.fog.routing.simulated.PartialRoutingService"
             class="de.tuilmenau.ics.fog.eclipse.OutlineAdapterFactory">
          <adapter
                type="org.eclipse.ui.views.contentoutline.IContentOutlinePage">

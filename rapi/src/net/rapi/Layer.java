@@ -29,6 +29,13 @@ package net.rapi;
  */
 public interface Layer extends EventSource
 {
+	public enum LayerStatus { OPERATING, DISCONNECTED, ERROR };
+	
+	/**
+	 * @return Current status of the layer entity
+	 */
+	public LayerStatus getStatus();
+	
 	/**
 	 * Registers an entity with a given name at the layer. Afterwards,
 	 * clients can connect to this service by using the same name.

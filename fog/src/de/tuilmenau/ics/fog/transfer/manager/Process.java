@@ -21,6 +21,7 @@ import de.tuilmenau.ics.fog.EventHandler;
 import de.tuilmenau.ics.fog.IContinuation;
 import de.tuilmenau.ics.fog.IEvent;
 import de.tuilmenau.ics.fog.authentication.IdentityManagement;
+import de.tuilmenau.ics.fog.routing.Route;
 import de.tuilmenau.ics.fog.transfer.ForwardingNode;
 import de.tuilmenau.ics.fog.ui.Viewable;
 import de.tuilmenau.ics.fog.util.Logger;
@@ -146,6 +147,12 @@ public abstract class Process
 	public final void terminate(Exception pCause)
 	{
 		if(!isFinished()) {
+			if(pCause != null) {
+				mLogger.warn(this, "Terminate due to error.", pCause);
+			} else {
+				mLogger.log(this, "Terminate");
+			}
+			
 			setState(ProcessState.CLOSING);
 			
 			mTerminationCause = pCause;
@@ -290,6 +297,42 @@ public abstract class Process
 		// it for the finishing process
 	}
 	
+	public boolean responsableFor(Identity requester, int requesterID)
+	{
+		if(requester != null) {
+			return (requester.equals(this.requester) && (requesterID == this.requesterID));
+		} else {
+			return false;
+		}
+	}
+	
+	public void setRequester(Identity requester, int requesterID, Route requesterRoute)
+	{
+		this.requester = requester;
+		this.requesterID = requesterID;
+		this.requesterRoute = requesterRoute;
+	}
+	
+	public boolean hasRequester()
+	{
+		return requester != null;
+	}
+	
+	public Identity getRequester()
+	{
+		return requester;
+	}
+	
+	public int getRequesterID()
+	{
+		return requesterID;
+	}
+	
+	public Route getRequesterRoute()
+	{
+		return requesterRoute;
+	}
+	
 	public enum ProcessState { INIT, STARTING, OPERATING, CLOSING }
 	
 	@Viewable("Process ID")
@@ -306,6 +349,13 @@ public abstract class Process
 	
 	@Viewable("Timer")
 	private Timer mTimer;
+	
+	@Viewable("Requester")
+	private Identity requester = null;
+	@Viewable("Requester ID")
+	private int requesterID = -1;
+	@Viewable("Requester route")
+	private Route requesterRoute = null;
 	
 	private Exception mTerminationCause = null;
 	private ContinuationHandler<Process> mContinuationsStateChange = null;

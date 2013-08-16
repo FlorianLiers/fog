@@ -21,6 +21,7 @@ import java.util.LinkedList;
 
 import net.rapi.Description;
 import net.rapi.Identity;
+import net.rapi.Layer;
 import net.rapi.Name;
 import net.rapi.NetworkException;
 import net.rapi.Signature;
@@ -30,6 +31,7 @@ import net.rapi.properties.NonFunctionalRequirementsProperty;
 import net.rapi.properties.PriorityProperty;
 import net.rapi.properties.Property;
 import net.rapi.properties.PropertyException;
+
 import de.tuilmenau.ics.fog.Config;
 import de.tuilmenau.ics.fog.FoGEntity;
 import de.tuilmenau.ics.fog.IContinuation;
@@ -50,9 +52,6 @@ import de.tuilmenau.ics.fog.routing.RouteSegmentDescription;
 import de.tuilmenau.ics.fog.routing.RouteSegmentMissingPart;
 import de.tuilmenau.ics.fog.routing.RouteSegmentPath;
 import de.tuilmenau.ics.fog.routing.RoutingService;
-import de.tuilmenau.ics.fog.topology.ILowerLayer;
-import de.tuilmenau.ics.fog.topology.NeighborInformation;
-import de.tuilmenau.ics.fog.topology.NetworkInterface;
 import de.tuilmenau.ics.fog.topology.Node;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;
 import de.tuilmenau.ics.fog.transfer.ForwardingNode;
@@ -62,7 +61,6 @@ import de.tuilmenau.ics.fog.transfer.forwardingNodes.GateContainer;
 import de.tuilmenau.ics.fog.transfer.forwardingNodes.Multiplexer;
 import de.tuilmenau.ics.fog.transfer.gates.AbstractGate;
 import de.tuilmenau.ics.fog.transfer.gates.DirectDownGate;
-import de.tuilmenau.ics.fog.transfer.gates.DownGate;
 import de.tuilmenau.ics.fog.transfer.gates.ErrorReflectorGate;
 import de.tuilmenau.ics.fog.transfer.gates.GateID;
 import de.tuilmenau.ics.fog.transfer.gates.GateIterator;
@@ -83,6 +81,21 @@ public class Controller
 	{
 		mEntity = entity;
 		mLogger = entity.getLogger();
+	}
+	
+	public Process getProcessFor(ForwardingNode fn, Identity requester, int requesterID)
+	{
+		ProcessList processes = fn.getEntity().getProcessRegister().getProcesses(fn);
+		
+		if(processes != null) {
+			for(Process process : processes) {
+				if(process.responsableFor(requester, requesterID)) {
+					return process;
+				}
+			}
+		}
+		
+		return null;
 	}
 	
 	/**
@@ -408,7 +421,7 @@ public class Controller
 			// -> just reuse parallel one
 			reuse = true;
 		}
-		else if(parallelGate instanceof DownGate) {
+		else if(parallelGate instanceof DirectDownGate) {
 			// parallel gate leaves host
 			// -> create parallel one with other QoS
 			Description requ = newGateDescription.getDescr();
@@ -437,7 +450,7 @@ public class Controller
 					requ.remove(lossRate);
 					
 					// check if it is a problem with this lower layer
-					boolean llIsLossy = isLossy(((DownGate) parallelGate).getLowerLayer().getBus());
+					boolean llIsLossy = isLossy(((DirectDownGate) parallelGate).getLowerLayer().getBus());
 					
 					// was loss rate the only property?
 					if(requ.isBestEffort() && llIsLossy) {
@@ -473,7 +486,7 @@ public class Controller
 					//
 					// 2. Handle requirements without loss rate requirement
 					//
-					DownGate downGate = (DownGate) parallelGate;
+					DirectDownGate downGate = (DirectDownGate) parallelGate;
 					boolean priorityOnly = isPriorityOnly(requ);
 					
 					if(priorityOnly) {
@@ -484,7 +497,7 @@ public class Controller
 					
 					if(newGate == null) {
 						// 2.2 Reuse not possible: Create a new gate
-						newGate = createNewDownGate(fn, downGate.getLowerLayer(), downGate.getToLowerLayerID(), requ, newGateDescription.getRequester(), null, false);
+						newGate = downGate.getLowerLayer().createNewDownGate(downGate.getPeerName(), requ, null, true, newGateDescription.getRequester());
 					}
 					
 					// Check if there is a RouteSegementMissingPart on the "stack", which
@@ -541,10 +554,10 @@ public class Controller
 	/**
 	 * @return If a lower layer might loose packets.
 	 */
-	private static boolean isLossy(ILowerLayer bus)
+	private static boolean isLossy(Layer bus)
 	{
 		try {
-			Description busDescr = bus.getDescription();
+			Description busDescr = bus.getCapabilities(null, null);
 			
 			if(busDescr != null) {
 				LossRateProperty bussLoss = (LossRateProperty) busDescr.get(LossRateProperty.class);
@@ -552,8 +565,9 @@ public class Controller
 					return bussLoss.isBE();
 				}
 			}
-		} catch (RemoteException exc) {
-			// ignore it
+		} catch (NetworkException exc) {
+			// ignore
+			return true;
 		}
 		
 		return false;
@@ -583,18 +597,18 @@ public class Controller
 	 * @param bus Bus, which the node should connect to
 	 * @return Interface for the connection to the bus OR null, if attach operation failed
 	 */
-	public NetworkInterface addLink(ILowerLayer bus)
+	public LowerLayerObserver addLink(Layer bus)
 	{
-		NetworkInterface newNetworkInterface = getNetworkInterface(bus);
+		LowerLayerObserver newNetworkInterface = getNetworkInterface(bus);
 		
 		// isn't node already connected to bus?
 		if(newNetworkInterface == null) {
-			newNetworkInterface = new NetworkInterface(bus, mEntity);
+			newNetworkInterface = new LowerLayerObserver(bus, mEntity);
 			
 			if(newNetworkInterface.attach()) {
 				mLogger.log(this, "new network interface " +newNetworkInterface);
 				
-				mEntity.getNode().count(NetworkInterface.class.getName(), true);
+				mEntity.getNode().count(LowerLayerObserver.class.getName(), true);
 				
 				// register generic send gate
 				// => that is important for calculating the reverse routes, while setting up DownGates
@@ -626,9 +640,9 @@ public class Controller
 	 * @param bus Searching for this bus (by reference)
 	 * @return interface or null if not connected to bus
 	 */
-	public NetworkInterface getNetworkInterface(ILowerLayer bus)
+	public LowerLayerObserver getNetworkInterface(Layer bus)
 	{
-		for(NetworkInterface tInterf : buslist) {
+		for(LowerLayerObserver tInterf : buslist) {
 			if(tInterf != null)
 				if(tInterf.getBus() == bus) return tInterf;
 		}
@@ -636,21 +650,41 @@ public class Controller
 		return null;
 	}
 	
+	/**
+	 * Required by the open DownGate process for determining the network interface for a FN.
+	 * 
+	 * @param entity FN
+	 * @return Network interface using the FN as FN. Null if not interface found.
+	 */
+	public LowerLayerObserver getNetworkInterface(ForwardingElement entity)
+	{
+		for(LowerLayerObserver tInterf : buslist) {
+			// local search for object; Reference comparison is sufficient
+			if(tInterf.getMultiplexerGate() == entity) {
+				return tInterf;
+			}
+		}
+		
+		return null;
+	}
+
+
+	
 
 	/**
 	 * Removes interface connected to a bus.
 	 * 
 	 * @param lowerLayer
 	 */
-	public NetworkInterface removeLink(ILowerLayer lowerLayer)
+	public LowerLayerObserver removeLink(Layer lowerLayer)
 	{
-		for(NetworkInterface tInter : buslist) {
+		for(LowerLayerObserver tInter : buslist) {
 			if(tInter.getBus() == lowerLayer) {
 				buslist.remove(tInter);
 				removeNetworkInterface(tInter);
 				
 				if(tInter != null) {
-					mEntity.getNode().count(NetworkInterface.class.getName(), false);
+					mEntity.getNode().count(LowerLayerObserver.class.getName(), false);
 				}
 				
 				return tInter;
@@ -660,100 +694,13 @@ public class Controller
 		return null;
 	}
 	
-	private void removeNetworkInterface(NetworkInterface netInterface)
+	private void removeNetworkInterface(LowerLayerObserver netInterface)
 	{
 		mLogger.log(this, "removing network interface " +netInterface);
 		
 		netInterface.detach();
 		
 		mEntity.getNode().notifyObservers(netInterface);
-	}
-	
-	public void addNeighbor(NetworkInterface pInterface, NeighborInformation pNeighborLLID)
-	{
-		GateContainer tFN = pInterface.getMultiplexerGate(); 
-
-		synchronized(tFN) { synchronized(tFN.getEntity()) {
-			ReroutingGate[] backup = new ReroutingGate[1];
-			Description requ = DescriptionHelper.createBE(false);
-			DownGate downGate = checkDownGateAvailable(tFN, pNeighborLLID, null, requ, backup);
-			
-			// check, if DownGate already available
-			if(downGate == null) {
-				// if there is a backup for the best-effort gate, there might be more gates,
-				// which can be repaired?
-				if(backup[0] != null) {
-					mLogger.trace(this, "BE DownGate to neighbor available as rerouting gate. Maybe other gates can be repaired, too? Schedule event.");
-					
-					mEntity.getTimeBase().scheduleIn(1.0d, new RepairEvent(pInterface, pNeighborLLID));
-				}
-				
-				//
-				// Option (A):
-				// Request bidirectional connection without previous setup on node itself
-				//
-				// Assumes that the neighbor will try to setup a reverse gate for its gate.
-				
-				//
-				// Option (B):
-				// Setup one gate immediately and request reverse gate, only
-				//
-				try {
-					createNewDownGate(tFN, pInterface, pNeighborLLID, requ, mEntity.getIdentity(), backup[0], false);
-				}
-				catch (NetworkException tExc) {
-					mLogger.warn(this, "Can not add down gate to neighbor " +pNeighborLLID +". Ignoring neighbor.", tExc);
-				}
-			} else {
-				mLogger.log(this, "DownGate to neighbor " +pNeighborLLID +" on interface " +pInterface +" already available.");
-
-				mLogger.log(this, "Refreshing DownGate " +downGate);
-				downGate.refresh();
-			}
-		} }
-	}
-	
-	/**
-	 * Creates new down gate to neighbor and requests the reverse gate from it. 
-	 * 
-	 * @param pFN FN to connect the gate to
-	 * @param pInterface Lower layer
-	 * @param pNeighborLLID Lower layer name of peer
-	 * @param pDescription Requirements for down gate
-	 * @return reference to new gate (!= null)
-	 * @throws NetworkException on error
-	 */
-	private Gate createNewDownGate(GateContainer pFN, NetworkInterface pInterface, NeighborInformation pNeighborLLID, Description pDescription, Identity pRequester, ReroutingGate pBackup, boolean pLazyCreation) throws NetworkException
-	{
-		mLogger.log(this, "Creating DownGate to neighbor " +pNeighborLLID +" on interface " +pInterface +" with " +pDescription);
-		
-		// create process handling the creation and deletion of down gate
-		ProcessDownGate tProcess = new ProcessDownGate(pFN, pInterface, pNeighborLLID, pDescription, pRequester, pBackup);
-		
-		try {
-			Gate tGate = null;
-			
-			tProcess.start();
-			
-			if(pLazyCreation && (pBackup != null)) {
-				// delay creation it until signaling is finished
-			} else {
-				tGate = tProcess.create();
-			}
-			
-			// Request reverse gate from peer
-			Name localRoutingName = mEntity.getRoutingService().getNameFor(pFN);
-			
-			tProcess.signal(localRoutingName);
-			
-			return tGate;
-		}
-		catch (NetworkException tExc) {
-			tExc = new TransferServiceException(this, "Opening down gate to neighbor " +pNeighborLLID +" failed.", tExc);
-			
-			tProcess.terminate(tExc);
-			throw tExc;
-		}
 	}
 	
 	/**
@@ -837,7 +784,7 @@ public class Controller
 		return new CreationResult(null, null);
 	}
 	
-	private static DirectDownGate searchForParallelPriorityGate(Multiplexer fn, DownGate gate)
+	private static DirectDownGate searchForParallelPriorityGate(Multiplexer fn, DirectDownGate gate)
 	{
 		Name remoteFN = gate.getRemoteDestinationName();
 		
@@ -861,32 +808,10 @@ public class Controller
 		return null;
 	}
 
-	public void delNeighbor(NetworkInterface pInterface, NeighborInformation pNeighborLLID)
-	{
-		DirectDownGate gate;
-		GateContainer container = pInterface.getMultiplexerGate();
-		
-		mLogger.log(this, "Deleting DirectDownGate to neighbor " +pNeighborLLID +" on interface " +pInterface);
-		
-		synchronized(container) {	
-			do {
-				gate = checkDownGateAvailable(container, pNeighborLLID, null, null, null);
-				
-				if(gate != null) {
-					mEntity.getTransferPlane().unregisterLink(container, gate);
-					gate.shutdown();
-					
-					container.unregisterGate(gate);
-				}
-			}
-			while(gate != null);
-		}
-	}
-	
 	public void repair()
 	{
 		mRepairCountdown = buslist.size();
-		for(NetworkInterface ni : buslist) {
+		for(LowerLayerObserver ni : buslist) {
 			ni.repair();
 		}
 	}
@@ -947,7 +872,7 @@ public class Controller
 	 * @param pDescription QoS description (== null, if no filtering for description)
 	 * @return Gate fitting the parameters
 	 */
-	public DirectDownGate checkDownGateAvailable(ForwardingNode pFN, NeighborInformation pNeighborLLID, GateID pReverseGateNumber, Description pDescription, ReroutingGate[] pBackupGate)
+	public DirectDownGate checkDownGateAvailable(ForwardingNode pFN, Name pNeighborLLID, GateID pReverseGateNumber, Description pDescription, ReroutingGate[] pBackupGate)
 	{
 		if((pFN != null) && (pNeighborLLID != null)) {
 			//
@@ -1034,7 +959,7 @@ public class Controller
 	 * @param pPacket packet to be delivered when broken node was detected
 	 * @param pFrom last used gate
 	 */
-	public void handleBrokenElement(BrokenType pType, NetworkInterface pNetworkInterface, Packet pPacket, DirectDownGate pFrom)
+	public void handleBrokenElement(BrokenType pType, LowerLayerObserver pNetworkInterface, Packet pPacket, DirectDownGate pFrom)
 	{
 		Config tConfig = mEntity.getNode().getConfig();
 		RerouteMethod tRerouteMethod = tConfig.routing.REROUTE;
@@ -1166,7 +1091,7 @@ public class Controller
 			// Is one gate with requirements broken? Maybe the best effort does not work either.
 			if(tRouteRequirements != null) {
 				if(!tRouteRequirements.isBestEffort()) {
-					DownGate tBEGate = checkDownGateAvailable(pNetworkInterface.getMultiplexerGate(), pFrom.getToLowerLayerID(), null, DescriptionHelper.createBE(false), null);
+					DirectDownGate tBEGate = checkDownGateAvailable(pNetworkInterface.getMultiplexerGate(), pFrom.getToLowerLayerID(), null, DescriptionHelper.createBE(false), null);
 					
 					if(tBEGate != null) {
 						mLogger.log(this, "Gate with requirements failed. Check best effort gate " +tBEGate);
@@ -1482,7 +1407,7 @@ public class Controller
 		// Detach from all links/buses
 		//
 		while(!buslist.isEmpty()) {
-			NetworkInterface tInterface = buslist.removeFirst();
+			LowerLayerObserver tInterface = buslist.removeFirst();
 			
 			if(tInterface != null) {
 				removeNetworkInterface(tInterface);
@@ -1509,43 +1434,6 @@ public class Controller
 		return "Controller@" +mEntity;
 	}
 	
-	private class RepairEvent implements IEvent
-	{
-		public RepairEvent(NetworkInterface pInterface, NeighborInformation pNeighborLLID)
-		{
-			mInterface = pInterface;
-			mNeighborLLID = pNeighborLLID;
-		}
-		
-		@Override
-		public void fire()
-		{
-			mLogger.log(this, "Repair gates for interface " +mInterface);
-			
-			synchronized(mInterface.getEntity()) {
-				// Search for rerouting gates and try to repair them
-				GateIterator tIter = mInterface.getMultiplexerGate().getIterator(ReroutingGate.class);
-				
-				while(tIter.hasNext()) {
-					// type cast is valid, due to filter for iterator
-					ReroutingGate tGate = (ReroutingGate) tIter.next();
-					
-					if(tGate.match(mNeighborLLID, null, null)) {
-						try {
-							createNewDownGate(mInterface.getMultiplexerGate(), mInterface, mNeighborLLID, tGate.getDescription(), tGate.getOwner(), tGate, true);
-						}
-						catch (NetworkException tExc) {
-							mLogger.warn(this, "Failed to repair " +tGate +".", tExc);
-						}
-					}
-				}
-			}
-		}
-		
-		private NetworkInterface mInterface;
-		private NeighborInformation mNeighborLLID;
-	}
-	
 	public void receivedOpenGateResponse()
 	{
 		if (mRepairCountdown != -1) {
@@ -1562,7 +1450,7 @@ public class Controller
 	
 	private FoGEntity mEntity;
 	private Logger mLogger;
-	private final LinkedList<NetworkInterface> buslist = new LinkedList<NetworkInterface>();
+	private final LinkedList<LowerLayerObserver> buslist = new LinkedList<LowerLayerObserver>();
 	private int mRepairCountdown = -1;
 }
 

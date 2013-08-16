@@ -26,9 +26,8 @@ import de.tuilmenau.ics.fog.facade.properties.PropertyFactoryContainer;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.packets.PleaseOpenUnicast;
 import de.tuilmenau.ics.fog.routing.Route;
-import de.tuilmenau.ics.fog.topology.NetworkInterface;
 import de.tuilmenau.ics.fog.transfer.ForwardingNode;
-import de.tuilmenau.ics.fog.transfer.gates.DownGate;
+import de.tuilmenau.ics.fog.transfer.gates.DirectDownGate;
 import de.tuilmenau.ics.fog.transfer.gates.ReroutingGate;
 import de.tuilmenau.ics.fog.ui.Viewable;
 
@@ -38,7 +37,7 @@ public class ProcessRerouting extends Process
 	private static final double RESEND_OPEN_REQUEST_TIMEOUT_SEC = 2.5d;
 	
 	
-	public ProcessRerouting(NetworkInterface netInterface, DownGate forGate, int removeGatesFromRoute, Name externalGivenRemoteDestinationName)
+	public ProcessRerouting(LowerLayerObserver netInterface, DirectDownGate forGate, int removeGatesFromRoute, Name externalGivenRemoteDestinationName)
 	{
 		super(netInterface.getEntity().getCentralFN(), forGate.getOwner());
 		
@@ -215,7 +214,7 @@ public class ProcessRerouting extends Process
 		super.finished();
 	}
 	
-	private DownGate forGate;
+	private DirectDownGate forGate;
 	private int removeGatesFromRoute;
 	
 	@Viewable("Remote destination name for rerouting")

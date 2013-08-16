@@ -16,8 +16,7 @@ package de.tuilmenau.ics.fog.packets;
 import de.tuilmenau.ics.fog.FoGEntity;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;
 import de.tuilmenau.ics.fog.transfer.forwardingNodes.Multiplexer;
-import de.tuilmenau.ics.fog.transfer.gates.DownGate;
-import de.tuilmenau.ics.fog.transfer.gates.LowerLayerReceiveGate;
+import de.tuilmenau.ics.fog.transfer.gates.DirectDownGate;
 import de.tuilmenau.ics.fog.ui.Marker;
 import de.tuilmenau.ics.fog.ui.MarkerContainer;
 
@@ -41,11 +40,8 @@ public class InvisibleMarker implements Invisible
 		//
 		// Mark elements logically connected with the current one
 		//
-		if(pElement instanceof LowerLayerReceiveGate) {
-			doUnMarking(((LowerLayerReceiveGate) pElement).getLowerLayer());
-		}
-		if(pElement instanceof DownGate) {
-			doUnMarking(((DownGate) pElement).getLowerLayer());
+		if(pElement instanceof DirectDownGate) {
+			doUnMarking(((DirectDownGate) pElement).getLowerLayer());
 		}
 		if(pElement instanceof Multiplexer) {
 			FoGEntity tNode = ((Multiplexer) pElement).getEntity();

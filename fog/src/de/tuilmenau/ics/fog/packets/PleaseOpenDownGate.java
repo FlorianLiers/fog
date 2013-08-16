@@ -17,12 +17,14 @@ import net.rapi.Description;
 import net.rapi.Identity;
 import net.rapi.Name;
 import net.rapi.NetworkException;
-import de.tuilmenau.ics.fog.routing.Route;
+import de.tuilmenau.ics.fog.FoGEntity;
 import de.tuilmenau.ics.fog.transfer.ForwardingNode;
-import de.tuilmenau.ics.fog.transfer.Gate;
 import de.tuilmenau.ics.fog.transfer.gates.GateID;
-import de.tuilmenau.ics.fog.transfer.gates.ReroutingGate;
+import de.tuilmenau.ics.fog.transfer.manager.LowerLayerObserver;
+import de.tuilmenau.ics.fog.transfer.manager.LowerLayerSession;
+import de.tuilmenau.ics.fog.transfer.manager.Process;
 import de.tuilmenau.ics.fog.transfer.manager.ProcessDownGate;
+import de.tuilmenau.ics.fog.transfer.manager.ProcessGateConstruction;
 import de.tuilmenau.ics.fog.ui.Viewable;
 
 
@@ -34,77 +36,108 @@ public class PleaseOpenDownGate extends PleaseOpenGate
 {
 	private static final long serialVersionUID = -7309033185606147609L;
 
-	public PleaseOpenDownGate(int pLocalProcessNumber, GateID pLocalOutgoingGateNumber, Name pLocalNodeRoutingID, Description pDescription)
+	/**
+	 * Constructor for requesting a reverse gate though the same connection.
+	 */
+	public PleaseOpenDownGate(int pLocalProcessNumber, GateID pLocalOutgoingGateNumber, ForwardingNode pLocalDestination, Name pLocalAttachmentName)
 	{
-		super(pLocalProcessNumber, pLocalOutgoingGateNumber, pDescription);
+		super(pLocalProcessNumber, pLocalOutgoingGateNumber, null);
 		
-		mPeerNodeRoutingID = pLocalNodeRoutingID;
-	}
-	
-	public PleaseOpenDownGate(ProcessDownGate pProcess, Name pLocalNodeRoutingID, Description pDescription) throws NetworkException
-	{
-		this(pProcess.getID(), pProcess.getGateNumber(), pLocalNodeRoutingID, pDescription);
+		mPeerNodeAttachmentName = pLocalAttachmentName;
+		mPeerDestinationRoutingName = pLocalDestination.getEntity().getRoutingService().getNameFor(pLocalDestination);
 	}
 
+	/**
+	 * Constructor for requesting a new connection through the same lower layer
+	 * 
+	 * @param pLocalProcessNumber Number of the process requesting the gate 
+	 * @param pLocalOutgoingGateNumber Gate number of local gate acting as reverse gate for new gate
+	 * @param pLocalDestination Forwarding node receiving the data passed through the new gate
+	 * @param pLocalAttachmentName Name of the FoG peer requesting the gate
+	 * @param pRequirements Requirements for new connection (null == no new connection; reuse existing one)
+	 */
+	public PleaseOpenDownGate(ProcessDownGate pProcess, ForwardingNode pLocalDestination, Name pLocalAttachmentName, Description pRequirements)
+	{
+		super(pProcess.getID(), pProcess.getGateNumber(), pRequirements);
+		
+		mPeerNodeAttachmentName = pLocalAttachmentName;
+		mPeerDestinationRoutingName = pLocalDestination.getEntity().getRoutingService().getNameFor(pLocalDestination);
+	}
+	
 	@Override
 	public boolean execute(ForwardingNode pFN, Packet pPacket, Identity pRequester)
 	{
-		SignallingAnswer tAnswer = null; 
-		pFN.getEntity().getLogger().log(this, "execute open request for " +pFN + " from reverse node '" +mPeerNodeRoutingID +"'");
+		FoGEntity node = pFN.getEntity();
 		
-		synchronized(pFN.getEntity()) {
-			// check, if gate already exists
-			ReroutingGate[] tBackup = new ReroutingGate[1];
-			Gate tGate = pFN.getEntity().getController().checkDownGateAvailable(pFN, pPacket.getReceivedFrom(), getGateNumber(), getDescription(), tBackup);
+		node.getLogger().log(this, "execute open request for " +pFN + " from reverse FoG peer " +mPeerNodeAttachmentName +" with routing name " +mPeerDestinationRoutingName +" and requ=" +getDescription());
+		
+		// check if FN corresponds to a valid network interface
+		LowerLayerObserver netInf = node.getController().getNetworkInterface(pFN);
+		
+		if(netInf != null) {
+			// do we already have a process for this request?
+			Process process = node.getController().getProcessFor(pFN, pRequester, getProcessNumber());
 			
-			if(tGate == null) {
-				if(tBackup[0] != null) {
-					pFN.getEntity().getLogger().log(this, "found reroute gate " +tBackup[0] +". Re-creating down gate based on reroute gate.");
-				}
-				
-				ProcessDownGate process = new ProcessDownGate(pFN, pPacket.getReceivingInterface(), pPacket.getReceivedFrom(), getDescription(), pRequester, tBackup[0]);
-				
+			// if there is none, create new one to handle request
+			if(process == null) {
 				try {
+					// If requirements are given, the request opens a new connection.
+					// If not, the gate is opened for the connection via the request was received.
+					Description requ = getDescription();
+					if(requ != null) {
+						process = new ProcessDownGate(netInf, mPeerNodeAttachmentName, requ, pRequester, null);
+					} else {
+						if(mReceiveSession != null) {
+							// Note: productive implementations would have to check,
+							//       if receiving connection belongs really to the interface
+							process = new ProcessDownGate(netInf, mReceiveSession, pRequester);
+						} else {
+							throw new NetworkException(this, "Can not setup DownGate since receiving session is not known.");
+						}
+					}
+					
+					// set information from peer
+					process.setRequester(pRequester, getProcessNumber(), pPacket.getReturnRoute());
 					process.start();
-					
-					tGate = process.create();
-					
-					process.update(getGateNumber(), mPeerNodeRoutingID, pRequester);
-				} catch (NetworkException tExc) {
-					process.terminate(tExc);
-					tAnswer = new OpenGateResponse(this, tExc);
+				}
+				catch(NetworkException exc) {
+					node.getLogger().err(this, "Failure during starting of " +process, exc);
+				}
+			}
+			
+			if(process instanceof ProcessGateConstruction) {
+				try {
+					((ProcessGateConstruction) process).update(getGateNumber(), mPeerDestinationRoutingName, pRequester);
+				}
+				catch(NetworkException exc) {
+					node.getLogger().err(this, "Error during update of " +process, exc);
 				}
 			} else {
-				pFN.getEntity().getLogger().log(this, "gate " +tGate +" already exists at " +pFN);
+				// wrong process type
+				node.getLogger().err(this, "Process " +process +" has wrong type for opening DownGate.");
 			}
-		
-			// no error?
-			if(tAnswer == null) {
-				Name myFNRoutingName = pFN.getEntity().getRoutingService().getNameFor(pFN);
-				tAnswer = new OpenGateResponse(this, tGate.getGateID(), myFNRoutingName);
-			}
-		}
-		
-		// send response
-		Route tRoute = new Route(pPacket.getReturnRoute());
-		Packet tPacket = new Packet(tRoute, tAnswer);
-		
-		pFN.getEntity().getAuthenticationService().sign(tPacket, pFN.getOwner());
-		
-		if(pPacket.isReturnRouteBroken()) {
-			// Reverse route is broken because there was no gate for the
-			// connection via the lower layer. Use lower layer directly for
-			// answer.
-			pPacket.getReceivingInterface().sendPacketTo(pPacket.getReceivedFrom(), tPacket, null);
 		} else {
-			// Return route was valid. Send answer back over the normal
-			// return route.
-			pFN.handlePacket(tPacket, null);
+			// FN without link to lower layer
+			node.getLogger().err(this, "FN " +pFN +" does not belong to a network interface.");
 		}
-
+		
 		return true;
 	}
+	
+	/**
+	 * Sets information locally required to setup gate.
+	 */
+	public void setReceiveSession(LowerLayerSession pSession)
+	{
+		mReceiveSession = pSession;
+	}
 
-	@Viewable("Peer node routing name")
-	private Name mPeerNodeRoutingID;
+	@Viewable("Peer node FoG attachment name")
+	private Name mPeerNodeAttachmentName;
+	
+	@Viewable("Peer forwarding node routing name")
+	private Name mPeerDestinationRoutingName;
+	
+	@Viewable("Session, which received message")
+	private transient LowerLayerSession mReceiveSession;
 }

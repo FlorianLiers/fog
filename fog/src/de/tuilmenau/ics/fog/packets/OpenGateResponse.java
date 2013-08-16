@@ -33,9 +33,9 @@ public class OpenGateResponse extends SignallingAnswer
 	/**
 	 * Constructor for error report.
 	 */
-	public OpenGateResponse(SignallingRequest request, NetworkException localError)
+	public OpenGateResponse(Process responder, NetworkException localError)
 	{
-		super(request);
+		super(responder.getRequesterID());
 		
 		error = localError;
 	}
@@ -43,9 +43,9 @@ public class OpenGateResponse extends SignallingAnswer
 	/**
 	 * Constructor for successful operation.
 	 */
-	public OpenGateResponse(SignallingRequest request, GateID localOutgoingNumber, Name localBaseRoutingName)
+	public OpenGateResponse(int requesterID, GateID localOutgoingNumber, Name localBaseRoutingName)
 	{
-		super(request);
+		super(requesterID);
 		
 		peerOutgoingNumber = localOutgoingNumber;
 		peerBaseRoutingName = localBaseRoutingName;

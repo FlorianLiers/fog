@@ -9,35 +9,32 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.eclipse.properties;
 
+import net.rapi.Layer;
+import net.rapi.LayerContainer;
+
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
-import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
-import de.tuilmenau.ics.fog.topology.ILowerLayer;
-import de.tuilmenau.ics.fog.topology.NeighborInformation;
-import de.tuilmenau.ics.fog.topology.NeighborList;
 
-
-
-public class NeighborsPropertySource implements IPropertySource
+public class LayerContainerPropertySource implements IPropertySource
 {
-	public NeighborsPropertySource(NeighborList neighbors)
+	public LayerContainerPropertySource(LayerContainer container)
 	{
-		this.neighbors = neighbors;
+		this.container = container;
 	}
 
 	public IPropertyDescriptor[] getPropertyDescriptors()
 	{
 		if (propertyDescriptors == null) {
-			propertyDescriptors = new IPropertyDescriptor[neighbors.size()];
-			int i = 0;
+			// get all layer elements
+			Layer[] layers = container.getLayers(null);
 			
-			for(NeighborInformation neighbor : neighbors) {
-				PropertyDescriptor neighborsDescriptor = new TextPropertyDescriptor(neighbor, neighbor.toString());
-				
-				propertyDescriptors[i] = neighborsDescriptor;
-				i++;
+			// construct GUI elements for each layer
+			propertyDescriptors = new IPropertyDescriptor[layers.length];
+			
+			for(int i=0; i<layers.length; i++) {
+				propertyDescriptors[i] = propertyDescriptors[i] = new TextPropertyDescriptor(layers[i], layers[i].toString());
 			}
 		}
 		return propertyDescriptors;
@@ -52,18 +49,7 @@ public class NeighborsPropertySource implements IPropertySource
 	@Override
 	public Object getPropertyValue(Object name)
 	{
-		if(name instanceof NeighborInformation) {
-			ILowerLayer bus = neighbors.getBus();
-			
-			if(bus != null) {
-				return name.toString() +"@" +bus.toString();
-			} else {
-				return name.toString();
-			}
-		}
-		else {
-			return null;
-		}
+		return name;
 	}
 
 	@Override
@@ -85,8 +71,7 @@ public class NeighborsPropertySource implements IPropertySource
 	}
 
 	
-	private NeighborList neighbors;
-
+	private LayerContainer container;
 	private IPropertyDescriptor[] propertyDescriptors;
 }
 

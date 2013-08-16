@@ -15,9 +15,9 @@ package de.tuilmenau.ics.fog.transfer.gates;
 
 import net.rapi.Description;
 import net.rapi.Identity;
+import net.rapi.Name;
 import de.tuilmenau.ics.fog.FoGEntity;
 import de.tuilmenau.ics.fog.packets.Packet;
-import de.tuilmenau.ics.fog.topology.NeighborInformation;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;
 import de.tuilmenau.ics.fog.transfer.manager.Controller;
 import de.tuilmenau.ics.fog.ui.Viewable;
@@ -27,11 +27,11 @@ import de.tuilmenau.ics.fog.ui.Viewable;
  */
 public class ReroutingGate extends HorizontalGate
 {
-	public ReroutingGate(FoGEntity pEntity, DownGate pInvalidGate, Identity pOwner, int pRemoveGatesFromRoute)
+	public ReroutingGate(FoGEntity pEntity, DirectDownGate pInvalidGate, Identity pOwner, int pRemoveGatesFromRoute)
 	{
 		super(pEntity, pEntity.getCentralFN(), pOwner);
 		
-		mNeighborLLID = pInvalidGate.getToLowerLayerID();
+		mNeighborLLID = pInvalidGate.getPeerName();
 		mRemoveGatesFromRoute = pRemoveGatesFromRoute;
 		
 		setDescription(pInvalidGate.getDescription());
@@ -62,7 +62,7 @@ public class ReroutingGate extends HorizontalGate
 		return true;
 	}
 	
-	public boolean match(NeighborInformation pNeighborLLID, GateID pReverseGateNumber, Description pRequirements)
+	public boolean match(Name pNeighborLLID, GateID pReverseGateNumber, Description pRequirements)
 	{
 		if(pNeighborLLID.equals(mNeighborLLID)) {
 			if(pReverseGateNumber != null) {
@@ -78,7 +78,7 @@ public class ReroutingGate extends HorizontalGate
 	}
 	
 	@Viewable("Neighbor name")
-	private NeighborInformation mNeighborLLID;
+	private Name mNeighborLLID;
 	
 	@Viewable("Remove number of gates from route")
 	private int mRemoveGatesFromRoute;

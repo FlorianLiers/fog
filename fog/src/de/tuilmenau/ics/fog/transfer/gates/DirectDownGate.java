@@ -15,46 +15,74 @@ package de.tuilmenau.ics.fog.transfer.gates;
 
 import java.util.NoSuchElementException;
 
-import net.rapi.Description;
+import net.rapi.Connection;
 import net.rapi.Identity;
+import net.rapi.Layer.LayerStatus;
 import net.rapi.Name;
-
+import net.rapi.NetworkException;
 import de.tuilmenau.ics.fog.FoGEntity;
-import de.tuilmenau.ics.fog.Config.Simulator.SimulatorMode;
-import de.tuilmenau.ics.fog.Config;
 import de.tuilmenau.ics.fog.packets.Packet;
-import de.tuilmenau.ics.fog.packets.PleaseOpenDownGate;
 import de.tuilmenau.ics.fog.routing.RouteSegmentPath;
-import de.tuilmenau.ics.fog.topology.NeighborInformation;
-import de.tuilmenau.ics.fog.topology.NetworkInterface;
-import de.tuilmenau.ics.fog.topology.ILowerLayer.SendResult;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;
 import de.tuilmenau.ics.fog.transfer.manager.Controller.BrokenType;
+import de.tuilmenau.ics.fog.transfer.manager.LowerLayerObserver;
 import de.tuilmenau.ics.fog.ui.Viewable;
-
 
 /**
  * Represents gate which forwards messages to another node by using a lower
  * layer ID (e.g. a MAC address for a bus).
  */
-public class DirectDownGate extends DownGate
+public class DirectDownGate extends AbstractGate
 {
-	public DirectDownGate(int localProcessNumber, FoGEntity entity, NetworkInterface networkInterface,	NeighborInformation toLowerLayerID, Description description, Identity owner)
+	public DirectDownGate(FoGEntity node, LowerLayerObserver netInf, Connection connection, Identity owner)
 	{
-		super(entity, networkInterface, description, owner);
+		super(node, connection.getRequirements(), owner);
 
-		mLocalProcessNumber = localProcessNumber;
-		mToLowerLayerID = toLowerLayerID;
+		mConnection = connection;
+		mNetInf = netInf;
+	}
 
-		networkInterface.attachDownGate(this);
+	public Name getPeerName()
+	{
+		Name res = null;
+		
+		if(mConnection != null) {
+			res = mConnection.getBindingName();
+			
+			if(res == null) {
+				// name not known due to passive establishment
+				// try to get name of peer via LowerLayerSession
+				return mNetInf.getPeerName(mConnection);
+			}
+		}
+		// else: not connected; no peer name
+		
+		return res;
+	}
+	
+	public LowerLayerObserver getLowerLayer()
+	{
+		return mNetInf;
+	}
+	
+	/*
+	 * knowing the next hop is not too important for most DownGates, but it is of great help for the GUI.
+	 */
+	public ForwardingElement getNextNode()
+	{
+		return mNetInf.getLowerLayerGUIRepresentation();
 	}
 	
 	@Override
 	protected void init()
 	{
-		if((mToLowerLayerID == null) || (getLowerLayer() == null)) {
+		if(mConnection == null) {
 			setState(GateState.ERROR);
-		}
+		} /*else {
+			if(!mConnection.isConnected()) {
+				setState(GateState.ERROR);
+			}
+		}*/
 	}
 	
 	@Override
@@ -82,96 +110,75 @@ public class DirectDownGate extends DownGate
 		
 		boolean invisible = packet.isInvisible();
 
-		// send packet to lower layer
-		NetworkInterface ll = getLowerLayer();
-		if(ll != null) {
+		// send packet to connection through lower layer
+		if(mConnection != null) {
 			if(!invisible) incMessageCounter();
 			
-			SendResult res = ll.sendPacketTo(mToLowerLayerID, packet, this);
-
-			// Error during transmission?
-			// Do not do any recovery for invisible packets.
-			if((res != SendResult.OK) && !invisible) {
-				String msg = "Cannot send packet " +packet +" to " +mToLowerLayerID +" due to " +res;
-				if(Config.Simulator.MODE == SimulatorMode.FAST_SIM) {
-					// do not report it in batch mode as warning, since it might be intended by scenario
-					mLogger.log(this, msg);
-				} else {
-					mLogger.warn(this, msg);
-				}
-				
-				// maybe gate already closed during error recovery? 
-				if((getState() != GateState.SHUTDOWN) && (getState() != GateState.DELETED)) {
-					switchToState(GateState.ERROR);
-				}
-				
-				// inform controller
-				try {
-					if (packet.getReturnRoute().getFirst() instanceof RouteSegmentPath) {
-						((RouteSegmentPath)packet.getReturnRoute().getFirst()).removeFirst();
-						((RouteSegmentPath)packet.getReturnRoute().getFirst()).removeFirst();
+			try {
+				mConnection.write(packet);
+			}
+			catch(NetworkException exc) {
+				// Error during transmission?
+				// Do not do any recovery for invisible packets.
+				if(!invisible) {
+					mEntity.getLogger().warn(this, "Cannot send packet " +packet +" through " +mConnection, exc);
+					
+					// maybe gate already closed during error recovery? 
+					if((getState() != GateState.SHUTDOWN) && (getState() != GateState.DELETED)) {
+						switchToState(GateState.ERROR);
+					}
+					
+					// determine error problem and inform controller about it
+					// TODO BrokenType.NODE?
+					BrokenType errorType = BrokenType.UNKNOWN;
+					if(getLowerLayer().getLayer().getStatus() == LayerStatus.DISCONNECTED) {
+						errorType = BrokenType.BUS;
+					}
+					
+					// fix reverse route since it is too long // TODO make it with nice code!
+					try {
+						if (packet.getReturnRoute().getFirst() instanceof RouteSegmentPath) {
+							((RouteSegmentPath)packet.getReturnRoute().getFirst()).removeFirst();
+							((RouteSegmentPath)packet.getReturnRoute().getFirst()).removeFirst();
+						}
+						mEntity.getController().handleBrokenElement(errorType, getLowerLayer(), packet, this);
+					}
+					catch (NoSuchElementException e) {
+						mEntity.getLogger().err(this, "Could not modify return route", e);
 					}
 				}
-				catch (NoSuchElementException e) {
-					mEntity.getLogger().err(this, "Could not modify return route", e);
-				}
-				mEntity.getController().handleBrokenElement(convertError(res), getLowerLayer(), packet, this);
 			}
 		} else {
 			if(!invisible) {
 				// gate maybe closed
-				mLogger.err(this, "No network interface given. Dropping packet " +packet);
+				mLogger.err(this, "No connection through lower layer given. Dropping packet " +packet);
 			}
 			// else: ignore error due to invisible packet
 			packet.dropped(this);
 		}
 	}
-	
+		
 	@Override
 	public void refresh()
 	{
-		NetworkInterface ll = getLowerLayer();
+		init();
+	}
+	
+	@Override
+	public void close() throws NetworkException
+	{
+		super.close();
 		
-		if(ll != null) {
-			Name addr = mEntity.getRoutingService().getNameFor(ll.getMultiplexerGate());
-			
-			Packet tReq = new Packet(new PleaseOpenDownGate(mLocalProcessNumber, getGateID(), addr, getDescription()));
-			if(getEntity().getAuthenticationService().sign(tReq, getEntity().getIdentity())) {
-				handlePacket(tReq, null);
-			} else {
-				mLogger.err(this, "Can not send refresh signaling message since signature for " +getEntity().getIdentity() +" can not be created. (owner of gate = " +getOwner() +")");
-			}
-		} else {
-			delete();
+		if(mConnection != null) {
+			mConnection.close();
+			mConnection = null;
 		}
 	}
 
-	public NeighborInformation getToLowerLayerID()
-	{
-		return mToLowerLayerID;
-	}
+	@Viewable("Network interface")
+	private LowerLayerObserver mNetInf;
 	
-	private BrokenType convertError(SendResult result)
-	{
-		switch(result) {
-		case LOWER_LAYER_BROKEN:
-			return BrokenType.BUS;
-			
-		case NEIGHBOR_NOT_REACHABLE:
-			return BrokenType.NODE;
-			
-		case NEIGHBOR_NOT_KNOWN:
-			// TODO: implement
-			
-		case UNKNOWN_ERROR:
-		default:
-			return BrokenType.UNKNOWN;
-		}
-	}
+	@Viewable("Connection")
+	private Connection mConnection;
 	
-	@Viewable("Local process number")
-	private int mLocalProcessNumber = -1;
-	
-	@Viewable("Lower layer name")
-	private NeighborInformation mToLowerLayerID;
 }

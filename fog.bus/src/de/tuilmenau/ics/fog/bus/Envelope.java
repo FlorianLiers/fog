@@ -14,7 +14,6 @@
 package de.tuilmenau.ics.fog.bus;
 
 import de.tuilmenau.ics.fog.packets.Packet;
-import de.tuilmenau.ics.fog.topology.NeighborInformation;
 
 
 public class Envelope

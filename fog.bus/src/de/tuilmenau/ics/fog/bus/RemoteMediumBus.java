@@ -15,7 +15,6 @@ package de.tuilmenau.ics.fog.bus;
 
 import de.tuilmenau.ics.fog.EventHandler;
 import de.tuilmenau.ics.fog.bus.BusStub;
-import de.tuilmenau.ics.fog.topology.ILowerLayer;
 import de.tuilmenau.ics.fog.topology.RemoteMedium;
 import de.tuilmenau.ics.fog.util.Logger;
 import de.tuilmenau.ics.middleware.JiniHelper;

@@ -9,12 +9,8 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.eclipse.console;
 
-import java.rmi.RemoteException;
-
 import de.tuilmenau.ics.fog.facade.Host;
-
 import de.tuilmenau.ics.fog.topology.AutonomousSystem;
-import de.tuilmenau.ics.fog.topology.ILowerLayer;
 import de.tuilmenau.ics.fog.topology.Node;
 import de.tuilmenau.ics.fog.topology.Simulation;
 import de.tuilmenau.ics.fog.ui.commands.Command;
@@ -44,13 +40,6 @@ public class OpenLoggerCommand implements Command
 		}
 		else if(pObject instanceof Node) {
 			mLogger = ((Node) pObject).getLogger(); 
-		}
-		else if(pObject instanceof ILowerLayer) {
-			try {
-				mLogger = ((ILowerLayer) pObject).getLogger();
-			} catch (RemoteException exc) {
-				mLogger = null;
-			} 
 		}
 		else if(pObject instanceof AutonomousSystem) {
 			mLogger = ((AutonomousSystem) pObject).getLogger(); 

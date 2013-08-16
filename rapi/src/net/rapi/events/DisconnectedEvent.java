@@ -17,28 +17,14 @@
 package net.rapi.events;
 
 import net.rapi.EventSource;
-import net.rapi.NeighborName;
 
-public class PeerInformationEvent extends Event
+/**
+ * Event occurs if a connection is disconnected.
+ */
+public class DisconnectedEvent extends Event
 {
-	public PeerInformationEvent(EventSource source, NeighborName peer, boolean appeared)
+	public DisconnectedEvent(EventSource source)
 	{
 		super(source);
-		
-		this.peer = peer;
-		this.appeared = appeared;
 	}
-	
-	public NeighborName getPeerName()
-	{
-		return peer;
-	}
-	
-	public boolean isAppeared()
-	{
-		return appeared;
-	}
-	
-	private NeighborName peer;
-	private boolean appeared;
 }

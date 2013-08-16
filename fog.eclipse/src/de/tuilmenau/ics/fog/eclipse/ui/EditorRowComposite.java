@@ -155,6 +155,25 @@ public class EditorRowComposite
 	    return tLbValue;
 	}
 	
+	public Button createRow(String pKey, String pValue, String pActionName, Listener pSelectionListener)
+	{
+		Label tLbKey = new Label(parent, SWT.NONE);
+		tLbKey.setText(pKey);		
+		
+		Label tLbValue = new Label(parent, SWT.NONE);
+		tLbValue.setText(pValue);
+
+		Button tButton = new Button(parent, SWT.NONE);
+		tButton.setText(pActionName);	
+	    GridData tGridData2 = new GridData();
+	    tGridData2.horizontalAlignment = SWT.FILL;
+	    tGridData2.grabExcessHorizontalSpace = true;
+	    tButton.setLayoutData(tGridData2);
+	    tButton.addListener(SWT.Selection, pSelectionListener);	    
+
+	    return tButton;
+	}
+	
 	private Group parent;
 }
 

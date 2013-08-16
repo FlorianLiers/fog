@@ -41,6 +41,7 @@ public class NodePropertySource implements IPropertySource
 			PropertyDescriptor gatesDescriptor = new TextPropertyDescriptor(PROPERTY_GATES, "Gates");
 			PropertyDescriptor asDescriptor = new TextPropertyDescriptor(PROPERTY_AS, "AS");
 			PropertyDescriptor llDescriptor = new TextPropertyDescriptor(PROPERTY_LAYERS, "Layers");
+			PropertyDescriptor llnoDescriptor = new TextPropertyDescriptor(PROPERTY_LAYERS_NUMBER, "Layer number");
 			PropertyDescriptor brokenDescriptor = new TextPropertyDescriptor(PROPERTY_BROKEN, "Is broken");
 			PropertyDescriptor serversDescriptor = new TextPropertyDescriptor(PROPERTY_SERVERS, "Registered servers");
 			PropertyDescriptor appsDescriptor = new TextPropertyDescriptor(PROPERTY_APPS, "Running apps");
@@ -51,6 +52,7 @@ public class NodePropertySource implements IPropertySource
 					gatesDescriptor,
 					asDescriptor,
 					llDescriptor,
+					llnoDescriptor,
 					brokenDescriptor,
 					serversDescriptor,
 					appsDescriptor
@@ -80,6 +82,9 @@ public class NodePropertySource implements IPropertySource
 			return node.getAS();
 		}
 		else if(PROPERTY_LAYERS.equals(name)) {
+			return node.getLayerContainer();
+		}
+		else if(PROPERTY_LAYERS_NUMBER.equals(name)) {
 			return node.getLayerContainer().size();
 		}
 		else if(PROPERTY_BROKEN.equals(name)) {
@@ -122,13 +127,12 @@ public class NodePropertySource implements IPropertySource
 	private static final String PROPERTY_GATES = "Node.Gates";
 	private static final String PROPERTY_AS = "Node.AS";
 	private static final String PROPERTY_LAYERS = "Node.Layers";
+	private static final String PROPERTY_LAYERS_NUMBER = "Node.Layers.Number";
 	private static final String PROPERTY_BROKEN = "Node.Broken";
 	private static final String PROPERTY_IDENTITY = "Node.Identity";
 	private static final String PROPERTY_TS = "Node.Transfer";
 	private static final String PROPERTY_SERVERS = "Node.Servers";
 	private static final String PROPERTY_APPS = "Node.Apps";
-
-//	private final SizePropertySource sizePropertySource = new SizePropertySource();
 
 	private IPropertyDescriptor[] propertyDescriptors;
 }

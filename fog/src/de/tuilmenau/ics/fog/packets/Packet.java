@@ -25,8 +25,6 @@ import de.tuilmenau.ics.fog.packets.statistics.IPacketStatistics;
 import de.tuilmenau.ics.fog.routing.Route;
 import de.tuilmenau.ics.fog.routing.RouteSegment;
 import de.tuilmenau.ics.fog.routing.RouteSegmentDescription;
-import de.tuilmenau.ics.fog.topology.NeighborInformation;
-import de.tuilmenau.ics.fog.topology.NetworkInterface;
 import de.tuilmenau.ics.fog.topology.Simulation;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;
 import de.tuilmenau.ics.fog.transfer.ForwardingNode;
@@ -421,28 +419,6 @@ public class Packet implements Serializable
 		mTargetNode = pTargetNode;
 	}
 
-	/**
-	 * For internal use in the node, only. The lower layer information
-	 * are needed for setting up new DownGates.
-	 * 
-	 * @param pLowerLayerInfos Network interface and parameters from which the packet was received
-	 */
-	public void setReceivingLowerLayer(NetworkInterface pReceivingInterface, NeighborInformation pFrom)
-	{
-		mReceivingInterface = pReceivingInterface;
-		mFrom = pFrom;
-	}
-	
-	public NetworkInterface getReceivingInterface()
-	{
-		return mReceivingInterface;
-	}
-	
-	public NeighborInformation getReceivedFrom()
-	{
-		return mFrom;
-	}
-	
 	public void addBus(String bus)
 	{
 		mLowerLayers.add(bus);
@@ -695,8 +671,6 @@ public class Packet implements Serializable
 	private LinkedList<String> mLowerLayers = new LinkedList<String>();
 
 	// for error handling inside of a node
-	private transient NetworkInterface mReceivingInterface = null;
-	private transient NeighborInformation mFrom = null;
 	private transient Route mDownRoute = null;
 
 	//

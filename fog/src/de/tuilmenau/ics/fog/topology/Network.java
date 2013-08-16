@@ -18,10 +18,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import net.rapi.Layer;
+
 import de.tuilmenau.ics.fog.facade.Host;
 
 import de.tuilmenau.ics.fog.EventHandler;
-import de.tuilmenau.ics.fog.routing.simulated.RemoteRoutingService;
 import de.tuilmenau.ics.fog.util.Logger;
 import de.tuilmenau.ics.graph.GraphProvider;
 import de.tuilmenau.ics.graph.RoutableGraph;
@@ -102,7 +103,7 @@ public class Network implements GraphProvider
 	public synchronized boolean setBusBroken(String pBus, boolean pBroken, boolean pErrorTypeVisible)
 	{
 		boolean tOk = false;
-		ILowerLayer tBus = getBusByName(pBus);
+		Medium tBus = getBusByName(pBus);
 		
 		if (tBus != null) {
 			try {
@@ -126,11 +127,11 @@ public class Network implements GraphProvider
 		return mName;
 	}
 	
-	public synchronized boolean addBus(ILowerLayer newBus)
+	public synchronized boolean addBus(Medium newBus)
 	{
 		boolean tOk = false;
 		
-		try {
+		if(newBus != null) {
 			String name = newBus.getName();
 			if(!containsBus(name)) {
 				if(name != null) {
@@ -154,9 +155,6 @@ public class Network implements GraphProvider
 				tOk = true;
 			}
 		}
-		catch(RemoteException exc) {
-			mLogger.err(this, "Can not add bus because it is not accessible.", exc);
-		}
 		
 		return tOk;
 	}
@@ -175,29 +173,20 @@ public class Network implements GraphProvider
 	{
 		boolean tRes = false;
 		
-		ILowerLayer tBus = buslist.remove(pName);
+		Medium tBus = buslist.remove(pName);
 		
 		if(tBus != null) {
 			tRes = true;
 			
-			try {
-				RemoteMedium proxy = tBus.getProxy();
-				if(proxy != null) {
-					JiniHelper.unregisterService(RemoteMedium.class, proxy);
-				}
-			}
-			catch(RemoteException tExc) {
-				mLogger.err(this, "Can not remove bus " +pName +" from JINI registry.", tExc);
+			RemoteMedium proxy = tBus.getProxy();
+			if(proxy != null) {
+				JiniHelper.unregisterService(RemoteMedium.class, proxy);
 			}
 			
 			mScenario.remove(tBus);
 			
 			if(pInformElement) {
-				try {
-					tBus.close();
-				} catch (RemoteException tExc) {
-					mLogger.err(this, "Can not close bus " + tBus +" due to exception " +tExc);
-				}
+				tBus.deleted();
 			}
 		} else {
 			mLogger.log(this, "Can not remove bus. " +pName +" not known or not local.");
@@ -249,9 +238,9 @@ public class Network implements GraphProvider
 		return nodelist.get(name);
 	}
 	
-	public synchronized ILowerLayer getBusByName(String name)
+	public synchronized Medium getBusByName(String name)
 	{
-		ILowerLayer tRes = buslist.get(name);
+		Medium tRes = buslist.get(name);
 		
 		// locally not available? => try it via RMI
 		if(tRes == null) {
@@ -275,28 +264,43 @@ public class Network implements GraphProvider
 		return nodelist;
 	}
 	
-	public boolean attach(Node node, ILowerLayer lowerLayer)
+	public boolean attach(Node node, Medium medium)
 	{
-		NetworkInterface interf = node.attach(lowerLayer);
-		
-		if(interf != null) {
-			mScenario.link(node, lowerLayer, interf);
-			return true;
-		} else {
-			return false;
+		if(medium != null) {
+			Layer layer = medium.attach(node);
+			
+			if(layer != null) {
+				// inform node
+				node.attach(layer);
+				
+				// draw it in GUI
+				mScenario.link(node, medium, layer);
+				return true;
+			}
 		}
+		
+		return false;
 	}
-		
-	public boolean detach(Node node, ILowerLayer lowerLayer)
+	
+	public boolean detach(Node node, Medium medium)
 	{
-		NetworkInterface interf = node.detach(lowerLayer);
+		Object link = mScenario.getEdge(node, medium, null);
 		
-		if(interf != null) {
-			mScenario.unlink(interf);
+		if(link instanceof Layer) {
+			Layer layer = (Layer) link;
+			
+			// inform medium and node
+			medium.detach(node);
+			node.detach(layer);
+			
+			// update GUI although detach had failed (since there is not link anymore) 
+			mScenario.unlink(layer);
 			return true;
 		} else {
-			return false;
+			mLogger.err(this, "Node " +node +" is not attached to medium " +medium);
 		}
+		
+		return false;
 	}
 	
 	public int numberOfNodes()
@@ -375,6 +379,6 @@ public class Network implements GraphProvider
 	private EventHandler mTimeBase;
 	
 	private HashMap<String, Node> nodelist = new HashMap<String, Node>();
-	private HashMap<String, ILowerLayer>  buslist  = new HashMap<String, ILowerLayer>();
+	private HashMap<String, Medium> buslist  = new HashMap<String, Medium>();
 
 }

@@ -54,13 +54,13 @@ import de.tuilmenau.ics.fog.routing.simulated.RemoteRoutingService;
 import de.tuilmenau.ics.fog.routing.simulated.RoutingServiceAddress;
 import de.tuilmenau.ics.fog.topology.Breakable;
 import de.tuilmenau.ics.fog.topology.Breakable.Status;
-import de.tuilmenau.ics.fog.topology.ILowerLayer;
-import de.tuilmenau.ics.fog.topology.NetworkInterface;
+import de.tuilmenau.ics.fog.topology.Medium;
 import de.tuilmenau.ics.fog.topology.Node;
 import de.tuilmenau.ics.fog.transfer.DummyForwardingElement;
 import de.tuilmenau.ics.fog.transfer.Gate;
 import de.tuilmenau.ics.fog.transfer.forwardingNodes.GateContainer;
 import de.tuilmenau.ics.fog.transfer.gates.AbstractGate;
+import de.tuilmenau.ics.fog.transfer.manager.LowerLayerObserver;
 import de.tuilmenau.ics.fog.ui.Decoration;
 import de.tuilmenau.ics.fog.ui.Decorator;
 import de.tuilmenau.ics.fog.ui.Logging;
@@ -237,8 +237,8 @@ public class GraphViewer<NodeObject, LinkObject> implements Observer, Runnable
 			instance.reset();
 			instance.moveTo(0.0f, 0.0f);
 
-			if(e instanceof NetworkInterface) {
-				NetworkInterface ni = (NetworkInterface) e;
+			if(e instanceof LowerLayerObserver) {
+				LowerLayerObserver ni = (LowerLayerObserver) e;
 				
 				PacketLogger log = PacketLogger.getLogger(ni.getBus());
 				
@@ -440,7 +440,7 @@ public class GraphViewer<NodeObject, LinkObject> implements Observer, Runnable
 				
 				if (i instanceof AbstractGate) return Color.LIGHT_GRAY;
 				if (i instanceof GateContainer) return colorGreen;
-				if (i instanceof ILowerLayer) return colorYellow;
+				if (i instanceof Medium) return colorYellow;
 				
 				if (i instanceof PartialRoutingService) return Color.ORANGE;
 				if (i instanceof RemoteRoutingService) return colorBlue;
@@ -631,8 +631,8 @@ public class GraphViewer<NodeObject, LinkObject> implements Observer, Runnable
 					tName.append(((Gate) edge).getNumberMessages(false));
 					tName.append(")");
 				}
-				else if(edge instanceof NetworkInterface) {
-					return "LL_" +((NetworkInterface) edge).getLowerLayerID();
+				else if(edge instanceof LowerLayerObserver) {
+					return "LL_" +((LowerLayerObserver) edge).getAttachmentName();
 				}
 
 				if(tName == null) return edge.toString();

@@ -31,7 +31,7 @@ import de.tuilmenau.ics.fog.routing.naming.NameMappingService;
 import de.tuilmenau.ics.fog.scripts.RerouteScript;
 import de.tuilmenau.ics.fog.topology.AutonomousSystem;
 import de.tuilmenau.ics.fog.topology.IAutonomousSystem;
-import de.tuilmenau.ics.fog.topology.ILowerLayer;
+import de.tuilmenau.ics.fog.topology.Medium;
 import de.tuilmenau.ics.fog.topology.SimulationEventHandler;
 import de.tuilmenau.ics.fog.transfer.Gate;
 import de.tuilmenau.ics.fog.transfer.manager.NodeUp;
@@ -511,8 +511,8 @@ public class ReroutingExperiment implements IRerouteMaster, IPacketStatistics, S
 					/*
 					 * as it is a local simulation we may cast the interface to autonomous system 
 					 */
-					ILowerLayer ll = ((AutonomousSystem)tAS).getBusByName(mBrokenName);
-					if(ll != null) {
+					Medium medium = ((AutonomousSystem)tAS).getBusByName(mBrokenName);
+					if(medium != null) {
 						execution = tAS.setBusBroken(mBrokenName, breakIt, Config.Routing.ERROR_TYPE_VISIBLE);
 					}
 				}

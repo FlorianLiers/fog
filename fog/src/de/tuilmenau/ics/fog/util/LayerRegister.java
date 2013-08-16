@@ -3,8 +3,6 @@ package de.tuilmenau.ics.fog.util;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import de.tuilmenau.ics.fog.topology.Medium;
-
 import net.rapi.Layer;
 import net.rapi.LayerContainer;
 import net.rapi.events.LayerSetEvent;
@@ -18,10 +16,10 @@ public class LayerRegister extends BaseEventSource implements LayerContainer
 	{
 	}
 	
-	public void register(Medium medium, Layer layer)
+	public void register(Layer layer)
 	{
 		if(layer != null) {
-			if(layerList == null) layerList = new LinkedList<MediumLayerRelation>();
+			if(layerList == null) layerList = new LinkedList<Layer>();
 			else {
 				// avoid duplicated entries
 				if(contains(layer)) {
@@ -29,7 +27,7 @@ public class LayerRegister extends BaseEventSource implements LayerContainer
 				}
 			}
 			
-			layerList.addLast(new MediumLayerRelation(medium, layer));
+			layerList.addLast(layer);
 			
 			notifyObservers(new LayerSetEvent(this, layer, true));
 		}
@@ -40,14 +38,14 @@ public class LayerRegister extends BaseEventSource implements LayerContainer
 	{
 		if(layerList != null) {
 			if(layerClass != null) {
-				for(MediumLayerRelation mlr : layerList) {
-					if(mlr.layer.getClass().equals(layerClass)) {
-						return mlr.layer;
+				for(Layer layer : layerList) {
+					if(layer.getClass().equals(layerClass)) {
+						return layer;
 					}
 				}
 			} else {
 				// return default layer
-				return layerList.getFirst().layer;
+				return layerList.getFirst();
 			}
 		}
 
@@ -57,32 +55,43 @@ public class LayerRegister extends BaseEventSource implements LayerContainer
 	@Override
 	public Layer[] getLayers(Class<?> layerClass)
 	{
-		Layer[] res = emptyList;
-		
 		if(layerList != null) {
 			LinkedList<Layer> found = null;
 			
 			// find suitable layers
-			for(MediumLayerRelation mlr : layerList) {
+			for(Layer layer : layerList) {
 				boolean match = true;
 				if(layerClass != null) {
-					match = mlr.layer.getClass().isAssignableFrom(layerClass); 
+					match = layer.getClass().isAssignableFrom(layerClass); 
 				}
 				
 				if(match) {
 					if(found == null) found = new LinkedList<Layer>();
 					
-					found.add(mlr.layer);
+					found.add(layer);
 				}
 			}
 			
-			// copy list to array
-			if(found != null) {
-				if(found.size() > 0) {
-					res = new Layer[found.size()];
-					for(int i = 0; i < found.size(); i++) {
-						res[i] = found.get(i);
-					}
+			return convertList(found);
+		}
+		
+		return emptyList;
+	}
+	
+	/**
+	 * Copy list to array 
+	 * 
+	 * @return Array (!= null)
+	 */
+	private Layer[] convertList(LinkedList<Layer> list)
+	{
+		Layer[] res = emptyList;
+		
+		if(list != null) {
+			if(list.size() > 0) {
+				res = new Layer[list.size()];
+				for(int i = 0; i < list.size(); i++) {
+					res[i] = list.get(i);
 				}
 			}
 		}
@@ -93,16 +102,15 @@ public class LayerRegister extends BaseEventSource implements LayerContainer
 	public boolean unregister(Layer layer)
 	{
 		if(layerList != null) {
-			Iterator<MediumLayerRelation> iter = layerList.iterator();
+			Iterator<Layer> iter = layerList.iterator();
 		
 			while(iter.hasNext()) {
-				MediumLayerRelation mlr = iter.next();
+				Layer layerIn = iter.next();
 				
-				if(mlr.layer == layer) {
+				if(layerIn == layer) {
 					iter.remove();
 					
-					notifyObservers(new LayerSetEvent(this, mlr.layer, false));
-					
+					notifyObservers(new LayerSetEvent(this, layerIn, false));
 					return true;
 				}
 			}
@@ -111,38 +119,6 @@ public class LayerRegister extends BaseEventSource implements LayerContainer
 		return false;
 	}
 	
-	public boolean unregister(Medium medium)
-	{
-		int deletedCounter = 0;
-		
-		if(layerList != null) {
-			LinkedList<MediumLayerRelation> found = null;
-
-			// 1. find all candidates for the deletion
-			for(MediumLayerRelation mlr : layerList) {
-				if(mlr.medium == medium) {
-					// lacy creation
-					if(found == null) found = new LinkedList<MediumLayerRelation>();
-					
-					found.add(mlr);
-				}
-			}
-			
-			// 2. delete these candidates
-			if(found != null) {
-				for(MediumLayerRelation mlr : found) {
-					if(layerList.remove(mlr)) {
-						notifyObservers(new LayerSetEvent(this, mlr.layer, false));
-						
-						deletedCounter++;
-					}
-				}
-			}
-		}
-		
-		return deletedCounter > 0;
-	}
-
 	@Override
 	public int size()
 	{
@@ -159,24 +135,8 @@ public class LayerRegister extends BaseEventSource implements LayerContainer
 	public boolean contains(Layer layer)
 	{
 		if(layerList != null) {
-			for(MediumLayerRelation mlr : layerList) {
-				if(mlr.layer == layer) {
-					return true;
-				}
-			}
-		}
-		
-		return false;
-	}
-	
-	/**
-	 * Checks whether a specific medium is included in the register
-	 */
-	public boolean contains(Medium medium)
-	{
-		if(layerList != null) {
-			for(MediumLayerRelation mlr : layerList) {
-				if(mlr.medium == medium) {
+			for(Layer layerIn : layerList) {
+				if(layerIn == layer) {
 					return true;
 				}
 			}
@@ -191,18 +151,6 @@ public class LayerRegister extends BaseEventSource implements LayerContainer
 		// ignore
 	}
 	
-	private class MediumLayerRelation
-	{
-		public MediumLayerRelation(Medium medium, Layer layer)
-		{
-			this.medium = medium;
-			this.layer = layer;
-		}
-		
-		public Medium medium;
-		public Layer layer;
-	}
-	
 	private static final Layer[] emptyList = new Layer[0]; // lazy creation
-	private LinkedList<MediumLayerRelation> layerList = null; // lazy creation
+	private LinkedList<Layer> layerList = null; // lazy creation
 }

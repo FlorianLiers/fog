@@ -12,6 +12,8 @@ package de.tuilmenau.ics.fog.eclipse;
 import java.util.LinkedList;
 
 import net.rapi.Description;
+import net.rapi.Layer;
+import net.rapi.LayerContainer;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.ui.views.properties.IPropertySource;
@@ -26,9 +28,9 @@ import de.tuilmenau.ics.fog.eclipse.properties.ForwardingNodePropertySource;
 import de.tuilmenau.ics.fog.eclipse.properties.GateListPropertySource;
 import de.tuilmenau.ics.fog.eclipse.properties.GatePropertySource;
 import de.tuilmenau.ics.fog.eclipse.properties.GenericAnnotationPropertySource;
+import de.tuilmenau.ics.fog.eclipse.properties.LayerContainerPropertySource;
 import de.tuilmenau.ics.fog.eclipse.properties.LinkedListPropertySource;
-import de.tuilmenau.ics.fog.eclipse.properties.LowerLayerPropertySource;
-import de.tuilmenau.ics.fog.eclipse.properties.NeighborsPropertySource;
+import de.tuilmenau.ics.fog.eclipse.properties.LayerPropertySource;
 import de.tuilmenau.ics.fog.eclipse.properties.NodePropertySource;
 import de.tuilmenau.ics.fog.eclipse.properties.PacketPropertySource;
 import de.tuilmenau.ics.fog.eclipse.properties.PacketQueuePropertySource;
@@ -42,8 +44,6 @@ import de.tuilmenau.ics.fog.packets.Signalling;
 import de.tuilmenau.ics.fog.routing.RoutingServiceLink;
 import de.tuilmenau.ics.fog.routing.simulated.RemoteRoutingService;
 import de.tuilmenau.ics.fog.topology.IAutonomousSystem;
-import de.tuilmenau.ics.fog.topology.ILowerLayer;
-import de.tuilmenau.ics.fog.topology.NeighborList;
 import de.tuilmenau.ics.fog.topology.Node;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;
 import de.tuilmenau.ics.fog.transfer.ForwardingNode;
@@ -74,11 +74,8 @@ public class PropertyAdapterFactory implements IAdapterFactory
 			if(adaptableObject instanceof Node) {
 				return new NodePropertySource((Node) adaptableObject);
 			}
-			else if(adaptableObject instanceof ILowerLayer) {
-				return new LowerLayerPropertySource((ILowerLayer) adaptableObject);
-			}
-			else if(adaptableObject instanceof NeighborList) {
-				return new NeighborsPropertySource((NeighborList) adaptableObject);
+			else if(adaptableObject instanceof Layer) {
+				return new LayerPropertySource((Layer) adaptableObject);
 			}
 			else if(adaptableObject instanceof AbstractGate) {
 				return new GatePropertySource((AbstractGate) adaptableObject);
@@ -133,6 +130,10 @@ public class PropertyAdapterFactory implements IAdapterFactory
 			}
 			else if(adaptableObject instanceof RoutingServiceLink) {
 				return new GenericAnnotationPropertySource(adaptableObject);
+			}
+			// try if something generic works
+			else if(adaptableObject instanceof LayerContainer) {
+				return new LayerContainerPropertySource((LayerContainer) adaptableObject);
 			}
 		}
 		

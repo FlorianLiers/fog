@@ -11,7 +11,7 @@
  * under the terms of the GNU General Public License version 2 as published
  * by the Free Software Foundation.
  ******************************************************************************/
-package de.tuilmenau.ics.fog.topology;
+package de.tuilmenau.ics.fog.bus;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -20,6 +20,8 @@ import net.rapi.Description;
 
 import de.tuilmenau.ics.fog.application.util.LayerObserverCallback;
 import de.tuilmenau.ics.fog.packets.Packet;
+import de.tuilmenau.ics.fog.topology.Breakable;
+import de.tuilmenau.ics.fog.topology.RemoteMedium;
 import de.tuilmenau.ics.fog.util.Logger;
 
 
