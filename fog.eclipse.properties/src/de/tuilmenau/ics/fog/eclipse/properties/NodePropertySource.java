@@ -40,7 +40,7 @@ public class NodePropertySource implements IPropertySource
 			PropertyDescriptor nameDescriptor = new TextPropertyDescriptor(PROPERTY_NAME, "Name");
 			PropertyDescriptor gatesDescriptor = new TextPropertyDescriptor(PROPERTY_GATES, "Gates");
 			PropertyDescriptor asDescriptor = new TextPropertyDescriptor(PROPERTY_AS, "AS");
-			PropertyDescriptor llDescriptor = new TextPropertyDescriptor(PROPERTY_LL, "Lower layer");
+			PropertyDescriptor llDescriptor = new TextPropertyDescriptor(PROPERTY_LAYERS, "Layers");
 			PropertyDescriptor brokenDescriptor = new TextPropertyDescriptor(PROPERTY_BROKEN, "Is broken");
 			PropertyDescriptor serversDescriptor = new TextPropertyDescriptor(PROPERTY_SERVERS, "Registered servers");
 			PropertyDescriptor appsDescriptor = new TextPropertyDescriptor(PROPERTY_APPS, "Running apps");
@@ -79,8 +79,8 @@ public class NodePropertySource implements IPropertySource
 		else if(PROPERTY_AS.equals(name)) {
 			return node.getAS();
 		}
-		else if(PROPERTY_LL.equals(name)) {
-			return node.getNumberLowerLayers();
+		else if(PROPERTY_LAYERS.equals(name)) {
+			return node.getLayerContainer().size();
 		}
 		else if(PROPERTY_BROKEN.equals(name)) {
 			return node.isBroken();
@@ -121,7 +121,7 @@ public class NodePropertySource implements IPropertySource
 	private static final String PROPERTY_NAME = "Node.Name";	
 	private static final String PROPERTY_GATES = "Node.Gates";
 	private static final String PROPERTY_AS = "Node.AS";
-	private static final String PROPERTY_LL = "Node.LL";
+	private static final String PROPERTY_LAYERS = "Node.Layers";
 	private static final String PROPERTY_BROKEN = "Node.Broken";
 	private static final String PROPERTY_IDENTITY = "Node.Identity";
 	private static final String PROPERTY_TS = "Node.Transfer";

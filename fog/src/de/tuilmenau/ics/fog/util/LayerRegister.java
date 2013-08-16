@@ -142,7 +142,8 @@ public class LayerRegister extends BaseEventSource implements LayerContainer
 		
 		return deletedCounter > 0;
 	}
-	
+
+	@Override
 	public int size()
 	{
 		if(layerList != null) {

@@ -37,5 +37,10 @@ public interface LayerContainer extends EventSource
 	 * @param layerClass Filter; {@code null} for all layer entities
 	 * @return List of layers ({@code != null})
 	 */
-	public Layer[] getLayers(Class<?> layerClass);	
+	public Layer[] getLayers(Class<?> layerClass);
+	
+	/**
+	 * @return Number of registered layers
+	 */
+	public int size();
 }
