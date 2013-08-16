@@ -515,7 +515,7 @@ public class Coordinator extends Application implements ServerCallback, Decorato
 			{
 				Connection tConn = null;
 				try {
-					tConn = BlockingCalls.connect(mHost.getLayer(null), tName, getConnectDescription(tProperty), ((FoGEntity) mHost.getLayer(FoGEntity.class)).getIdentity());
+					tConn = BlockingCalls.connect(mHost.getLayerContainer().getLayer(null), tName, getConnectDescription(tProperty), ((FoGEntity) mHost.getLayerContainer().getLayer(FoGEntity.class)).getIdentity());
 				} catch (NetworkException tExc) {
 					Logging.err(this, "Unable to connecto to " + tName, tExc);
 				}

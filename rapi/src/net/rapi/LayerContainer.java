@@ -21,7 +21,7 @@ package net.rapi;
  * Its main purpose is to provide access to the available layers of
  * a node.
  */
-public interface LayerContainer
+public interface LayerContainer extends EventSource
 {
 	/**
 	 * Returns a layer entity residing in this container.

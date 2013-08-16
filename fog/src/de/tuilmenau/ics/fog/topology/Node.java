@@ -22,7 +22,7 @@ import net.rapi.Description;
 import de.tuilmenau.ics.fog.facade.DescriptionHelper;
 import de.tuilmenau.ics.fog.facade.Host;
 import net.rapi.Identity;
-import net.rapi.Layer;
+import net.rapi.LayerContainer;
 import net.rapi.Name;
 import net.rapi.Namespace;
 import net.rapi.NetworkException;
@@ -40,6 +40,7 @@ import de.tuilmenau.ics.fog.application.Application;
 import de.tuilmenau.ics.fog.authentication.IdentityManagement;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.routing.Route;
+import de.tuilmenau.ics.fog.util.LayerRegister;
 import de.tuilmenau.ics.fog.util.Logger;
 import de.tuilmenau.ics.fog.util.SimpleName;
 import de.tuilmenau.ics.fog.util.ParameterMap;
@@ -80,6 +81,12 @@ public class Node extends Observable implements Host, SimulationElement, Breakab
 		// TEST:
 //		routingService = new RoutingServiceMultiplexer();
 //		((RoutingServiceMultiplexer)routingService).add(new RoutingService(pRoutingService));
+	}
+	
+	@Override
+	public LayerContainer getLayerContainer()
+	{
+		return layerRegister;
 	}
 	
 	/**
@@ -354,34 +361,6 @@ public class Node extends Observable implements Host, SimulationElement, Breakab
 	}
 
 	@Override
-	public Layer getLayer(Class<?> layerClass)
-	{
-		if(layerClass == null) {
-			// return default
-			return mFoG;
-		}
-		else if(FoGEntity.class.equals(layerClass)) {
-			return mFoG;
-		}
-		else {
-			// currently not supported
-			return null;
-		}
-	}
-	
-	@Override
-	public Layer[] getLayers(Class<?> layerClass)
-	{
-		Layer layer = getLayer(layerClass);
-		
-		if(layer != null) {
-			return new Layer[] { layer };
-		} else {
-			return new Layer[0];
-		}
-	}
-	
-	@Override
 	public LinkedList<Name> getServerNames()
 	{
 		return mRegisteredServers;		
@@ -452,6 +431,7 @@ public class Node extends Observable implements Host, SimulationElement, Breakab
 	private FoGEntity mFoG;
 	private LinkedList<Name> mRegisteredServers = new LinkedList<Name>();
 	private LinkedList<Application> mApps = null; // lazy creation
+	private LayerRegister layerRegister = new LayerRegister();
 	
 	private static final String Cap = "CAPABILITY";
 }

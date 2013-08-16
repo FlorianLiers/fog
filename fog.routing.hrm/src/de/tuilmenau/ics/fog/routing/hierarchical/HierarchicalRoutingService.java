@@ -90,7 +90,7 @@ public class HierarchicalRoutingService implements RoutingService
 	 */
 	public HierarchicalRoutingService(Node pReferenceNode)
 	{
-		mReferenceNode = (FoGEntity) pReferenceNode.getLayer(FoGEntity.class);
+		mReferenceNode = (FoGEntity) pReferenceNode.getLayerContainer().getLayer(FoGEntity.class);
 		
 		if(mReferenceNode == null) {
 			throw new RuntimeException("No FoG layer available for " +mReferenceNode);

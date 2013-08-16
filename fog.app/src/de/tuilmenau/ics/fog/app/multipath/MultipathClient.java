@@ -90,7 +90,7 @@ public class MultipathClient extends Application
 	@Override
 	protected void started() 
 	{
-		Layer layer = mHost.getLayer(null);
+		Layer layer = getLayer();
 		
 		// connect to multipath server
 		mHighPrioToMultipathServer = layer.connect(mServerName, null /* TODO: differentiate between the paths and stream requirements */, null);

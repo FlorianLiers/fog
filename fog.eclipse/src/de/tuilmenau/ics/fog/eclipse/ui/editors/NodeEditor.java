@@ -51,7 +51,7 @@ public class NodeEditor extends EditorPart
 
 		EditorRowComposite tGrp = new EditorRowComposite(parent, SWT.SHADOW_NONE);
 		
-		Layer[] layers = node.getLayers(null);
+		Layer[] layers = node.getLayerContainer().getLayers(null);
 		tGrp.createRow("Layer entities:", Integer.toString(layers.length));
 		
 		for(Layer layer : layers) {

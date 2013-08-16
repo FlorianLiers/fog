@@ -152,7 +152,7 @@ public class CommandParsing
 					
 					if(tNode != null) {
 						SimpleName tDest = SimpleName.parse(tParts[2]);
-						FoGEntity fogLayer = (FoGEntity) tNode.getLayer(FoGEntity.class);
+						FoGEntity fogLayer = (FoGEntity) tNode.getLayerContainer().getLayer(FoGEntity.class);
 
 						Route tRoute = fogLayer.getTransferPlane().getRoute(fogLayer.getCentralFN(), tDest, null, null);
 						pAS.getLogger().info(pSim, tParts[1] +"->" +tDest +"=" +tRoute);

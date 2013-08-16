@@ -89,7 +89,7 @@ public class AutonomousSystem extends Network implements IAutonomousSystem
 		String tRoutingConfigurator = mSim.getConfig().Scenario.ROUTING_CONFIGURATOR;
 		NodeConfiguratorContainer.getRouting().configure(tRoutingConfigurator, pName, this, newNode);
 		
-		FoGEntity layer = (FoGEntity) newNode.getLayer(FoGEntity.class);
+		FoGEntity layer = (FoGEntity) newNode.getLayerContainer().getLayer(FoGEntity.class);
 		if(layer != null) {
 			if(!layer.hasRoutingService()) {
 				// no routing service at all? -> create default routing service
@@ -212,7 +212,7 @@ public class AutonomousSystem extends Network implements IAutonomousSystem
 				ReroutingSession tSession = tExecutor.new ReroutingSession(true);
 
 				Connection tConnection = null;
-				tConnection = tNode.getLayer(null).connect(new SimpleName(new Namespace("rerouting"), pTargetNode), tExecutor.getDescription(), null);
+				tConnection = tNode.getLayerContainer().getLayer(null).connect(new SimpleName(new Namespace("rerouting"), pTargetNode), tExecutor.getDescription(), null);
 
 				tSession.start(tConnection);
 				if(!JiniHelper.isEnabled()) {

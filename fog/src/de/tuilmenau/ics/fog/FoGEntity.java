@@ -294,7 +294,7 @@ public class FoGEntity extends BaseEventSource implements Layer, GraphProvider, 
 	
 	public static boolean registerRoutingService(Host pHost, RoutingService pRS)
 	{
-		FoGEntity layer = (FoGEntity) pHost.getLayer(FoGEntity.class);
+		FoGEntity layer = (FoGEntity) pHost.getLayerContainer().getLayer(FoGEntity.class);
 		
 		if(layer != null) {
 			layer.registerRoutingService(pRS);

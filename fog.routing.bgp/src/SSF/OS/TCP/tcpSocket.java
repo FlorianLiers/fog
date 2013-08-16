@@ -103,7 +103,7 @@ public class tcpSocket extends Session
 	  }
 	  
 	  // ... connect ...
-	  Connection conn = mSession.host.getLayer(null).connect(to, requ, mPeer.getIdentity());
+	  Connection conn = mSession.host.getLayerContainer().getLayer(null).connect(to, requ, mPeer.getIdentity());
 	  connectResponse = caller;
 	  
 	  // ... start new session

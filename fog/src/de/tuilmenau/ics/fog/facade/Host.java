@@ -32,8 +32,13 @@ import de.tuilmenau.ics.fog.util.ParameterMap;
  * running on that node. Therefore, Host does provide application related
  * methods, only.
  */
-public interface Host extends LayerContainer
+public interface Host
 {
+	/**
+	 * @return Layer container of host (!= null)
+	 */
+	public LayerContainer getLayerContainer();
+	
 	/**
 	 * Returns all server names registered at this host.
 	 * 

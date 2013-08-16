@@ -33,7 +33,7 @@ public class LayerMenuCreator extends MenuCreator
 
 		if(pContext instanceof Host) {
 			Host host = (Host) pContext;
-			Layer[] layerEntites = host.getLayers(null);
+			Layer[] layerEntites = host.getLayerContainer().getLayers(null);
 			
 			if(layerEntites.length > 0) {
 				for(Layer entity : layerEntites) {

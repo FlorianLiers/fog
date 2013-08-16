@@ -55,7 +55,7 @@ public class AdvertiseName extends DialogCommand
 		if(object instanceof Node) {
 			Node node = (Node) object;
 
-			layer = (FoGEntity) node.getLayer(FoGEntity.class);
+			layer = (FoGEntity) node.getLayerContainer().getLayer(FoGEntity.class);
 		}
 		
 		

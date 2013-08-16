@@ -223,7 +223,7 @@ public class ConsoleApp extends ThreadApplication implements ReceiveCallback
 						}						
 					}
 					
-					socket = getHost().getLayer(null).connect(SimpleName.parse(tParts[1]), tDescr, identity);
+					socket = getLayer().connect(SimpleName.parse(tParts[1]), tDescr, identity);
 					
 					Session session = new Session(false, Logging.getInstance(), this);
 					session.start(socket);

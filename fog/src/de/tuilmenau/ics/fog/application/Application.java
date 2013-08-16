@@ -230,7 +230,7 @@ public abstract class Application
 	
 	public Layer getLayer()
 	{
-		return mHost.getLayer(null);
+		return mHost.getLayerContainer().getLayer(null);
 	}
 	
 	public Logger getLogger()
