@@ -22,7 +22,6 @@ import net.rapi.Name;
 
 import de.tuilmenau.ics.fog.topology.Simulation;
 import de.tuilmenau.ics.fog.transfer.TransferPlaneObserver.NamingLevel;
-import de.tuilmenau.ics.fog.ui.Logging;
 import de.tuilmenau.ics.fog.util.Logger;
 import de.tuilmenau.ics.middleware.JiniHelper;
 
@@ -43,7 +42,7 @@ public class HierarchicalNameMappingService<Address extends Serializable> implem
 			
 			// no Jini available or no RS registered?
 			if(tNameMappingService == null) {
-				Logging.getInstance().log("No NameMappingService available from JINI: Creating local one.");
+				pSim.getLogger().log("No NameMappingService available from JINI: Creating local one.");
 	
 				// create new one and try to register it
 				tNameMappingService = new HierarchicalNameMappingService(null, pSim.getLogger());
@@ -51,12 +50,12 @@ public class HierarchicalNameMappingService<Address extends Serializable> implem
 				pSim.setGlobalObject(NameMappingService.class, tNameMappingService);
 				JiniHelper.registerService(NameMappingService.class, tNameMappingService, GLOBAL_NAMEMAPPING_SERVICE_NAME);
 			} else {
-				Logging.getInstance().log("Using NameMappingService provided via Jini");
+				pSim.getLogger().log("Using NameMappingService provided via Jini");
 				
 				pSim.setGlobalObject(NameMappingService.class, tNameMappingService);
 			}
 		} else {
-			Logging.getInstance().log("Using local NameMappingService");
+			pSim.getLogger().log("Using local NameMappingService");
 		}
 		
 		return tNameMappingService;
