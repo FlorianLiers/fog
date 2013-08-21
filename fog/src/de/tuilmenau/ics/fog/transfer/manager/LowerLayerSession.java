@@ -37,6 +37,9 @@ public class LowerLayerSession extends Session
 		if(data instanceof Packet) {
 			Packet packet = (Packet) data;
 			
+			// clear overhead data
+			packet.clearDownRoute();
+			
 			if(next != null) {
 				// do we have to track the receiving session for DownGate creation?
 				if(packet.isSignalling() && packet.getRoute().isEmpty()) {

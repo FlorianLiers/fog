@@ -20,6 +20,7 @@ import net.rapi.NetworkException;
 import de.tuilmenau.ics.fog.FoGEntity;
 import de.tuilmenau.ics.fog.transfer.ForwardingNode;
 import de.tuilmenau.ics.fog.transfer.gates.GateID;
+import de.tuilmenau.ics.fog.transfer.gates.ReroutingGate;
 import de.tuilmenau.ics.fog.transfer.manager.LowerLayerObserver;
 import de.tuilmenau.ics.fog.transfer.manager.LowerLayerSession;
 import de.tuilmenau.ics.fog.transfer.manager.Process;
@@ -80,17 +81,33 @@ public class PleaseOpenDownGate extends PleaseOpenGate
 			
 			// if there is none, create new one to handle request
 			if(process == null) {
+				ReroutingGate[] backup = new ReroutingGate[1];
+				ProcessDownGate downGate = netInf.checkDownGateAvailable(mPeerNodeAttachmentName, backup);
+				
+				// check, if DownGate already available
+				if(downGate == null) {
+					// if there is a backup for the best-effort gate, there might be more gates,
+					// which can be repaired?
+/* TODO					if(backup[0] != null) {
+						node.getLogger().trace(this, "BE DownGate to neighbor available as rerouting gate. Maybe other gates can be repaired, too? Schedule event.");
+						
+						node.getTimeBase().scheduleIn(1.0d, new RepairEvent(newNeighborName));
+					}*/
+				} else {
+					node.getLogger().err(this, "No process but a gate available (gate=" +downGate +") for " +mPeerNodeAttachmentName);
+				}
+				
 				try {
 					// If requirements are given, the request opens a new connection.
 					// If not, the gate is opened for the connection via the request was received.
 					Description requ = getDescription();
 					if(requ != null) {
-						process = new ProcessDownGate(netInf, mPeerNodeAttachmentName, requ, pRequester, null);
+						process = new ProcessDownGate(netInf, mPeerNodeAttachmentName, requ, pRequester, backup[0]);
 					} else {
 						if(mReceiveSession != null) {
 							// Note: productive implementations would have to check,
 							//       if receiving connection belongs really to the interface
-							process = new ProcessDownGate(netInf, mReceiveSession, pRequester);
+							process = new ProcessDownGate(netInf, mReceiveSession, pRequester, backup[0]);
 						} else {
 							throw new NetworkException(this, "Can not setup DownGate since receiving session is not known.");
 						}

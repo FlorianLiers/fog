@@ -56,9 +56,9 @@ public class ProcessDownGate extends ProcessGateConstruction
 	/**
 	 * Constructor for passive handling of an incoming connection from a peer.
 	 */
-	public ProcessDownGate(LowerLayerObserver netInf, LowerLayerSession pSession, Identity pOwner)
+	public ProcessDownGate(LowerLayerObserver netInf, LowerLayerSession pSession, Identity pOwner, ReroutingGate backup)
 	{
-		super(netInf.getMultiplexerGate(), null, pOwner);
+		super(netInf.getMultiplexerGate(), backup, pOwner);
 		
 		mInterface = netInf;
 		
@@ -138,6 +138,23 @@ public class ProcessDownGate extends ProcessGateConstruction
 		}
 	}
 
+	@Override
+	public boolean check()
+	{
+		if(mGate != null) {
+			if(mGate.isOperational()) {
+				// Do not trust state, since connection may have changed asynchronously.
+				// Try to contact peer:
+				PleaseOpenDownGate requ = new PleaseOpenDownGate(getID(), mGate.getGateID(), mInterface.getMultiplexerGate(), mInterface.getAttachmentName());
+				sendToPeer(requ);
+				
+				mGate.refresh();
+			}
+		}
+		
+		return super.check();
+	}
+		
 	@Override
 	protected void finished()
 	{

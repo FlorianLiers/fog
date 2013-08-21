@@ -32,6 +32,7 @@ import de.tuilmenau.ics.fog.scripts.RerouteScript;
 import de.tuilmenau.ics.fog.topology.AutonomousSystem;
 import de.tuilmenau.ics.fog.topology.IAutonomousSystem;
 import de.tuilmenau.ics.fog.topology.Medium;
+import de.tuilmenau.ics.fog.topology.Network;
 import de.tuilmenau.ics.fog.topology.SimulationEventHandler;
 import de.tuilmenau.ics.fog.transfer.Gate;
 import de.tuilmenau.ics.fog.transfer.manager.NodeUp;
@@ -501,30 +502,23 @@ public class ReroutingExperiment implements IRerouteMaster, IPacketStatistics, S
 				}
 			}
 		} else if (mConcurrentBrokenType == BROKEN_TYPE_BUS) {
-			if(JiniHelper.isEnabled()) {
-				ILowerLayer ll = (ILowerLayer) JiniHelper.getService(ILowerLayer.class, mBrokenName);
-				IAutonomousSystem as = (IAutonomousSystem) JiniHelper.getService(IAutonomousSystem.class, ll.getASName()); 
-				execution = as.setBusBroken(mBrokenName, breakIt, Config.Routing.ERROR_TYPE_VISIBLE);
-			} else {
-				LinkedList<IAutonomousSystem> tASs = mScript.getSimulation().getAS();
-				for(IAutonomousSystem tAS : tASs) {
-					/*
-					 * as it is a local simulation we may cast the interface to autonomous system 
-					 */
-					Medium medium = ((AutonomousSystem)tAS).getBusByName(mBrokenName);
-					if(medium != null) {
-						execution = tAS.setBusBroken(mBrokenName, breakIt, Config.Routing.ERROR_TYPE_VISIBLE);
-					}
+			String networkOfBrokenMedium = Network.getNetworkNameOfMedium(getLogger(), mBrokenName);
+			
+			if(networkOfBrokenMedium != null) {
+				IAutonomousSystem as = (IAutonomousSystem) JiniHelper.getService(IAutonomousSystem.class, networkOfBrokenMedium);
+				
+				if(as != null) {
+					execution = as.setBusBroken(mBrokenName, breakIt, Config.Routing.ERROR_TYPE_VISIBLE);
 				}
 			}
 		}
 
 		if(breakIt) {
 			getLogger().debug(this, (execution ? "successfully" : "unsuccessfully") + " broke element " + mBrokenName + " in turn " + mCount + " at step " + mStep);
-			return true;
+			return execution;
 		} else {
 			getLogger().debug(this, (execution ? "successfully" : "unsuccessfully") + " repaired element " + mBrokenName + " in turn " + mCount + " at step " + mStep);
-			return true;
+			return execution;
 		}
 	}
 	

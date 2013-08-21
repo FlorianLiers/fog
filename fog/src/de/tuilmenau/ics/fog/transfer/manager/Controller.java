@@ -894,7 +894,7 @@ public class Controller
 				// type cast is valid, due to filter for iterator
 				DirectDownGate tGate = (DirectDownGate) tIter.next();
 				
-				if(pNeighborLLID.equals(tGate.getToLowerLayerID())) {
+				if(pNeighborLLID.equals(tGate.getPeerName())) {
 					// do we filter for reverse gate number?
 					if(pReverseGateNumber != null) {
 						if(tSpecialCase || pReverseGateNumber.equals(tGate.getReverseGateID())) {
@@ -1091,7 +1091,7 @@ public class Controller
 			// Is one gate with requirements broken? Maybe the best effort does not work either.
 			if(tRouteRequirements != null) {
 				if(!tRouteRequirements.isBestEffort()) {
-					DirectDownGate tBEGate = checkDownGateAvailable(pNetworkInterface.getMultiplexerGate(), pFrom.getToLowerLayerID(), null, DescriptionHelper.createBE(false), null);
+					DirectDownGate tBEGate = checkDownGateAvailable(pNetworkInterface.getMultiplexerGate(), pFrom.getPeerName(), null, DescriptionHelper.createBE(false), null);
 					
 					if(tBEGate != null) {
 						mLogger.log(this, "Gate with requirements failed. Check best effort gate " +tBEGate);

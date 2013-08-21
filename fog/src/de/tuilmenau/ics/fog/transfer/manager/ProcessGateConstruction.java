@@ -174,7 +174,7 @@ public abstract class ProcessGateConstruction extends Process
 	public boolean check()
 	{
 		if(mGate != null) {
-			// gate ok?
+			// gate ok?			
 			return (mGate.getState() == GateState.OPERATE);
 		} else {
 			// something wrong since create was not called or terminate does not stop timer

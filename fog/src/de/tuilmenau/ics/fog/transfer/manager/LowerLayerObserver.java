@@ -280,20 +280,25 @@ public class LowerLayerObserver extends LayerObserver
 			getLogger().log(this, "Repair gates for interface " +LowerLayerObserver.this);
 			
 			synchronized(mEntity) {
-				// Search for rerouting gates and try to repair them
-				GateIterator tIter = getMultiplexerGate().getIterator(ReroutingGate.class);
-				
-				while(tIter.hasNext()) {
-					// type cast is valid, due to filter for iterator
-					ReroutingGate tGate = (ReroutingGate) tIter.next();
+				while(true) {
+					// Search for rerouting gates and try to repair them
+					GateIterator tIter = getMultiplexerGate().getIterator(ReroutingGate.class);
 					
-					if(tGate.match(mNeighborLLID, null, null)) {
-						try {
-							createNewDownGate(mNeighborLLID, tGate.getDescription(), tGate, true, tGate.getOwner());
+					if(tIter.hasNext()) {
+						// type cast is valid, due to filter for iterator
+						ReroutingGate tGate = (ReroutingGate) tIter.next();
+						
+						if(tGate.match(mNeighborLLID, null, null)) {
+							try {
+								createNewDownGate(mNeighborLLID, tGate.getDescription(), tGate, true, tGate.getOwner());
+							}
+							catch (NetworkException tExc) {
+								getLogger().warn(this, "Failed to repair " +tGate +".", tExc);
+							}
 						}
-						catch (NetworkException tExc) {
-							getLogger().warn(this, "Failed to repair " +tGate +".", tExc);
-						}
+					} else {
+						// terminate loop
+						break;
 					}
 				}
 			}
@@ -328,7 +333,7 @@ public class LowerLayerObserver extends LayerObserver
 			// maybe we forgot to unregister the observer of the lower layer? 
 			mEntity.getLogger().err(this, "Neighbor disappeared was called, but interface is not connected. Ignoring call.");
 		}
-	}	
+	}
 	
 	/**
 	 * Check if there are already known neighbors available.
@@ -441,7 +446,7 @@ public class LowerLayerObserver extends LayerObserver
 	 * @param pDescription QoS description (== null, if no filtering for description)
 	 * @return Gate fitting the parameters
 	 */
-	private ProcessDownGate checkDownGateAvailable(Name pNeighborLLID, ReroutingGate[] pBackupGate)
+	public ProcessDownGate checkDownGateAvailable(Name pNeighborLLID, ReroutingGate[] pBackupGate)
 	{
 		if((mMultiplexer != null) && (pNeighborLLID != null)) {
 			//
@@ -467,8 +472,7 @@ public class LowerLayerObserver extends LayerObserver
 			// Maybe there was a down gate and the node has some
 			// gates from repairing the down gate.
 			//
-			// TODO integrate again
-/* 			if(pBackupGate != null) {
+ 			if(pBackupGate != null) {
 				if(pBackupGate.length > 0) {
 					pBackupGate[0] = null;
 					
@@ -478,13 +482,13 @@ public class LowerLayerObserver extends LayerObserver
 						// type cast is valid, due to filter for iterator
 						ReroutingGate tGate = (ReroutingGate) tIter.next();
 						
-						if(tGate.match(pNeighborLLID, pDescription)) {
+						if(tGate.match(pNeighborLLID, null, null)) {
 							pBackupGate[0] = tGate;
 							return null;
 						}
 					}
 				}
-			}*/
+			}
 			
 			return null;
 		}

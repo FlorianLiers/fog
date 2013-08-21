@@ -44,6 +44,8 @@ public class ProcessRerouting extends Process
 		this.forGate = forGate;
 		this.removeGatesFromRoute = removeGatesFromRoute;
 		
+		fnOfGate = netInterface.getMultiplexerGate();
+		
 		remoteDestinationName = externalGivenRemoteDestinationName;
 		
 		// if not given, try to get it from gate directly
@@ -74,7 +76,6 @@ public class ProcessRerouting extends Process
 		reroutingGate.setReverseGateID(forGate.getReverseGateID());
 		reroutingGate.setRemoteDestinationName(remoteDestinationName);
 		
-		fnOfGate = forGate.getNetworkInterface().getMultiplexerGate();
 		fnOfGate.replaceGate(forGate, reroutingGate);
 		
 		// ok, now we do not need it any longer

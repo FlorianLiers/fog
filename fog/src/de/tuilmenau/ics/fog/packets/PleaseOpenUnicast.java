@@ -31,7 +31,7 @@ public class PleaseOpenUnicast extends PleaseOpenGate
 	public boolean execute(ForwardingNode fn, Packet packet, Identity requester)
 	{
 		Route route = new Route(packet.getReturnRoute());
-		Packet answer = new Packet(route, new OpenGateResponse(this, new GateID(-1), null));
+		Packet answer = new Packet(route, new OpenGateResponse(getProcessNumber(), new GateID(-1), null));
 		
 		signAndSend(fn, answer);
 		return true;
