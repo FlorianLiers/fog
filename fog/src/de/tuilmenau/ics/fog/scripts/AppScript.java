@@ -34,7 +34,7 @@ public class AppScript extends Script
 		
 		if(commandParts.length > 3) {
 			String hostName = commandParts[3];
-			Host host = as.getHostByName(hostName);
+			Host host = as.getNodeByName(hostName);
 			
 			if(host != null) {
 				String appName = commandParts[2];

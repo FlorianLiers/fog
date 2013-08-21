@@ -32,30 +32,20 @@ public class HierarchicalNameMappingService<Address extends Serializable> implem
 	private final static String GLOBAL_NAMEMAPPING_SERVICE_NAME = "Global Name Mapping";
 	
 	
-	private static NameMappingService<?> createGlobalNameMappingService(Simulation pSim)
+	public synchronized static NameMappingService createNameMappingService(Logger pLogger, String pName)
 	{
-		NameMappingService<?> tNameMappingService = (NameMappingService<?>) pSim.getGlobalObject(NameMappingService.class);
+		NameMappingService<?> tNameMappingService = (NameMappingService<?>) JiniHelper.getService(NameMappingService.class, pName);
 		
-		// first try: local NM
+		// no Jini available or no RS registered?
 		if(tNameMappingService == null) {
-			tNameMappingService = (NameMappingService<?>) JiniHelper.getService(NameMappingService.class, GLOBAL_NAMEMAPPING_SERVICE_NAME);
+			pLogger.log(HierarchicalNameMappingService.class, "No " +NameMappingService.class +" available from JINI: Creating " +pName);
+
+			// create new one and try to register it
+			tNameMappingService = new HierarchicalNameMappingService(null, pLogger);
 			
-			// no Jini available or no RS registered?
-			if(tNameMappingService == null) {
-				pSim.getLogger().log("No NameMappingService available from JINI: Creating local one.");
-	
-				// create new one and try to register it
-				tNameMappingService = new HierarchicalNameMappingService(null, pSim.getLogger());
-					
-				pSim.setGlobalObject(NameMappingService.class, tNameMappingService);
-				JiniHelper.registerService(NameMappingService.class, tNameMappingService, GLOBAL_NAMEMAPPING_SERVICE_NAME);
-			} else {
-				pSim.getLogger().log("Using NameMappingService provided via Jini");
-				
-				pSim.setGlobalObject(NameMappingService.class, tNameMappingService);
-			}
+			JiniHelper.registerService(NameMappingService.class, tNameMappingService, pName);
 		} else {
-			pSim.getLogger().log("Using local NameMappingService");
+			pLogger.log(HierarchicalNameMappingService.class, "Using NameMappingService provided via Jini");
 		}
 		
 		return tNameMappingService;
@@ -63,16 +53,26 @@ public class HierarchicalNameMappingService<Address extends Serializable> implem
 	
 	/**
 	 * Returns global name mapping service object.
+	 * This name mapping service is used by simulations by default.
 	 * If no object available, it will be created.
 	 * 
 	 * @param pSim Current simulation
 	 * @return Global name mapping service object from simulation
 	 */
-	public static NameMappingService getGlobalNameMappingService(Simulation pSim)
+	public synchronized static NameMappingService getGlobalNameMappingService(Simulation pSim)
 	{
+		// try local NM first
 		NameMappingService<?> tNameMappingService = (NameMappingService<?>) pSim.getGlobalObject(NameMappingService.class);
 		if(tNameMappingService == null) {
-			return createGlobalNameMappingService(pSim);
+			// create/get new one from JINI
+			tNameMappingService = createNameMappingService(pSim.getLogger(), GLOBAL_NAMEMAPPING_SERVICE_NAME);
+			
+			// cache it locally
+			pSim.setGlobalObject(NameMappingService.class, tNameMappingService);
+			
+			pSim.getLogger().log(HierarchicalNameMappingService.class, "Using new name mapping service " +tNameMappingService);
+		} else {
+			pSim.getLogger().log(HierarchicalNameMappingService.class, "Using existing name mapping service " +tNameMappingService);
 		}
 		
 		return tNameMappingService;

@@ -19,11 +19,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import net.rapi.Layer;
-
-import de.tuilmenau.ics.fog.facade.Host;
+import net.rapi.Namespace;
 
 import de.tuilmenau.ics.fog.EventHandler;
+import de.tuilmenau.ics.fog.routing.naming.HierarchicalNameMappingService;
+import de.tuilmenau.ics.fog.routing.naming.NameMappingEntry;
+import de.tuilmenau.ics.fog.routing.naming.NameMappingService;
+import de.tuilmenau.ics.fog.transfer.TransferPlaneObserver.NamingLevel;
 import de.tuilmenau.ics.fog.util.Logger;
+import de.tuilmenau.ics.fog.util.SimpleName;
 import de.tuilmenau.ics.graph.GraphProvider;
 import de.tuilmenau.ics.graph.RoutableGraph;
 import de.tuilmenau.ics.middleware.JiniHelper;
@@ -35,6 +39,10 @@ import de.tuilmenau.ics.middleware.JiniHelper;
  */
 public class Network implements GraphProvider
 {
+	private static final String MEDIUM_TO_NETWORK_MAPPING = "Medium name to network name mapping";
+	private static final Namespace MEDIUM_NAMESPACE = new Namespace("medium");
+	
+	
 	public Network(String pName, Logger pLogger, EventHandler pTimeBase)
 	{
 		mName = pName;
@@ -103,7 +111,7 @@ public class Network implements GraphProvider
 	public synchronized boolean setBusBroken(String pBus, boolean pBroken, boolean pErrorTypeVisible)
 	{
 		boolean tOk = false;
-		Medium tBus = getBusByName(pBus);
+		Medium tBus = getMediumByName(pBus, false);
 		
 		if (tBus != null) {
 			try {
@@ -133,26 +141,38 @@ public class Network implements GraphProvider
 		
 		if(newBus != null) {
 			String name = newBus.getName();
-			if(!containsBus(name)) {
-				if(name != null) {
+			
+			if(name != null) {
+				if(!containsBus(name)) {
 					buslist.put(name, newBus);
-				} else {
-					buslist.put(newBus.getName(), newBus);
-				}
-				
-				mScenario.add(newBus);
-				
-				if(name != null) {
-					RemoteMedium proxy = newBus.getProxy();
 					
+					mScenario.add(newBus);
+
+					// make it available remotely
+					RemoteMedium proxy = newBus.getProxy();
 					// is it the original object?
 					if(proxy != null) {
+						// register medium proxy in JINI
 						JiniHelper.registerService(RemoteMedium.class, proxy, name);
-						mLogger.debug(this, "Registered bus with " + JiniHelper.getService(RemoteMedium.class, name));
+						
+						mLogger.debug(this, "Registered medium with " + JiniHelper.getService(RemoteMedium.class, name));
 					}
+					
+					// register network name for medium
+					try {
+						if(remoteMediumToNetworkName == null) {
+							remoteMediumToNetworkName = HierarchicalNameMappingService.createNameMappingService(mLogger, MEDIUM_TO_NETWORK_MAPPING);
+						}
+						
+						remoteMediumToNetworkName.registerName(new SimpleName(MEDIUM_NAMESPACE, name), getName(), NamingLevel.NAMES);
+					}
+					catch (RemoteException exc) {
+						mLogger.warn(this, "Can not register network name for " +newBus, exc);
+					}
+					
+					tOk = true;
 				}
-				
-				tOk = true;
+				// else: already added
 			}
 		}
 		
@@ -180,7 +200,18 @@ public class Network implements GraphProvider
 			
 			RemoteMedium proxy = tBus.getProxy();
 			if(proxy != null) {
+				// unregister medium from JINI
 				JiniHelper.unregisterService(RemoteMedium.class, proxy);
+				
+				// remove medium from name mapping
+				if(remoteMediumToNetworkName != null) {
+					try {
+						remoteMediumToNetworkName.unregisterName(new SimpleName(MEDIUM_NAMESPACE, tBus.getName()), getName());
+					}
+					catch (RemoteException exc) {
+						mLogger.warn(this, "Can not remove " +tBus +" from medium to network mapping.", exc);
+					}
+				}
 			}
 			
 			mScenario.remove(tBus);
@@ -231,19 +262,18 @@ public class Network implements GraphProvider
 	}
 
 	/**
-	 * @return Reference to host or null
+	 * Searches a medium by its name
+	 * 
+	 * @param name Name of the medium
+	 * @param activateRemote If not available locally, try to activate an adapter from remote
+	 * @return Medium or null if none available
 	 */
-	public Host getHostByName(String name)
-	{
-		return nodelist.get(name);
-	}
-	
-	public synchronized Medium getBusByName(String name)
+	protected synchronized Medium getMediumByName(String name, boolean activateRemote)
 	{
 		Medium tRes = buslist.get(name);
 		
 		// locally not available? => try it via RMI
-		if(tRes == null) {
+		if((tRes == null) && activateRemote) {
 			RemoteMedium tProxy = (RemoteMedium) JiniHelper.getService(RemoteMedium.class, name);
 
 			if(tProxy != null) {
@@ -259,9 +289,23 @@ public class Network implements GraphProvider
 		return tRes;
 	}
 	
-	public HashMap<String, Node> getNodelist()
+	public static synchronized String getNetworkNameOfMedium(Logger logger, String mediumName)
 	{
-		return nodelist;
+		if(remoteMediumToNetworkName == null) {
+			remoteMediumToNetworkName = HierarchicalNameMappingService.createNameMappingService(logger, MEDIUM_TO_NETWORK_MAPPING);
+		}
+		
+		try {
+			NameMappingEntry<String>[] networkNames = remoteMediumToNetworkName.getAddresses(new SimpleName(MEDIUM_NAMESPACE, mediumName));
+			if(networkNames.length > 0) {
+				return networkNames[0].getAddress();
+			}
+		}
+		catch (RemoteException exc) {
+			logger.err(Network.class, "Can not access mapping from medium to network names for " +mediumName, exc);
+		}
+		
+		return null;
 	}
 	
 	public boolean attach(Node node, Medium medium)
@@ -378,7 +422,11 @@ public class Network implements GraphProvider
 	private RoutableGraph<Object, Object> mScenario = new RoutableGraph<Object, Object>();
 	private EventHandler mTimeBase;
 	
-	private HashMap<String, Node> nodelist = new HashMap<String, Node>();
-	private HashMap<String, Medium> buslist  = new HashMap<String, Medium>();
+	private HashMap<String, Node> nodelist  = new HashMap<String, Node>();
+	private HashMap<String, Medium> buslist = new HashMap<String, Medium>();
 
+	/**
+	 * Element required for simulation purposes. It stores the network names for remote mediums.
+	 */
+	private static NameMappingService<String> remoteMediumToNetworkName = null;
 }
