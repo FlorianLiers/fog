@@ -144,17 +144,13 @@ public class ProcessDownGate extends ProcessGateConstruction
 		if(mGate != null) {
 			if(mGate.isOperational()) {
 				// Do not trust state, since connection may have changed asynchronously.
-				// Try to contact peer:
-				PleaseOpenDownGate requ = new PleaseOpenDownGate(getID(), mGate.getGateID(), mInterface.getMultiplexerGate(), mInterface.getAttachmentName());
-				sendToPeer(requ);
-				
-				mGate.refresh();
+				mGate.refresh();				
 			}
 		}
 		
 		return super.check();
 	}
-		
+	
 	@Override
 	protected void finished()
 	{

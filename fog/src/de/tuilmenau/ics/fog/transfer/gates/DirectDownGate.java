@@ -161,7 +161,13 @@ public class DirectDownGate extends AbstractGate
 	@Override
 	public void refresh()
 	{
-		init();
+		if(mConnection != null) {
+			if(mConnection.isConnected()) {
+				return;
+			}
+		}
+		
+		setState(GateState.ERROR);
 	}
 	
 	@Override

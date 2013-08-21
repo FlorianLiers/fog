@@ -218,7 +218,12 @@ public class LowerLayerObserver extends LayerObserver
 								getLogger().log(this, "DownGate to neighbor " +newNeighborName +" already available.");
 								
 								getLogger().log(this, "Refreshing DownGate " +downGate);
-								downGate.check();
+								if(!downGate.check()) {
+									getLogger().log(this, "Refreshed gate reports error. Setting up a new one.");
+									// deleting old and restart discovery
+									downGate.terminate(null);
+									neighborDiscovered(newNeighbor);
+								}
 							} else {
 								getLogger().trace(this, "Delayed discovery skipped due to already existing process.");
 							}
