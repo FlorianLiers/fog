@@ -4,6 +4,8 @@ import java.rmi.RemoteException;
 
 import net.rapi.Layer;
 import net.rapi.NeighborName;
+import net.rapi.events.ConnectedEvent;
+import net.rapi.events.DisconnectedEvent;
 import net.rapi.events.Event;
 import net.rapi.events.PeerInformationEvent;
 import de.tuilmenau.ics.fog.application.ApplicationEventHandler;
@@ -38,6 +40,10 @@ public class LayerObserver extends ApplicationEventHandler<Layer> implements Lay
 			} else {
 				neighborDisappeared(neighborEvent.getPeerName());
 			}
+		}
+		else if(event instanceof ConnectedEvent) {
+			// layer has (re-)connected -> check status
+			neighborCheck();
 		}
 		else {
 			getLogger().warn(this, "Received unknown event: " +event);
