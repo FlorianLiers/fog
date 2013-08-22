@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Lower layer for FoG
+Bundle-SymbolicName: de.tuilmenau.ics.fog.lowerlayer;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: de.tuilmenau.ics.fog;bundle-version="1.0.2"
+Export-Package: de.tuilmenau.ics.fog.lowerlayer
+Bundle-Vendor: ICS group of TU Ilmenau
+Import-Package: de.tuilmenau.ics.CommonSim.datastream,
+ de.tuilmenau.ics.CommonSim.datastream.annotations,
+ de.tuilmenau.ics.CommonSim.datastream.numeric,
+ net.rapi,
+ net.rapi.events,
+ net.rapi.impl.base,
+ net.rapi.properties

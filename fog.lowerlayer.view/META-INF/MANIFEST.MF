@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Extensions for lower layer simulation
+Bundle-SymbolicName: de.tuilmenau.ics.fog.lowerlayer.view;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.views;bundle-version="3.6.0",
+ de.tuilmenau.ics.fog;bundle-version="1.0.2",
+ de.tuilmenau.ics.fog.lowerlayer;bundle-version="1.0.0",
+ de.tuilmenau.ics.fog.eclipse;bundle-version="1.0.2",
+ de.tuilmenau.ics.fog.eclipse.properties;bundle-version="1.0.2"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: de.tuilmenau.ics.fog.lowerlayer.view
+Bundle-Vendor: ICS group of TU Ilmenau
+Import-Package: net.rapi
