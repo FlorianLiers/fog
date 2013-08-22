@@ -238,11 +238,21 @@ public class HierarchicalNameMappingService<Address extends Serializable> implem
 		}
 	}
 	
+	public Iterable<Name> getAllNames()
+	{
+		return mDNS.keySet();
+	}
+	
+	/**
+	 * @Deprecated Refactor remote name handling of nodes according to handling of media
+	 */
+	@Deprecated
 	public String getASNameByNode(String node) throws RemoteException
 	{
 		return mASToNode.get(node);
 	}
 	
+	@Deprecated 
 	public boolean setNodeASName(String rAddress, String ASName)throws RemoteException
 	{
 		mASToNode.put(rAddress, ASName);

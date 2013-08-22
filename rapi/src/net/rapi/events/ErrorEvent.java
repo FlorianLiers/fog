@@ -21,17 +21,17 @@ import net.rapi.EventSource;
 
 public class ErrorEvent extends Event
 {
-	public ErrorEvent(Exception exc, EventSource source)
+	public ErrorEvent(Throwable exc, EventSource source)
 	{
 		super(source);
 		
 		this.exc = exc;
 	}
 	
-	public Exception getException()
+	public Throwable getException()
 	{
 		return exc;
 	}
 	
-	private Exception exc;
+	private Throwable exc;
 }

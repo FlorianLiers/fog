@@ -49,7 +49,7 @@ public class BlockingCalls
 			}
 		}
 		else if(event instanceof ErrorEvent) {
-			Exception exc = ((ErrorEvent) event).getException();
+			Throwable exc = ((ErrorEvent) event).getException();
 			
 			if(exc instanceof NetworkException) {
 				throw (NetworkException) exc;

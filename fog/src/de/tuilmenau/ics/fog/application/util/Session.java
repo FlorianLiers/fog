@@ -85,10 +85,10 @@ public class Session extends ApplicationEventHandler<Connection> implements Rece
 	}
 	
 	@Override
-	public void error(Exception pExc)
+	public void error(Throwable pCause)
 	{
 		if(callback != null) {
-			callback.error(pExc);
+			callback.error(pCause);
 		} else {
 			stop();
 		}

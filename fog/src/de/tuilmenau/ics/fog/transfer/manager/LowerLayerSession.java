@@ -67,10 +67,10 @@ public class LowerLayerSession extends Session
 	}
 	
 	@Override
-	public void error(Exception pExc)
+	public void error(Throwable errorDescription)
 	{
-		if(observer != null) observer.terminate(pExc);
-		else error = pExc;
+		if(observer != null) observer.terminate(errorDescription);
+		else error = errorDescription;
 	}
 	
 	@Override
@@ -118,5 +118,5 @@ public class LowerLayerSession extends Session
 	private ForwardingElement next;
 	
 	private ProcessDownGate observer;
-	private Exception error = null;
+	private Throwable error = null;
 }

@@ -35,5 +35,5 @@ public interface ReceiveCallback
 	 */
 	public void closed();
 	
-	public void error(Exception pExc);
+	public void error(Throwable errorDescription);
 }

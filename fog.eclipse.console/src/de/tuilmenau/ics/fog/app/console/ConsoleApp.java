@@ -320,7 +320,7 @@ public class ConsoleApp extends ThreadApplication implements ReceiveCallback
 	}
 	
 	@Override
-	public void error(Exception pExc)
+	public void error(Throwable pExc)
 	{
 		socket = null;
 		

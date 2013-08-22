@@ -209,7 +209,7 @@ public class tcpSocket extends Session
   	private Object[] receiveBuffer = null;
 
 	@Override
-	public void error(Exception pExc)
+	public void error(Throwable pExc)
 	{
 		if(connectResponse != null) {
 			mSession.logger.err(this, "Can not connect to potential peer", pExc);

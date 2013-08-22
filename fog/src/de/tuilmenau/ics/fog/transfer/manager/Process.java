@@ -144,7 +144,7 @@ public abstract class Process
 	 * 
 	 * @param pCause if != null cause of termination is stated 
 	 */
-	public final void terminate(Exception pCause)
+	public final void terminate(Throwable pCause)
 	{
 		if(!isFinished()) {
 			if(pCause != null) {
@@ -218,7 +218,7 @@ public abstract class Process
 		}
 	}
 	
-	public Exception getTerminationCause()
+	public Throwable getTerminationCause()
 	{
 		return mTerminationCause;
 	}
@@ -357,7 +357,7 @@ public abstract class Process
 	@Viewable("Requester route")
 	private Route requesterRoute = null;
 	
-	private Exception mTerminationCause = null;
+	private Throwable mTerminationCause = null;
 	private ContinuationHandler<Process> mContinuationsStateChange = null;
 	protected Logger mLogger;
 }

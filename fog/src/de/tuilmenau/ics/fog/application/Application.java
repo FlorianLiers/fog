@@ -199,7 +199,7 @@ public abstract class Application
 	 * 
 	 * @param pExc != null if the application terminates with an error.
 	 */
-	protected final void terminated(Exception pExc)
+	protected final void terminated(Throwable pExc)
 	{
 		if(isRunning()) {
 			throw new IllegalStateException(this +" - Application is terminated but still running.");

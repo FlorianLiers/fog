@@ -309,7 +309,7 @@ public class ConnectionEndPointTCPProxy extends Session
 		}
 		
 		@Override
-		public void error(Exception pExc)
+		public void error(Throwable pError)
 		{
 			// TODO Auto-generated method stub
 			

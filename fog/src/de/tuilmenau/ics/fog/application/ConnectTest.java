@@ -142,7 +142,7 @@ public class ConnectTest extends ApplicationClient
 		}
 		
 		@Override
-		public void error(Exception pExc)
+		public void error(Throwable pExc)
 		{
 			count("Exception");
 			getLogger().err(this, "Exception during connection from " +getLayer() +" to " +getDestination(), pExc);

@@ -322,7 +322,8 @@ public class Config
 		 * is not set, the reroute method is just performed for the first packet using a broken link or
 		 * node. Subsequent packets will be dropped.
 		 */
-		public RerouteMethod REROUTE = RerouteMethod.LOCAL;
+//		public RerouteMethod REROUTE = RerouteMethod.LOCAL;
+		public RerouteMethod REROUTE = RerouteMethod.GLOBAL;
 		
 		/**
 		 * Enables the creation of horizontal gates for rerouting. They store the
@@ -442,7 +443,7 @@ public class Config
 		public static final boolean SERVER_REDIRECT_TO_MULTIPLEXER = false;
 		
 		/**
-		 * Indicates whether estalished connection should be observed to detect
+		 * Indicates whether established connections should be observed to detect
 		 * long time idle state without receiving any packets or
 		 * keep-alive-messages from remote peer.
 		 * <br/>If receive-idle-time exceeds {@link IDLE_TIMEOUT_SEC}
@@ -467,7 +468,7 @@ public class Config
 		public static final boolean SEND_KEEP_ALIVE_MESSAGES_WHEN_IDLE = false;
 		
 		/**
-		 * Indicates if re use is activated (USE_REQU_MAPPING_LANGUAGE = true!). 
+		 * Indicates if reuse is activated (requires USE_REQU_MAPPING_LANGUAGE to be true). 
 		 */
 		public static final boolean RE_USE_ACTIVATED = false;
 		

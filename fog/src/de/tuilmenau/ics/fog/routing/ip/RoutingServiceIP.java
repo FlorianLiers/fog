@@ -330,7 +330,7 @@ public class RoutingServiceIP implements RoutingService
 		}
 	
 		@Override
-		public void error(Exception tExc)
+		public void error(Throwable tExc)
 		{
 			mLogger.err(this, "Failed to send " +mMessage +" to other InterOpIP application.", tExc);
 			stop();

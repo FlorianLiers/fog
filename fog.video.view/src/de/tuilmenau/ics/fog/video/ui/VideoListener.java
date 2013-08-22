@@ -322,7 +322,7 @@ public class VideoListener implements ReceiveCallback
 		}
 
 		@Override
-		public void error(Exception pExc)
+		public void error(Throwable pExc)
 		{
 			if(pExc instanceof RoutingException) {
 				Logging.warn(this, "Routing exception (" + pExc + "). Can not connect to VideoServer.");
