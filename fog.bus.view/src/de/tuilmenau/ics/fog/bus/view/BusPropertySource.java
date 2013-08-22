@@ -15,15 +15,13 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 import de.tuilmenau.ics.fog.bus.Bus;
-import de.tuilmenau.ics.fog.eclipse.properties.LowerLayerPropertySource;
+import de.tuilmenau.ics.fog.eclipse.properties.AnnotationPropertySource;
 
 
-public class BusPropertySource extends LowerLayerPropertySource
+public class BusPropertySource extends AnnotationPropertySource
 {
 	public BusPropertySource(Bus bus)
 	{
-		super(bus);
-		
 		this.bus = bus;
 	}
 
@@ -32,7 +30,7 @@ public class BusPropertySource extends LowerLayerPropertySource
 	{
 		list.addLast(new TextPropertyDescriptor(PROPERTY_PACKETS_NUMBER, "Number Packets"));
 		
-		super.extendPropertyList(list);
+		extendPropertyListBasedOnAnnotations(list, bus);
 	}
 	
 	@Override
@@ -41,7 +39,7 @@ public class BusPropertySource extends LowerLayerPropertySource
 		if(PROPERTY_PACKETS_NUMBER.equals(name)) {
 			return bus.getNumberPackets();
 		} else {
-			return super.getPropertyValue(name);
+			return super.getPropertyValueBasedOnAnnotation(name, bus);
 		}
 	}
 
