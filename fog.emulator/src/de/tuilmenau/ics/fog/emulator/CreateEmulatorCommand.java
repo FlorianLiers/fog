@@ -21,7 +21,7 @@ import de.tuilmenau.ics.fog.topology.AutonomousSystem;
  * test implementation using named buffers.
  * "create ethernet <name of lower layer> <buffer name for receiving> <buffer name for sending>" 
  */
-public class CreateCommandEthernet implements CreateCommand
+public class CreateEmulatorCommand implements CreateCommand
 {
 	@Override
 	public boolean create(AutonomousSystem pAS, String[] pParameters)
@@ -33,7 +33,7 @@ public class CreateCommandEthernet implements CreateCommand
 					optionalOutName = pParameters[4];
 				}
 				
-				pAS.addBus(new Ethernet(pAS, pParameters[2], pParameters[3], optionalOutName));
+				pAS.addBus(new EmulatorMedium(pAS, pParameters[2], pParameters[3], optionalOutName));
 				return true;
 			} else {
 				return false;

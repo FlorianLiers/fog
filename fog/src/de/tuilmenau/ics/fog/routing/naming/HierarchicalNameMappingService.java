@@ -189,6 +189,30 @@ public class HierarchicalNameMappingService<Address extends Serializable> implem
 		return (del > 0) || parentRes;
 	}
 	
+	/**
+	 * Checks, if a given name-to-address entry is already available
+	 * 
+	 * @param name Name to check
+	 * @param address Optional address (if null, any address listed for a name leads to a positive result)
+	 * @return true, if name-to-address mapping already available
+	 */
+	public boolean contains(Name name, Address address)
+	{
+		NameMappingEntry<Address>[] addresses = getAddresses(name);
+		
+		if(address != null) {
+			for(NameMappingEntry<Address> entry : addresses) {
+				if(address.equals(entry.getAddress())) {
+					return true;
+				}
+			}
+			
+			return false;
+		} else {
+			return addresses.length > 0;
+		}
+	}
+	
 	@Override
 	public Name[] getNames(Address pAddress)
 	{

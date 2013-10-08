@@ -21,8 +21,8 @@ import net.rapi.Signature;
 
 import jniImports.PacketFoG;
 
-import de.tuilmenau.ics.fog.bus.NeighborInformation;
 import de.tuilmenau.ics.fog.eclipse.utils.Resources;
+import de.tuilmenau.ics.fog.emulator.Address;
 import de.tuilmenau.ics.fog.emulator.Interface;
 import de.tuilmenau.ics.fog.packets.Packet;
 import de.tuilmenau.ics.fog.routing.Route;
@@ -188,7 +188,7 @@ public class InterfaceMAC extends Interface
 	}
 	
 	@Override
-	public MACAddress getAddress()
+	public Address getAddress()
 	{
 		return mInterfaceHwAddress;
 	}
@@ -309,7 +309,7 @@ public class InterfaceMAC extends Interface
 	}
 
 	@Override
-	public synchronized int send(MACAddress pDestination, Object data) throws IOException
+	public synchronized int send(Address pDestination, Object data) throws IOException
 	{		
 		if(DEBUG_MAC_LAYER) {
 			mLogger.trace(this, "Sending via Ethernet an object of type " + data.getClass());
@@ -344,11 +344,6 @@ public class InterfaceMAC extends Interface
 			mRealFoGPacket.SetEthernetSourceAdr(mInterfaceHwAddress.toString());
 			
 			// set FoG header
-			if(data instanceof NeighborInformation) {
-				if (DEBUG_MAC_LAYER)
-					mLogger.trace(this, "Setting marking \"signaling\"");
-				mRealFoGPacket.SetFoGMarkingSignaling();
-			}
 			if(tRemainingFragments > 1){
 				if (DEBUG_MAC_LAYER)
 					mLogger.trace(this, "Setting marking \"fragment\"");

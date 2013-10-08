@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import de.tuilmenau.ics.fog.emulator.Address;
 import de.tuilmenau.ics.fog.emulator.Interface;
 import de.tuilmenau.ics.fog.emulator.ethernet.MACAddress;
 import de.tuilmenau.ics.middleware.Serializer;
@@ -38,7 +39,7 @@ public class InterfaceLocalTest extends Interface
 		}
 		
 		// create dummy element with string name
-		me = new MACAddress(this.toString());
+		me = new MACAddress(this.getClass().getSimpleName() +"_" +inName +"->" +outName);
 	}
 	
 	@Override
@@ -74,7 +75,7 @@ public class InterfaceLocalTest extends Interface
 	}
 	
 	@Override
-	public int send(MACAddress destination, Object data) throws IOException
+	public int send(Address destination, Object data) throws IOException
 	{
 		// ignore destination, since data is just put in a single queue
 		byte[] nextBytes = Serializer.getInstance().toBytes(new Object[] {me, data});

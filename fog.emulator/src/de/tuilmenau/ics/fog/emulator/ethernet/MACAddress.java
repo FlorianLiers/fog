@@ -9,10 +9,11 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.emulator.ethernet;
 
-import java.io.Serializable;
+import net.rapi.Namespace;
+import de.tuilmenau.ics.fog.emulator.Address;
 
 
-public class MACAddress implements Serializable
+public class MACAddress implements Address
 {
 	private static final long serialVersionUID = -8615832067720049926L;
 	
@@ -49,6 +50,18 @@ public class MACAddress implements Serializable
 	}
 	
 	@Override
+	public Namespace getNamespace()
+	{
+		return null;
+	}
+
+	@Override
+	public int getSerialisedSize()
+	{
+		return ETHERNET_ADDRESS_LENGTH;
+	}
+	
+	@Override
 	public boolean equals(Object obj)
 	{
 		if(obj == null) return false;
@@ -73,4 +86,5 @@ public class MACAddress implements Serializable
 	}
 	
 	private String mAddress;
+
 }

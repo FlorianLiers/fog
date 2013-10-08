@@ -6,7 +6,7 @@
          point="de.tuilmenau.ics.fog.create">
          <command
             name="ethernet"
-         	class="de.tuilmenau.ics.fog.emulator.CreateCommandEthernet">
+         	class="de.tuilmenau.ics.fog.emulator.CreateEmulatorCommand">
          </command>
    </extension>
    

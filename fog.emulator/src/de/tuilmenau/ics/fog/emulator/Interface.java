@@ -45,7 +45,7 @@ public abstract class Interface
 	/**
 	 * @return MAC address of this interface
 	 */
-	public abstract MACAddress getAddress();
+	public abstract Address getAddress();
 	
 	public class ReceiveResult
 	{
@@ -103,7 +103,7 @@ public abstract class Interface
 	 * @param data Data for pay load part of packet
 	 * @throws IOException On transmission error
 	 */
-	public abstract int send(MACAddress destination, Object data) throws IOException;
+	public abstract int send(Address destination, Object data) throws IOException;
 	
 	public abstract void close();
 }
