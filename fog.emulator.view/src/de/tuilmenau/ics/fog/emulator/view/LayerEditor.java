@@ -73,7 +73,7 @@ public class LayerEditor extends EditorPart
 			int i = 0;
 			for(Port port : ports) {
 				i++;
-				tGrp.createRow(port.toString(), port.toString() +":" +port.getPortNumber());
+				tGrp.createRow("Port " +port.getPortNumber(), port.toString());
 			}
 			
 			tGrp.createRow("Ports:", Integer.toString(i));

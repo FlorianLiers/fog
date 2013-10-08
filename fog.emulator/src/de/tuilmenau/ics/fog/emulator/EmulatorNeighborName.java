@@ -27,5 +27,11 @@ public class EmulatorNeighborName extends SimpleNeighborName
 		return destination;
 	}
 	
+	@Override
+	public String toString()
+	{
+		return getBindingName() +"@" +destination;
+	}
+	
 	private PortID destination;
 }
