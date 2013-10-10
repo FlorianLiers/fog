@@ -1,8 +1,5 @@
 package de.tuilmenau.ics.fog.emulator.view;
 
-import java.util.LinkedList;
-
-import net.rapi.Binding;
 import net.rapi.Name;
 import net.rapi.NeighborName;
 import net.rapi.NetworkException;
@@ -20,6 +17,8 @@ import org.eclipse.ui.part.EditorPart;
 import de.tuilmenau.ics.fog.eclipse.ui.EditorRowComposite;
 import de.tuilmenau.ics.fog.eclipse.ui.editors.EditorInput;
 import de.tuilmenau.ics.fog.eclipse.ui.editors.SelectionProvider;
+import de.tuilmenau.ics.fog.emulator.EmulatorBinding;
+import de.tuilmenau.ics.fog.emulator.EmulatorConnectionEndPoint;
 import de.tuilmenau.ics.fog.emulator.EmulatorLayer;
 import de.tuilmenau.ics.fog.emulator.Port;
 
@@ -73,7 +72,21 @@ public class LayerEditor extends EditorPart
 			int i = 0;
 			for(Port port : ports) {
 				i++;
-				tGrp.createRow("Port " +port.getPortNumber(), port.toString());
+				if(port instanceof EmulatorBinding) {
+					EmulatorBinding binding = (EmulatorBinding) port;
+					
+					tGrp.createRow("Port " +port.getPortNumber(), "Binding: " +String.valueOf(binding.getName()));
+					tGrp.createRow(" ", "open conn.: " +binding.getNumberConnections() + ", waiting conn.: " +binding.getNumberWaitingConnections());
+				}
+				else if(port instanceof EmulatorConnectionEndPoint) {
+					EmulatorConnectionEndPoint cep = (EmulatorConnectionEndPoint) port;
+					
+					tGrp.createRow("Port " +port.getPortNumber(), "Connection: " +cep.toString());
+					tGrp.createRow(" ", "send packets: " +cep.getNumberSendPackets() + ", waiting in buffer: " +cep.available());
+				}
+				else {
+					tGrp.createRow("Port " +port.getPortNumber(), port.toString());
+				}
 			}
 			
 			tGrp.createRow("Ports:", Integer.toString(i));

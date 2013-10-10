@@ -137,6 +137,7 @@ public class EmulatorConnectionEndPoint extends BaseConnectionEndPoint implement
 		if(isConnected()) {
 			Packet packet = new Packet(getPortNumber(), peer, data);
 			
+			numberSendPackets++;
 			layer.sendPacket(packet);
 		} else {
 			throw new NetworkException(this, "Can not send data since connection is not connected.");
@@ -193,6 +194,11 @@ public class EmulatorConnectionEndPoint extends BaseConnectionEndPoint implement
 		return peer;
 	}
 	
+	public int getNumberSendPackets()
+	{
+		return numberSendPackets;
+	}
+	
 	/**
 	 * Report some communication problem and close connection
 	 */
@@ -206,6 +212,11 @@ public class EmulatorConnectionEndPoint extends BaseConnectionEndPoint implement
 	private EmulatorBinding binding = null;
 
 	private int ownPortNumber  = -1;
+	
+	/**
+	 * Packet counter
+	 */
+	private int numberSendPackets = 0;
 
 	/**
 	 * Current knowledge about the state of the peer
