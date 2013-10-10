@@ -191,7 +191,10 @@ public class EmulatorLayer extends BaseEventSource implements Layer
 	 */
 	public void closed(Port port)
 	{
-		
+		// remove port from list
+		if(ports.remove(port.getPortNumber()) == null) {
+			logger.err(this, "Can not close port " +port +", because it is not known.");
+		}
 	}
 	
 	/**

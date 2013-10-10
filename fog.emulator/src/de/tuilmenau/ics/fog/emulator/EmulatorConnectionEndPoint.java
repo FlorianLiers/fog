@@ -41,6 +41,16 @@ public class EmulatorConnectionEndPoint extends BaseConnectionEndPoint implement
 		this.peer = peer;
 	}
 	
+	/**
+	 * Connections belongs to a local binding.
+	 */
+	public EmulatorConnectionEndPoint(EmulatorLayer layer, EmulatorBinding binding, PortID peer)
+	{
+		this(layer, binding.getName(), binding.getPortNumber(), peer);
+		
+		this.binding = binding;
+	}
+	
 	@Override
 	public void connect()
 	{
@@ -64,6 +74,8 @@ public class EmulatorConnectionEndPoint extends BaseConnectionEndPoint implement
 				}
 			}.fire();
 		} else {
+			layer.getLogger().log(this, "Connection established");
+			
 			// inform higher layer about the establishment of the connection
 			notifyObservers(new ConnectedEvent(this));
 		}
@@ -97,7 +109,14 @@ public class EmulatorConnectionEndPoint extends BaseConnectionEndPoint implement
 	@Override
 	public void close()
 	{
-// TODO		layer.closed(this);
+		layer.getLogger().log(this, "Closing");
+		
+		// report close event to container object
+		if(binding != null) {
+			binding.closed(this);
+		} else {
+			layer.closed(this);
+		}
 		
 		// *now* we can invalidate the object 
 		ownPortNumber = -1;
@@ -106,6 +125,7 @@ public class EmulatorConnectionEndPoint extends BaseConnectionEndPoint implement
 		super.cleanup();
 	}
 	
+	@Override
 	public int getPortNumber()
 	{
 		return ownPortNumber;
@@ -168,6 +188,11 @@ public class EmulatorConnectionEndPoint extends BaseConnectionEndPoint implement
 		
 	}
 	
+	public PortID getPeer()
+	{
+		return peer;
+	}
+	
 	/**
 	 * Report some communication problem and close connection
 	 */
@@ -178,6 +203,7 @@ public class EmulatorConnectionEndPoint extends BaseConnectionEndPoint implement
 	}
 
 	private EmulatorLayer layer;
+	private EmulatorBinding binding = null;
 
 	private int ownPortNumber  = -1;
 

@@ -15,7 +15,6 @@ import net.rapi.Description;
 import net.rapi.Identity;
 import net.rapi.Name;
 import net.rapi.NetworkException;
-import net.rapi.events.NewConnectionEvent;
 import net.rapi.impl.base.BaseBinding;
 import de.tuilmenau.ics.fog.IEvent;
 import de.tuilmenau.ics.fog.emulator.packets.BindingReply;
@@ -46,11 +45,20 @@ public class EmulatorBinding extends BaseBinding implements IEvent, Port
 	@Override
 	public synchronized void close()
 	{
-		layer.closed(this);
-
-		// *now* we can invalidate this object
-		super.close();
 		layer = null;
+		
+		// are there no open connections?
+		if(connections.size() <= 0) {
+			logger.log(this, "Removing binding");
+			
+			layer.closed(this);
+	
+			// *now* we can invalidate this object
+			super.close();
+		} else {
+			// still open connections -> wait until they are closed
+			logger.log(this, "Closing (" +connections.size() +" connections still open)");
+		}
 	}
 	
 	@Override
@@ -111,13 +119,20 @@ public class EmulatorBinding extends BaseBinding implements IEvent, Port
 		conn = conns.get(sender.getPortNumber());
 		// is port of sender unknown?
 		if(conn == null) {
-			conn = new EmulatorConnectionEndPoint(layer, getName(), portNumber, sender);
-			
-			logger.log(this, "Creating port implicitly: " +conn);
-			conns.put(sender.getPortNumber(), conn);
-			
-			// notify higher layer about new connection
-			addIncomingConnection(conn);
+			if(isActive()) {
+				conn = new EmulatorConnectionEndPoint(layer, this, sender);
+				
+				logger.log(this, "Creating port implicitly: " +conn);
+				conns.put(sender.getPortNumber(), conn);
+				
+				// notify higher layer about new connection
+				addIncomingConnection(conn);
+			} else {
+				logger.warn(this, "Binding closed. Rejecting new connection from " +sender);
+				
+				// exit method to avoid relaying of packet
+				return;
+			}
 		}
 		
 		// relay packet to connection
@@ -137,7 +152,54 @@ public class EmulatorBinding extends BaseBinding implements IEvent, Port
 		}
 	}
 	
+	/**
+	 * @return Number of open connections to this binding
+	 */
+	public int getNumberConnections()
+	{
+		return connections.size();
+	}
+	
+	/**
+	 * Called by connections of this binding, in order to inform
+	 * binding about their closing.
+	 * 
+	 * @param emulatorConnectionEndPoint CEP that was closed
+	 */
+	public void closed(EmulatorConnectionEndPoint cep)
+	{
+		boolean removed = false;
+		
+		if(cep != null) {
+			// remove entry
+			PortID peer = cep.getPeer();
+			HashMap<Integer, EmulatorConnectionEndPoint> conns = connections.get(peer.getAddress());
+			
+			if(conns != null) {
+				removed = conns.remove(peer.getPortNumber()) != null;
+				
+				// was it the last entry?
+				if(conns.size() <= 0) {
+					connections.remove(peer.getAddress());
+				}
+			}
+		}
+		
+		if(removed) {
+			// binding might be terminated and waiting for the last connection to close
+			if(!isActive()) {
+				close();
+			}
+		} else {
+			logger.err(this, "Can not remove CEP " +cep +" from list since it is not in.");
+		}
+	}
+
 	private Logger logger;
+
+	/**
+	 * If null, it indicates that the binding no longer accept new connections
+	 */
 	private EmulatorLayer layer;
 	private int portNumber;
 	
@@ -148,4 +210,5 @@ public class EmulatorBinding extends BaseBinding implements IEvent, Port
 	 * Key includes the sender address and the sender port number.
 	 */
 	private HashMap<Address, HashMap<Integer, EmulatorConnectionEndPoint>> connections = new HashMap<Address, HashMap<Integer,EmulatorConnectionEndPoint>>();
+
 }
