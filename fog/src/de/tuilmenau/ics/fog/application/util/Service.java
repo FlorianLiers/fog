@@ -65,6 +65,7 @@ public class Service extends ApplicationEventHandler<Binding> implements ServerC
 		else if(event instanceof ErrorEvent) {
 			error((ErrorEvent) event);
 		}
+		// else: ignore unknown event 
 	}
 
 	@Override
@@ -73,6 +74,7 @@ public class Service extends ApplicationEventHandler<Binding> implements ServerC
 		if(callback != null) {
 			return callback.openAck(pAuths, pDescription, pTargetName);
 		} else {
+			// default behavior if children do not overwrite function
 			return true;
 		}
 	}
@@ -95,9 +97,8 @@ public class Service extends ApplicationEventHandler<Binding> implements ServerC
 	{
 		if(callback != null) {
 			callback.error(pCause);
-		} else {
-			// no nothing
 		}
+		// else: do nothing
 	}
 	
 	@Override
