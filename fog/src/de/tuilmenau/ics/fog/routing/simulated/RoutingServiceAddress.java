@@ -115,10 +115,15 @@ public class RoutingServiceAddress implements Name
 		}
 	}
 	
+	/**
+	 * String version (at least first part) should be identical for the short
+	 * and the long version. That enables others to perform operations like
+	 * compareTo to the string version of the address.
+	 */
 	public String toString()
 	{
 		if(mOptionalDescr != null) {
-			return mOptionalDescr.toString() +"(" +Long.toString(mAddress.longValue()) +")";
+			return Long.toString(mAddress.longValue()) +"=(" +mOptionalDescr.toString() +")";
 		} else {
 			return Long.toString(mAddress.longValue());
 		}
