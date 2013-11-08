@@ -84,7 +84,7 @@ public interface Gate
 	/**
 	 * Non-blocking method for register continuation for gate state change.
 	 * 
-	 * @param maxWaitTimeSec Maximal waiting time for state change
+	 * @param maxWaitTimeSec Maximal waiting time for state change (negative for infinity)
 	 * @param continuation The methods success will be called if the state changes; failure in case of timeout
 	 */
 	public void waitForStateChange(double maxWaitTimeSec, IContinuation<Gate> continuation);

@@ -25,22 +25,19 @@ import net.rapi.Name;
 import net.rapi.Namespace;
 import net.rapi.NeighborName;
 import net.rapi.NetworkException;
-import net.rapi.Signature;
 import net.rapi.properties.DelayProperty;
-
 import de.tuilmenau.ics.fog.Config;
 import de.tuilmenau.ics.fog.FoGEntity;
+import de.tuilmenau.ics.fog.IContinuation;
 import de.tuilmenau.ics.fog.IEvent;
 import de.tuilmenau.ics.fog.application.util.Service;
-import de.tuilmenau.ics.fog.exceptions.InvalidParameterException;
-import de.tuilmenau.ics.fog.exceptions.TransferServiceException;
 import de.tuilmenau.ics.fog.facade.DescriptionHelper;
 import de.tuilmenau.ics.fog.transfer.DummyForwardingElement;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;
+import de.tuilmenau.ics.fog.transfer.Gate;
 import de.tuilmenau.ics.fog.transfer.TransferPlaneObserver.NamingLevel;
 import de.tuilmenau.ics.fog.transfer.forwardingNodes.GateContainer;
 import de.tuilmenau.ics.fog.transfer.forwardingNodes.Multiplexer;
-import de.tuilmenau.ics.fog.transfer.gates.AbstractGate;
 import de.tuilmenau.ics.fog.transfer.gates.DirectDownGate;
 import de.tuilmenau.ics.fog.transfer.gates.GateIterator;
 import de.tuilmenau.ics.fog.transfer.gates.ReroutingGate;
@@ -81,17 +78,17 @@ public class LowerLayerObserver extends LayerObserver
 	{
 		int rounds = 0;
 		
-		// first try: Use same name as node in order to simplify debugging
-		//            Note: Using this name as base is not required in real networks!
-		attachmentName = new SimpleName(FOG_NAMESPACE, mEntity.getNode().getName() +"_1");
+		// Does the forwarding node has a routing name?
+		// Note: This way of generating a binding name
+		//       is just useful for debugging purposes.
+		//       It is not required for real systems.
+		attachmentName = mEntity.getRoutingService().getNameFor(mMultiplexer);
 		
 		do {
 			rounds++;
 			
 			if(attachmentName == null) {
-				Random randGen = new Random(System.currentTimeMillis());
-	
-				attachmentName = new SimpleName(FOG_NAMESPACE, mEntity.getNode().getName() +"_" +Long.toString(randGen.nextLong()));
+				attachmentName = generateRandomName();
 			}
 			
 			// check if name is already known
@@ -111,6 +108,15 @@ public class LowerLayerObserver extends LayerObserver
 			}
 		}
 		while(true);
+	}
+	
+	private Name generateRandomName()
+	{
+		Random randGen = new Random(System.currentTimeMillis());
+		
+		// Note: The base part of the name (entity name) is not required in real systems.
+		//       It is just useful for debugging purposes.
+		return new SimpleName(FOG_NAMESPACE, mEntity.getNode().getName() +"_" +Long.toString(randGen.nextLong()));
 	}
 	
 	/**
@@ -153,7 +159,7 @@ public class LowerLayerObserver extends LayerObserver
 				// link central multiplexer with multiplexer of interface
 				mMultiplexer.connectMultiplexer(mEntity.getCentralFN());
 			
-				// Look for already known neighbors
+				// look for already known neighbors
 				neighborCheck();
 			}
 			catch(Exception tExc) {
@@ -184,7 +190,7 @@ public class LowerLayerObserver extends LayerObserver
 				if((attachmentName.toString().compareTo(newNeighborName.toString()) < 0) || alreadyDelayed) {
 					synchronized(mMultiplexer) {
 						ReroutingGate[] backup = new ReroutingGate[1];
-						ProcessDownGate downGate = checkDownGateAvailable(newNeighborName, backup);
+						DirectDownGate downGate = checkDownGateAvailable(newNeighborName, null);
 						
 						// check, if DownGate already available
 						if(downGate == null) {
@@ -207,7 +213,7 @@ public class LowerLayerObserver extends LayerObserver
 							// Setup one gate immediately and request reverse gate, only
 							//
 							try {
-								createNewDownGate(newNeighborName, DescriptionHelper.createBE(false), backup[0], false, mEntity.getIdentity());
+								createGateTo(newNeighborName, DescriptionHelper.createBE(false), null, null);
 							}
 							catch (NetworkException tExc) {
 								getLogger().warn(this, "Can not add down gate to neighbor " +newNeighborName +". Ignoring neighbor.", tExc);
@@ -218,10 +224,12 @@ public class LowerLayerObserver extends LayerObserver
 								getLogger().log(this, "DownGate to neighbor " +newNeighborName +" already available.");
 								
 								getLogger().log(this, "Refreshing DownGate " +downGate);
-								if(!downGate.check()) {
-									getLogger().log(this, "Refreshed gate reports error. Setting up a new one.");
+								downGate.refresh();
+								
+								if(!downGate.isOperational()) {
+									getLogger().warn(this, "Refreshed gate reports error. Setting up a new one.");
 									// deleting old and restart discovery
-									downGate.terminate(null);
+									downGate.shutdown();
 									neighborDiscovered(newNeighbor);
 								}
 							} else {
@@ -291,6 +299,7 @@ public class LowerLayerObserver extends LayerObserver
 					
 					if(tIter.hasNext()) {
 						// type cast is valid, due to filter for iterator
+/* TODO move fix to gate class
 						ReroutingGate tGate = (ReroutingGate) tIter.next();
 						
 						if(tGate.match(mNeighborLLID, null, null)) {
@@ -301,6 +310,7 @@ public class LowerLayerObserver extends LayerObserver
 								getLogger().warn(this, "Failed to repair " +tGate +".", tExc);
 							}
 						}
+						*/
 					} else {
 						// terminate loop
 						break;
@@ -323,14 +333,14 @@ public class LowerLayerObserver extends LayerObserver
 				synchronized(mMultiplexer) {
 					getLogger().log(this, "Deleting DirectDownGate to neighbor " +oldNeighborName);
 					
-					ProcessDownGate process;
+					DirectDownGate gate;
 					do {
-						process = checkDownGateAvailable(oldNeighborName, null);
-						if(process != null) {
-							process.terminate(null);
+						gate = checkDownGateAvailable(oldNeighborName, null);
+						if(gate != null) {
+							gate.shutdown();
 						}
 					}
-					while(process != null);
+					while(gate != null);
 				}
 			}
 			// else: ignore own binding
@@ -428,115 +438,42 @@ public class LowerLayerObserver extends LayerObserver
 	}
 	
 	/**
-	 * Is called if DownGates to neighbors with the given parameters should be tested.
+	 * Checks if a DirectDownGate starting at the FN of the interface
+	 * encapsulates a connection to a specific binding name of a peer
+	 * FoG entity.
 	 * 
-	 * @param peerName FoG peer name
-	 */
-	public void checkDownGates(Name peerName)
-	{
-		ProcessDownGate tBEGate = checkDownGateAvailable(peerName, null);
-		
-		if(tBEGate != null) {
-			tBEGate.check();
-			
-			// TODO integrate old code
-			//tBEGate.handlePacket(new Packet(null), null);
-		}
-	}
-	
-	/**
-	 * Checks if a DownGate starting at the FN of the interface is going to pNeighborLLID.
-	 * 
-	 * @param pNeighborLLID ID of the lower layer the gate is connected to
+	 * @param neighborBindingName ID of the lower layer the gate is connected to
 	 * @param pDescription QoS description (== null, if no filtering for description)
 	 * @return Gate fitting the parameters
 	 */
-	public ProcessDownGate checkDownGateAvailable(Name pNeighborLLID, ReroutingGate[] pBackupGate)
+	public DirectDownGate checkDownGateAvailable(Name neighborBindingName, Description capabilities)
 	{
-		if((mMultiplexer != null) && (pNeighborLLID != null)) {
+		if((mMultiplexer != null) && (neighborBindingName != null)) {
 			//
-			// Search for process responsible for gate
-			//
-			ProcessList processes = mEntity.getProcessRegister().getProcesses(mMultiplexer);
-			
-			if(processes != null) {
-				for(Process process : processes) {
-					if(process instanceof ProcessDownGate) {
-						ProcessDownGate res = (ProcessDownGate) process; 
-						Name peer = res.getNeighborName();
-						
-						if(pNeighborLLID.equals(peer)) {
-							return res;
-						}
-					}
-				}
-			}
-			
-			//
-			// Search for old gate
+			// Search for gate
 			// Maybe there was a down gate and the node has some
 			// gates from repairing the down gate.
 			//
- 			if(pBackupGate != null) {
-				if(pBackupGate.length > 0) {
-					pBackupGate[0] = null;
-					
-					GateIterator tIter = mMultiplexer.getIterator(ReroutingGate.class);
-					
-					while(tIter.hasNext()) {
-						// type cast is valid, due to filter for iterator
-						ReroutingGate tGate = (ReroutingGate) tIter.next();
-						
-						if(tGate.match(pNeighborLLID, null, null)) {
-							pBackupGate[0] = tGate;
-							return null;
+			GateIterator tIter = mMultiplexer.getIterator(DirectDownGate.class);
+			
+			while(tIter.hasNext()) {
+				// type cast is valid, due to filter for iterator
+				DirectDownGate tGate = (DirectDownGate) tIter.next();
+				
+				if(neighborBindingName.equals(tGate.getPeerBindingName())) {
+					// do we have to filter according to caps?
+					if(capabilities != null) {
+						if(capabilities.equals(tGate.getDescription())) {
+							return tGate;
 						}
+					} else {
+						return tGate;
 					}
 				}
 			}
-			
-			return null;
 		}
 		
 		return null;
-	}
-	
-	/**
-	 * Creates new down gate to neighbor and requests the reverse gate from it. 
-	 * 
-	 * @param pFN FN to connect the gate to
-	 * @param pInterface Lower layer
-	 * @param pNeighborLLID Lower layer name of peer
-	 * @param pRequirements Requirements for down gate
-	 * @throws NetworkException on error
-	 */
-	public AbstractGate createNewDownGate(Name pPeerName, Description pRequirements, ReroutingGate pBackup, boolean pCreateImmediately, Identity pRequester) throws NetworkException
-	{
-		getLogger().log(this, "Creating DownGate to neighbor " +pPeerName +" with " +pRequirements);
-		
-		ProcessDownGate tProcess = null;
-		try {
-			tProcess = new ProcessDownGate(this, pPeerName, pRequirements, pRequester, pBackup);
-			tProcess.start();
-			
-			// tProcess.start may have already created the gate, if the
-			// connection is already established. However, a gate can
-			// be created for a connection that is in the process of
-			// being set up.
-			if(pCreateImmediately) {
-				return tProcess.create();
-			} else {
-				return null;
-			}
-		}
-		catch (NetworkException tExc) {
-			tExc = new TransferServiceException(this, "Opening down gate to neighbor " +pPeerName +" failed.", tExc);
-			
-			if(tProcess != null) {
-				tProcess.terminate(tExc);
-			}
-			throw tExc;
-		}
 	}
 	
 	public void enableReattach()
@@ -591,28 +528,6 @@ public class LowerLayerObserver extends LayerObserver
 	}
 	
 	/**
-	 * Determines name of peer for a connection via the responsible LowerLayerSession
-	 */
-	public Name getPeerName(Connection connection)
-	{
-		ProcessList processes = mEntity.getProcessRegister().getProcesses(mMultiplexer);
-		if(processes != null) {
-			for(Process process : processes) {
-				if(process instanceof ProcessDownGate) {
-					ProcessDownGate processDG = ((ProcessDownGate) process);
-					
-					// does the process controls the connection?
-					if(processDG.hasConnection(connection)) {
-						return processDG.getNeighborName();
-					}
-				}
-			}
-		}
-		
-		return null;
-	}
-	
-	/**
 	 * Called by the receive gate in order to signal the removing
 	 * of the lower layer from the simulation. 
 	 */
@@ -629,8 +544,10 @@ public class LowerLayerObserver extends LayerObserver
 		// otherwise: we are not attached or we are currently detaching
 	}
 	
-	public synchronized LowerLayerSession getConnectionTo(Name destination, Description requirements) throws NetworkException
+	public void createGateTo(Name destination, Description requirements, Identity owner, IContinuation<Gate> callback) throws NetworkException
 	{
+		getLogger().log(this, "Start creating a new gate to " +destination +" with requirements " +requirements +" for " +owner);
+		
 		// request capabilities of lower layer and derive description of gate
 		Description connDescription = requirements;
 		Description capabilities = lowerLayer.getCapabilities(destination, requirements);
@@ -638,13 +555,14 @@ public class LowerLayerObserver extends LayerObserver
 			connDescription = DescriptionHelper.deriveRequirements(capabilities, requirements);
 		}
 		
+		// use observer as default owner of gates for lower layer
+		if(owner == null) owner = attachmentIdentity;
+		
 		// establish connection
 		Connection conn = lowerLayer.connect(destination, connDescription, attachmentIdentity);
 		
-		LowerLayerSession session = new LowerLayerSession(mMultiplexer, null, getLogger());
-		session.start(conn);
-		
-		return session;
+		// start handling of signaling and creation of gate
+		startSession(conn, callback);
 	}
 	
 	public Name getAttachmentName()
@@ -695,6 +613,15 @@ public class LowerLayerObserver extends LayerObserver
 		return "LowerLayerObserver:" +mLowerLayerBinding +"@" +lowerLayer;
 	}
 
+	private void startSession(Connection connection, IContinuation<Gate> callback)
+	{
+		LowerLayerSession session = new LowerLayerSession(mEntity, this, callback);
+		session.start(connection);
+	}
+	
+	/**
+	 * Proxy class in order to avoid multiple inheritance of observer class.
+	 */
 	private class FoGService extends Service
 	{
 		public FoGService()
@@ -702,44 +629,10 @@ public class LowerLayerObserver extends LayerObserver
 			super(false, null);
 		}
 		
-		/**
-		 * Accept only connection with source authentications.
-		 */
 		@Override
-		public boolean openAck(LinkedList<Signature> pAuths, Description pDescription, Name pTargetName)
+		public void newConnection(Connection connection)
 		{
-			if(pAuths != null) {
-				if(pAuths.size() > 0) {
-					getLogger().log(this, "Accept new connection from " +pAuths + " to " +pTargetName);
-					return true;
-				}
-			}
-			
-			getLogger().warn(this, "Reject connection due to missing authentications.");
-			return false;
-		}
-		
-		@Override
-		public void newConnection(Connection pConnection)
-		{
-			Signature originator = pConnection.getAuthentications().getFirst();
-			Name sourceName;
-			try {
-				sourceName = SimpleName.parse(originator.getIdentity().getName());
-			
-				// check if there is a binding for the source
-				if(lowerLayer.isKnown(sourceName)) {
-					LowerLayerSession session = new LowerLayerSession(mMultiplexer, sourceName, getLogger());
-					session.start(pConnection);
-				} else {
-					getLogger().warn(this, "Lower layer does not know binding for " +sourceName);
-					pConnection.close();
-				}
-			}
-			catch (InvalidParameterException exc) {
-				getLogger().warn(this, "Name of signature " +originator +" does not seem to be a FoG name.", exc);
-				pConnection.close();
-			}
+			startSession(connection, null);
 		}
 	};
 

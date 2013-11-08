@@ -90,6 +90,10 @@ public abstract class ProcessGateConstruction extends Process
 		return mGate;
 	}
 	
+	/**
+	 * TODO moved to AbstractGate?
+	 * @deprecated
+	 */
 	public void update(GateID reverseGateNumberAtPeer, Name peerNodeRoutingName, Identity peerIdentity) throws NetworkException
 	{
 		FoGEntity tNode = getBase().getEntity();
@@ -147,6 +151,10 @@ public abstract class ProcessGateConstruction extends Process
 		// else: hidden gate; do not inform RS
 	}
 
+	/**
+	 * TODO moved to AbstractGate?
+	 * @deprecated
+	 */
 	@Override
 	public boolean isChangableBy(Identity changer)
 	{

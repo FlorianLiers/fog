@@ -88,6 +88,47 @@ public abstract class AbstractGate implements Gate, ForwardingElement
 		return null;
 	}
 	
+	public void update(GateID reverseGateNumberAtPeer, Name peerNodeRoutingName, Identity peerIdentity) throws NetworkException
+	{
+		// check access permissions
+		if(isChangableBy(peerIdentity)) {
+			
+		} else {
+			throw new NetworkException(this, "Access not permitted for " +peerIdentity +". Peer identity is " +mOwner +".");
+		}
+		
+		// store reverse gate information
+		setRemoteDestinationName(peerNodeRoutingName);
+
+		// if reverse gate is not established, reference is null. Then we just
+		// have a one way down gate
+		setReverseGateID(reverseGateNumberAtPeer);
+	}
+
+	/**
+	 * @param changer Entity trying to change the gate
+	 * @return true if the entity is the owner of has admin rights; false otherwise
+	 */
+	public boolean isChangableBy(Identity changer)
+	{
+		// is owner already set?
+		if(mOwner != null) {
+			// does owner request change?
+			if(mOwner.equals(changer)) {
+				return true;
+			} else {
+				// admin rights of function provider itself?
+				if(changer != null) {
+					return changer.equals(getEntity().getIdentity());
+				} else {
+					return false;
+				}
+			}
+		} else {
+			return true;
+		}
+	}
+
 	/**
 	 * @param pReverseGateID The ID for the local partner gate or {@code null}
 	 * for deleting old partner gates ID.

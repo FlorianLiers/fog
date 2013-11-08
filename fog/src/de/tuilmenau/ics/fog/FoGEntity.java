@@ -143,7 +143,7 @@ public class FoGEntity extends BaseEventSource implements Layer, GraphProvider, 
 		}
 
 		@Override
-		public void failure(Process pCaller, Exception pException)
+		public void failure(Process pCaller, Throwable pException)
 		{
 			handleResult();
 		}

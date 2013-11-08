@@ -315,7 +315,7 @@ public class Controller
 		}
 
 		@Override
-		public void failure(Gate pGate, Exception pException)
+		public void failure(Gate pGate, Throwable pException)
 		{
 			mLogger.err(this, "Can not use new gate " +pGate +". Dropping packet " +mPacket, pException);
 			mPacket.droppingDetected(this, mEntity.getNode().getAS().getSimulation());
@@ -348,7 +348,7 @@ public class Controller
 		}
 
 		@Override
-		public void failure(Process pProcess, Exception pException)
+		public void failure(Process pProcess, Throwable pException)
 		{
 			mCont.failure(mGate, pException);
 		}
@@ -495,9 +495,15 @@ public class Controller
 						reuse = (newGate != null);
 					}
 					
+					// proceed after gate is ready without any process dependencies
+					cont = new CreateGateContinuation(fn, packet);
+
 					if(newGate == null) {
 						// 2.2 Reuse not possible: Create a new gate
-						newGate = downGate.getLowerLayer().createNewDownGate(downGate.getPeerName(), requ, null, true, newGateDescription.getRequester());
+						downGate.getLowerLayer().createGateTo(downGate.getPeerBindingName(), requ, newGateDescription.getRequester(), cont);
+						
+						// continuation handled by newly created gate; do not use it in this method
+						cont = null;
 					}
 					
 					// Check if there is a RouteSegementMissingPart on the "stack", which
@@ -515,9 +521,6 @@ public class Controller
 							}
 						}
 					}
-					
-					// proceed after gate is ready without any process dependencies
-					cont = new CreateGateContinuation(fn, packet);
 				}
 				
 				if(newGate != null) {
@@ -894,7 +897,7 @@ public class Controller
 				// type cast is valid, due to filter for iterator
 				DirectDownGate tGate = (DirectDownGate) tIter.next();
 				
-				if(pNeighborLLID.equals(tGate.getPeerName())) {
+				if(pNeighborLLID.equals(tGate.getPeerBindingName())) {
 					// do we filter for reverse gate number?
 					if(pReverseGateNumber != null) {
 						if(tSpecialCase || pReverseGateNumber.equals(tGate.getReverseGateID())) {
@@ -1091,7 +1094,7 @@ public class Controller
 			// Is one gate with requirements broken? Maybe the best effort does not work either.
 			if(tRouteRequirements != null) {
 				if(!tRouteRequirements.isBestEffort()) {
-					DirectDownGate tBEGate = checkDownGateAvailable(pNetworkInterface.getMultiplexerGate(), pFrom.getPeerName(), null, DescriptionHelper.createBE(false), null);
+					DirectDownGate tBEGate = checkDownGateAvailable(pNetworkInterface.getMultiplexerGate(), pFrom.getPeerBindingName(), null, DescriptionHelper.createBE(false), null);
 					
 					if(tBEGate != null) {
 						mLogger.log(this, "Gate with requirements failed. Check best effort gate " +tBEGate);

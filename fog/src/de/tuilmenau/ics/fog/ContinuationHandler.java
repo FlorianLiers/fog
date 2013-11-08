@@ -34,7 +34,7 @@ public class ContinuationHandler<CallingObject> implements IContinuation<Calling
 	/**
 	 * Constructor staring a timeout after which the failure method is called.
 	 * 
-	 * @param pTimeoutSec Timeout in seconds
+	 * @param pTimeoutSec Timeout in seconds (negative for infinity)
 	 * @param pCaller Object doing the operation.
 	 */
 	public ContinuationHandler(EventHandler pTimeBase, double pTimeoutSec, CallingObject pCaller)
@@ -94,7 +94,7 @@ public class ContinuationHandler<CallingObject> implements IContinuation<Calling
 	 * Executes all continuations and deletes them from list.
 	 */
 	@Override
-	public void failure(CallingObject pCaller, Exception pException)
+	public void failure(CallingObject pCaller, Throwable pException)
 	{
 		if(mContinuation != null) {
 			mContinuation.failure(pCaller, pException);

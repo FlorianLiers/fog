@@ -37,5 +37,5 @@ public interface IContinuation<CallingObject>
 	 * @param pCaller Object finishing the operation.
 	 * @param pException != null if the failure was caused by an exception
 	 */
-	public void failure(CallingObject pCaller, Exception pException);
+	public void failure(CallingObject pCaller, Throwable pException);
 }

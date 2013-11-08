@@ -15,7 +15,6 @@ package de.tuilmenau.ics.fog.transfer.gates;
 
 import java.util.NoSuchElementException;
 
-import net.rapi.Connection;
 import net.rapi.Identity;
 import net.rapi.Layer.LayerStatus;
 import net.rapi.Name;
@@ -26,6 +25,7 @@ import de.tuilmenau.ics.fog.routing.RouteSegmentPath;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;
 import de.tuilmenau.ics.fog.transfer.manager.Controller.BrokenType;
 import de.tuilmenau.ics.fog.transfer.manager.LowerLayerObserver;
+import de.tuilmenau.ics.fog.transfer.manager.LowerLayerSession;
 import de.tuilmenau.ics.fog.ui.Viewable;
 
 /**
@@ -34,35 +34,27 @@ import de.tuilmenau.ics.fog.ui.Viewable;
  */
 public class DirectDownGate extends AbstractGate
 {
-	public DirectDownGate(FoGEntity node, LowerLayerObserver netInf, Connection connection, Identity owner)
+	public DirectDownGate(FoGEntity node, LowerLayerSession session, Identity owner)
 	{
-		super(node, connection.getRequirements(), owner);
+		super(node, session.getConnection().getRequirements(), owner);
 
-		mConnection = connection;
-		mNetInf = netInf;
+		this.session = session;
 	}
 
-	public Name getPeerName()
+	/**
+	 * @return Name of peer FoG binding (or null if not known)
+	 */
+	public Name getPeerBindingName()
 	{
-		Name res = null;
-		
-		if(mConnection != null) {
-			res = mConnection.getBindingName();
-			
-			if(res == null) {
-				// name not known due to passive establishment
-				// try to get name of peer via LowerLayerSession
-				return mNetInf.getPeerName(mConnection);
-			}
-		}
-		// else: not connected; no peer name
-		
-		return res;
+		return session.getPeerBindingName();
 	}
 	
+	/**
+	 * @return Observer of lower layer the gate belongs to
+	 */
 	public LowerLayerObserver getLowerLayer()
 	{
-		return mNetInf;
+		return session.getLowerLayer();
 	}
 	
 	/*
@@ -70,13 +62,13 @@ public class DirectDownGate extends AbstractGate
 	 */
 	public ForwardingElement getNextNode()
 	{
-		return mNetInf.getLowerLayerGUIRepresentation();
+		return session.getLowerLayer().getLowerLayerGUIRepresentation();
 	}
 	
 	@Override
 	protected void init()
 	{
-		if(mConnection == null) {
+		if(session == null) {
 			setState(GateState.ERROR);
 		} /*else {
 			if(!mConnection.isConnected()) {
@@ -111,17 +103,17 @@ public class DirectDownGate extends AbstractGate
 		boolean invisible = packet.isInvisible();
 
 		// send packet to connection through lower layer
-		if(mConnection != null) {
+		if(session != null) {
 			if(!invisible) incMessageCounter();
 			
 			try {
-				mConnection.write(packet);
+				session.getConnection().write(packet);
 			}
 			catch(NetworkException exc) {
 				// Error during transmission?
 				// Do not do any recovery for invisible packets.
 				if(!invisible) {
-					mEntity.getLogger().warn(this, "Cannot send packet " +packet +" through " +mConnection, exc);
+					mEntity.getLogger().warn(this, "Cannot send packet " +packet +" through " +session, exc);
 					
 					// maybe gate already closed during error recovery? 
 					if((getState() != GateState.SHUTDOWN) && (getState() != GateState.DELETED)) {
@@ -161,8 +153,8 @@ public class DirectDownGate extends AbstractGate
 	@Override
 	public void refresh()
 	{
-		if(mConnection != null) {
-			if(mConnection.isConnected()) {
+		if(session != null) {
+			if(session.getConnection().isConnected()) {
 				return;
 			}
 		}
@@ -171,20 +163,19 @@ public class DirectDownGate extends AbstractGate
 	}
 	
 	@Override
-	public void close() throws NetworkException
+	protected void close() throws NetworkException
 	{
 		super.close();
 		
-		if(mConnection != null) {
-			mConnection.close();
-			mConnection = null;
+		if(session != null) {
+			session.stop();
+			session = null;
 		}
 	}
 
-	@Viewable("Network interface")
-	private LowerLayerObserver mNetInf;
+	@Viewable("Session for lower layer connection")
+	private LowerLayerSession session;
 	
-	@Viewable("Connection")
-	private Connection mConnection;
-	
+	@Viewable("Peer FN routing name")
+	private Name mPeerRoutingName;
 }

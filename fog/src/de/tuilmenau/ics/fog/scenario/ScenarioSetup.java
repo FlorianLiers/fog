@@ -62,6 +62,7 @@ public class ScenarioSetup
 					case 43: scenario43(sim); break;
 					
 					// emulator scenario
+					case 98: emulatorLocalTest(sim); break;
 					case 99: emulator(sim); break;
 				}
 				
@@ -182,6 +183,20 @@ public class ScenarioSetup
 		}
 	}
 
+	public static void emulatorLocalTest(Simulation pSim)
+	{
+		pSim.executeCommand("@ - create as default");
+		pSim.executeCommand("switch default");
+		pSim.executeCommand("create node A");
+		pSim.executeCommand("create node B");
+		
+		pSim.executeCommand("create ethernet ethA in out");
+		pSim.executeCommand("create ethernet ethB out in");
+		
+		pSim.executeCommand("connect A ethA");
+		pSim.executeCommand("connect B ethB");
+	}
+	
 	public static void emulator(Simulation pSim)
 	{
 		String nodeName = UUID.randomUUID().toString();
