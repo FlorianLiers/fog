@@ -184,9 +184,7 @@ public class EmulatorConnectionEndPoint extends BaseConnectionEndPoint implement
 	@Override
 	protected void notifyFailure(Throwable failure, EventListener listener)
 	{
-		// TODO Auto-generated method stub
-		
-		
+		layer.getLogger().err(this, "Error while notifying observers about event.", failure);
 	}
 	
 	public PortID getPeer()

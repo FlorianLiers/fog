@@ -163,7 +163,7 @@ public class EmulatorMedium implements Medium, Runnable
 		if(layer != null) {
 			layer.handleReceivedPacket(packet);
 		} else {
-			mLogger.log(this, "Ignoring packet " +packet +" since medium is not connected to a node.");
+			mLogger.log(this, "Ignoring packet '" +packet +"' since medium is not connected to a node.");
 		}
 	}
 	
