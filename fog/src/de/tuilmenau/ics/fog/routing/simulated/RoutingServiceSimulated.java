@@ -564,6 +564,8 @@ public class RoutingServiceSimulated implements RoutingService
 					}
 					informRoutingService(pFrom, pTo, pGate, tAddress);
 				}
+			} else {
+				mLogger.warn(this, "Gate " +pGate +" seems not to provide a local connection (to=" +pTo +"), but has no remote destination name.");
 			}
 		} else {
 			RoutingServiceAddress tFrom = getNameFor(pFrom);

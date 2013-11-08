@@ -23,8 +23,10 @@ import de.tuilmenau.ics.CommonSim.datastream.StreamTime;
 import de.tuilmenau.ics.CommonSim.datastream.numeric.IDoubleWriter;
 import de.tuilmenau.ics.CommonSim.datastream.numeric.SumNode;
 import de.tuilmenau.ics.fog.FoGEntity;
+import de.tuilmenau.ics.fog.IContinuation;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;
 import de.tuilmenau.ics.fog.transfer.ForwardingNode;
+import de.tuilmenau.ics.fog.transfer.Gate;
 import de.tuilmenau.ics.fog.transfer.Gate.GateState;
 import de.tuilmenau.ics.fog.transfer.TransferPlaneObserver.NamingLevel;
 import de.tuilmenau.ics.fog.transfer.gates.AbstractGate;
@@ -89,6 +91,32 @@ abstract public class GateContainer implements ForwardingNode
 				
 				mEntity.getTransferPlane().registerLink(this, newgate);
 				
+				if(!newgate.isOperational()) {
+					newgate.waitForStateChange(-1, new IContinuation<Gate>() {
+						@Override
+						public void success(Gate pCaller)
+						{
+							if(pCaller.isOperational()) {
+								try {
+									mEntity.getTransferPlane().registerLink(GateContainer.this, (AbstractGate)pCaller);
+								}
+								catch (NetworkException exc) {
+									mLogger.err(this, "Error while reporting " +pCaller +" to routing service.", exc);
+								}
+							} else {
+								pCaller.waitForStateChange(-1, this);
+							}
+						}
+						
+						@Override
+						public void failure(Gate pCaller, Throwable pException)
+						{
+							// should not happen, because there is no timeout
+						}
+					});
+				}
+				
+				// log number of gates in a FoG entity
 				mEntity.getNode().count(newgate.getClass().getName(), true);
 
 				mLogger.log(this, newgate +" added");
