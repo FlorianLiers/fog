@@ -190,6 +190,25 @@ public class HierarchicalNameMappingService<Address extends Serializable> implem
 	}
 	
 	/**
+	 * Removes all entries in the data base.
+	 */
+	public void clear()
+	{
+		// iterate all entries in order to inform hierarchical service about deletion
+		while(!mDNS.isEmpty()) {
+			Name name = mDNS.keySet().iterator().next();
+			
+			LinkedList<NameMappingEntry<Address>> entry = mDNS.get(name);
+			if(!entry.isEmpty()) {
+				unregisterName(name, entry.getFirst().getAddress());
+			} else {
+				mDNS.remove(name);
+			}
+		}
+		
+	}
+	
+	/**
 	 * Checks, if a given name-to-address entry is already available
 	 * 
 	 * @param name Name to check
@@ -288,4 +307,5 @@ public class HierarchicalNameMappingService<Address extends Serializable> implem
 	private HashMap<String, String> mASToNode = new HashMap<String,String>();
 	protected NameMappingService<Address> mParentNameMappingService = null;
 	private Logger mLogger = null;
+
 }

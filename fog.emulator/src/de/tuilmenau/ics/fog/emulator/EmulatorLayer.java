@@ -10,6 +10,7 @@
 package de.tuilmenau.ics.fog.emulator;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import net.rapi.Binding;
@@ -203,6 +204,23 @@ public class EmulatorLayer extends BaseEventSource implements Layer
 	public void detached()
 	{
 		medium = null;
+		logger.log(this, "Closing " +ports.size() +" ports due to detaching operation.");
+		
+		while(!ports.isEmpty()) {
+			Integer portNo = ports.keySet().iterator().next();
+			Port port = ports.get(portNo);
+			
+			if(port instanceof EmulatorConnectionEndPoint) {
+				((EmulatorConnectionEndPoint) port).close();
+			}
+			else if(port instanceof ControlPort) {
+				((ControlPort) port).close();
+			} else {
+				((EmulatorBinding) port).closeAllConnections();
+			}
+			
+			ports.remove(portNo);
+		}
 	}
 	
 	@Override

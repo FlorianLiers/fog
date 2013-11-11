@@ -5,7 +5,6 @@ import java.io.Serializable;
 import net.rapi.Name;
 import net.rapi.events.PeerInformationEvent;
 import de.tuilmenau.ics.fog.emulator.packets.BindingReply;
-import de.tuilmenau.ics.fog.emulator.packets.BindingRequest;
 import de.tuilmenau.ics.fog.emulator.packets.Packet;
 import de.tuilmenau.ics.fog.routing.naming.HierarchicalNameMappingService;
 import de.tuilmenau.ics.fog.routing.naming.NameMappingEntry;
@@ -60,6 +59,13 @@ public class ControlPort implements Port
 		else {
 			logger.warn(this, "Received message '" +data + "' of unknown type.");
 		}
+	}
+	
+	public void close()
+	{
+		logger.log(this, "Clearing name mapping.");
+		
+		nameMapping.clear();
 	}
 	
 	public NameMappingEntry<PortID>[] getAddresses(Name name)

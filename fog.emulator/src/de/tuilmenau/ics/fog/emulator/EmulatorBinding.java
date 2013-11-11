@@ -45,14 +45,17 @@ public class EmulatorBinding extends BaseBinding implements IEvent, Port
 	@Override
 	public synchronized void close()
 	{
-		layer = null;
+		activated = false;
 		
 		// are there no open connections?
 		if(connections.size() <= 0) {
-			logger.log(this, "Removing binding");
+			if(layer != null) {
+				logger.log(this, "Removing binding");
+
+				layer.closed(this);	
+				layer = null;
+			}
 			
-			layer.closed(this);
-	
 			// *now* we can invalidate this object
 			super.close();
 		} else {
@@ -64,7 +67,7 @@ public class EmulatorBinding extends BaseBinding implements IEvent, Port
 	@Override
 	public boolean isActive()
 	{
-		return layer != null;
+		return activated && (layer != null);
 	}
 	
 	@Override
@@ -77,7 +80,7 @@ public class EmulatorBinding extends BaseBinding implements IEvent, Port
 	{
 		boolean res = false;
 		
-		if(layer != null) {
+		if(isActive()) {
 			// create packet object only once and reuse it afterwards
 			if(cachedBroadcastPacket == null) {
 				BindingReply msg = new BindingReply(getName());
@@ -161,6 +164,24 @@ public class EmulatorBinding extends BaseBinding implements IEvent, Port
 	}
 	
 	/**
+	 * Closes all connections established to this binding.
+	 */
+	public void closeAllConnections()
+	{
+		// iterate all peers
+		while(!connections.isEmpty()) {
+			HashMap<Integer, EmulatorConnectionEndPoint> conns = connections.values().iterator().next();
+			
+			// iterate all connections with a peer
+			while(!conns.isEmpty()) {
+				EmulatorConnectionEndPoint conn = conns.values().iterator().next();
+				
+				conn.close();
+			}
+		}
+	}
+	
+	/**
 	 * Called by connections of this binding, in order to inform
 	 * binding about their closing.
 	 * 
@@ -198,8 +219,10 @@ public class EmulatorBinding extends BaseBinding implements IEvent, Port
 	private Logger logger;
 
 	/**
-	 * If null, it indicates that the binding no longer accept new connections
+	 * It indicates if the binding accept new connections
 	 */
+	private boolean activated = true;
+	
 	private EmulatorLayer layer;
 	private int portNumber;
 	

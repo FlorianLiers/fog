@@ -334,8 +334,8 @@ public class Network implements GraphProvider
 			Layer layer = (Layer) link;
 			
 			// inform medium and node
-			medium.detach(node);
 			node.detach(layer);
+			medium.detach(node);
 			
 			// update GUI although detach had failed (since there is not link anymore) 
 			mScenario.unlink(layer);
