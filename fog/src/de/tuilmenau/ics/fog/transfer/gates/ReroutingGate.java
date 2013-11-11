@@ -31,7 +31,7 @@ public class ReroutingGate extends HorizontalGate
 	{
 		super(pEntity, pEntity.getCentralFN(), pOwner);
 		
-		mNeighborLLID = pInvalidGate.getPeerName();
+		mNeighborLLID = pInvalidGate.getPeerBindingName();
 		mRemoveGatesFromRoute = pRemoveGatesFromRoute;
 		
 		setDescription(pInvalidGate.getDescription());
