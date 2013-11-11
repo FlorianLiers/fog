@@ -26,7 +26,9 @@ import de.tuilmenau.ics.fog.util.Logger;
 
 
 /**
- * TODO
+ * Emulates a broadcast medium.
+ * Class represents the medium itself. The attachment points of nodes are
+ * represented by {@link EmulatorLayer} objects.
  */
 public class EmulatorMedium implements Medium, Runnable
 {
@@ -99,7 +101,7 @@ public class EmulatorMedium implements Medium, Runnable
 		if(mInterface != null) {
 			mInterface.close();
 			mInterface = null;
-		}		
+		}
 	}
 	
 	@Override

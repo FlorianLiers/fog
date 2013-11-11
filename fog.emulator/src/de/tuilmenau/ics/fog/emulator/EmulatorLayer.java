@@ -10,7 +10,6 @@
 package de.tuilmenau.ics.fog.emulator;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import net.rapi.Binding;
@@ -30,7 +29,9 @@ import de.tuilmenau.ics.fog.util.Logger;
 
 
 /**
- * TODO
+ * Represents an attachment point of a node to a medium.
+ * It stores the node-specific information required to simulate
+ * an node attached to a broadcast medium.
  */
 public class EmulatorLayer extends BaseEventSource implements Layer
 {
