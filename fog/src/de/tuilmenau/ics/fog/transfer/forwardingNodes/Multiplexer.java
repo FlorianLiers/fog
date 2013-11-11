@@ -96,11 +96,11 @@ public class Multiplexer extends GateContainer
 		TransparentGate toMux   = new TransparentGate(getEntity(), pMux);
 		TransparentGate fromMux = new TransparentGate(getEntity(), this);
 		
-		GateID toMuxGateNr   = registerGate(toMux);
-		GateID fromMuxGateNr = pMux.registerGate(fromMux);
-		
 		toMux.initialise();
 		fromMux.initialise();
+		
+		GateID toMuxGateNr   = registerGate(toMux);
+		GateID fromMuxGateNr = pMux.registerGate(fromMux);
 		
 		if((toMuxGateNr == null) || (fromMuxGateNr == null)) {
 			mLogger.err(this, "connecting to " +pMux +" failed because of missing gate numbers.");
