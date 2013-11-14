@@ -34,8 +34,12 @@ public abstract class BaseBinding extends BaseEventSource implements Binding
 	public BaseBinding(Name name, Description requirements, Identity identity)
 	{
 		this.name = name;
-		this.requ = requirements;
 		this.identity = identity;
+		
+		if(requirements != null) {
+			// store a copy in order to avoid subsequent modifications by caller
+			this.requ = requirements.clone();
+		}
 	}
 
 	public BaseBinding(Name name, Exception error)

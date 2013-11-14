@@ -83,7 +83,7 @@ public class EmulatorBinding extends BaseBinding implements IEvent, Port
 		if(isActive()) {
 			// create packet object only once and reuse it afterwards
 			if(cachedBroadcastPacket == null) {
-				BindingReply msg = new BindingReply(getName());
+				BindingReply msg = new BindingReply(getName(), getRequirements());
 				
 				cachedBroadcastPacket = new Packet(getPortNumber(), EmulatorLayer.CONTROL_PORT, msg);
 			}
@@ -123,7 +123,7 @@ public class EmulatorBinding extends BaseBinding implements IEvent, Port
 		// is port of sender unknown?
 		if(conn == null) {
 			if(isActive()) {
-				conn = new EmulatorConnectionEndPoint(layer, this, sender);
+				conn = new EmulatorConnectionEndPoint(layer, this, sender, getRequirements());
 				
 				logger.log(this, "Creating port implicitly: " +conn);
 				conns.put(sender.getPortNumber(), conn);

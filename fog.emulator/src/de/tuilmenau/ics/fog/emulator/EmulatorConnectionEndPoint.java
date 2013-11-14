@@ -26,8 +26,10 @@ public class EmulatorConnectionEndPoint extends BaseConnectionEndPoint implement
 	private static final int MAX_NUMBER_TRIES = 4;
 	private static final double MAX_WAIT_TIME_SEC = 10.0d;
 	
-	
-	public EmulatorConnectionEndPoint(EmulatorLayer layer, Name bindingName, int portNumber, PortID peer)
+	/**
+	 * Connection was established actively and does not belong to a local binding.
+	 */
+	public EmulatorConnectionEndPoint(EmulatorLayer layer, Name bindingName, int portNumber, PortID peer, Description requirements)
 	{
 		super(bindingName);
 		
@@ -39,14 +41,22 @@ public class EmulatorConnectionEndPoint extends BaseConnectionEndPoint implement
 		this.ownPortNumber = portNumber;
 		
 		this.peer = peer;
+		
+		if(requirements != null) {
+			// do not allow subsequent modification by caller
+			this.requirements = requirements.clone();
+		} else {
+			// avoid null pointer
+			this.requirements = new Description();
+		}
 	}
 	
 	/**
 	 * Connections belongs to a local binding.
 	 */
-	public EmulatorConnectionEndPoint(EmulatorLayer layer, EmulatorBinding binding, PortID peer)
+	public EmulatorConnectionEndPoint(EmulatorLayer layer, EmulatorBinding binding, PortID peer, Description requirements)
 	{
-		this(layer, binding.getName(), binding.getPortNumber(), peer);
+		this(layer, binding.getName(), binding.getPortNumber(), peer, requirements);
 		
 		this.binding = binding;
 	}
@@ -102,8 +112,7 @@ public class EmulatorConnectionEndPoint extends BaseConnectionEndPoint implement
 	@Override
 	public Description getRequirements()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return requirements;
 	}
 
 	@Override
@@ -153,7 +162,7 @@ public class EmulatorConnectionEndPoint extends BaseConnectionEndPoint implement
 			Name bindingName = getBindingName();
 			boolean acceptNewPeer = true;
 			
-			// check binding name only if we known about it
+			// check binding name only if we know about it
 			if(bindingName != null) {
 				acceptNewPeer = bindingName.equals(msg.getBindingName());
 			}
@@ -220,4 +229,9 @@ public class EmulatorConnectionEndPoint extends BaseConnectionEndPoint implement
 	 * Current knowledge about the state of the peer
 	 */
 	private PortID peer = null;
+	
+	/**
+	 * Requirements/capabilities for this connection
+	 */
+	private Description requirements = null;
 }

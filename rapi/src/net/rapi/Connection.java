@@ -70,7 +70,7 @@ public interface Connection extends EventSource
 	 * the requirements of the {@link Layer#connect} call, and further requirements added by the
 	 * layer management.
 	 *  
-	 * @return Set of requirements used for this connection
+	 * @return Set of requirements used for this connection ({@code != null})
 	 */
 	public Description getRequirements();
 	

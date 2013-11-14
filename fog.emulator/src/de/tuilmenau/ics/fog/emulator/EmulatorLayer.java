@@ -97,7 +97,7 @@ public class EmulatorLayer extends BaseEventSource implements Layer
 			// else: no binding for this name known!
 		}
 		
-		EmulatorConnectionEndPoint cep = new EmulatorConnectionEndPoint(this, name, nextPortNumber, destination);
+		EmulatorConnectionEndPoint cep = new EmulatorConnectionEndPoint(this, name, nextPortNumber, destination, requirements);
 		nextPortNumber++;
 		if(destination != null) {
 			ports.put(cep.getPortNumber(), cep);
