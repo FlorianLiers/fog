@@ -401,6 +401,7 @@ public class Controller
 		AbstractGate parallelGate = newGateDescription.getParallelGate();
 		Gate newGate = null;
 		boolean reuse = false;
+		boolean done = false;
 		
 		if(parallelGate == null) {
 			//
@@ -504,6 +505,9 @@ public class Controller
 						
 						// continuation handled by newly created gate; do not use it in this method
 						cont = null;
+						
+						// since we have no pointer to new gate, set a flag
+						done = true;
 					}
 					
 					// Check if there is a RouteSegementMissingPart on the "stack", which
@@ -547,7 +551,7 @@ public class Controller
 			}
 		}
 		
-		if(newGate == null) {
+		if((newGate == null) && !done) {
 			// no way to setup something equivalent with other QoS
 			// -> error
 			throw new TransferServiceException(this, "Unable to create something equivalent to " +parallelGate +".");

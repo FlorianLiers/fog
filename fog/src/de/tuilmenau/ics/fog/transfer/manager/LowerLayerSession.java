@@ -150,6 +150,8 @@ public class LowerLayerSession extends Session
 						// update gate with information of msg
 						gate.update(msg.getPeerGateNumber(), msg.getPeerRoutingName(), peerIdentity);
 						
+						isAuthenticated = true;
+						
 						// are we waiting for this answer?
 						if(timer != null) {
 							// yes; cancel timer
