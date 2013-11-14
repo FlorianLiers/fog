@@ -271,7 +271,7 @@ public class LowerLayerSession extends Session
 			
 			tempGate.shutdown();
 			
-			// register gate at FN responsible for lower layer
+			// remove gate from FN responsible for lower layer
 			lowerLayer.getMultiplexerGate().unregisterGate(tempGate);
 		}
 	}
