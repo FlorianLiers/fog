@@ -76,7 +76,7 @@ public abstract class BaseEventSource implements EventSource
 		return res;
 	}
 
-	public synchronized void notifyObservers(Event event)
+	public void notifyObservers(Event event)
 	{
 		if(observers != null) {
 			synchronized (observers) {
@@ -128,7 +128,7 @@ public abstract class BaseEventSource implements EventSource
 	/**
 	 * Stores events until listener is registered
 	 */
-	private void storeEvent(Event event)
+	private synchronized void storeEvent(Event event)
 	{
 		if(events == null) events = new LinkedList<Event>();
 		
