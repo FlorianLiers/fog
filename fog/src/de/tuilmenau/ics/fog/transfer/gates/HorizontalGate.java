@@ -90,11 +90,13 @@ public class HorizontalGate extends FunctionalGate
 			
 			switchToState(GateState.ERROR);
 		} else {
+			// do we have to update the route?
 			if(route != null) {
 				mRoute = new Route(route);
 				
 				switchToState(GateState.OPERATE);
 			}
+			// else: both null -> no change
 		}
 	}
 	

@@ -116,7 +116,7 @@ public class DirectDownGate extends AbstractGate
 					mEntity.getLogger().warn(this, "Cannot send packet " +packet +" through " +session, exc);
 					
 					// maybe gate already closed during error recovery? 
-					if((getState() != GateState.SHUTDOWN) && (getState() != GateState.DELETED)) {
+					if((getState() != GateState.SHUTDOWN) && !isDeleted()) {
 						switchToState(GateState.ERROR);
 					}
 					

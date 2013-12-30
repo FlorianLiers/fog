@@ -15,19 +15,17 @@ package de.tuilmenau.ics.fog.transfer.forwardingNodes;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Observable;
+import java.util.Observer;
 
 import net.rapi.Name;
 import net.rapi.NetworkException;
-
 import de.tuilmenau.ics.CommonSim.datastream.StreamTime;
 import de.tuilmenau.ics.CommonSim.datastream.numeric.IDoubleWriter;
 import de.tuilmenau.ics.CommonSim.datastream.numeric.SumNode;
 import de.tuilmenau.ics.fog.FoGEntity;
-import de.tuilmenau.ics.fog.IContinuation;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;
 import de.tuilmenau.ics.fog.transfer.ForwardingNode;
-import de.tuilmenau.ics.fog.transfer.Gate;
-import de.tuilmenau.ics.fog.transfer.Gate.GateState;
 import de.tuilmenau.ics.fog.transfer.TransferPlaneObserver.NamingLevel;
 import de.tuilmenau.ics.fog.transfer.gates.AbstractGate;
 import de.tuilmenau.ics.fog.transfer.gates.GateID;
@@ -47,6 +45,42 @@ abstract public class GateContainer implements ForwardingNode
 	protected NamingLevel mLevel;
 	protected FoGEntity mEntity;
 	protected Logger mLogger;
+
+	/**
+	 * Callback for state changes of gates
+	 */
+	private Observer mStateChangeCallback = new Observer() {
+		@Override
+		public void update(Observable object, Object parameter)
+		{
+			AbstractGate gate = (AbstractGate) object;
+			
+			// inform routing service about (new) state of gate
+			if(gate.isOperational()) {
+				try {
+					mEntity.getTransferPlane().registerLink(GateContainer.this, gate);
+				}
+				catch (NetworkException exc) {
+					mLogger.err(this, "Error while reporting " +gate +" to routing service.", exc);
+				}
+				
+				mLogger.log(this, "Added gate " +gate +" to routing service.");
+
+			} else {
+				if(mEntity.getTransferPlane().unregisterLink(GateContainer.this, gate)) {
+					mLogger.log(this, "Removed gate " +gate +" from routing service since it is in " +gate.getState() +" state.");
+				}
+				// else: was not registered in routing service
+			}
+			
+			// was gate deleted?
+			// -> remove it from FN
+			if(gate.isDeleted()) {
+				mLogger.log(this, "Gate " +gate +" was deleted. Remove it from FN.");
+				unregisterGate(gate);
+			}
+		}
+	};
 	
 	/**
 	 * It is static in order to enforce global unique gate IDs.
@@ -85,49 +119,20 @@ abstract public class GateContainer implements ForwardingNode
 	private GateID registerGate(AbstractGate newgate, GateID gateID)
 	{
 		if(newgate != null) {
-			try {
-				newgate.setID(gateID);
-				mGates.put(gateID.GetID(), newgate);
-				
-				mEntity.getTransferPlane().registerLink(this, newgate);
-				
-				if(!newgate.isOperational()) {
-					newgate.waitForStateChange(-1, new IContinuation<Gate>() {
-						@Override
-						public void success(Gate pCaller)
-						{
-							if(pCaller.isOperational()) {
-								try {
-									mEntity.getTransferPlane().registerLink(GateContainer.this, (AbstractGate)pCaller);
-								}
-								catch (NetworkException exc) {
-									mLogger.err(this, "Error while reporting " +pCaller +" to routing service.", exc);
-								}
-							} else {
-								pCaller.waitForStateChange(-1, this);
-							}
-						}
-						
-						@Override
-						public void failure(Gate pCaller, Throwable pException)
-						{
-							// should not happen, because there is no timeout
-						}
-					});
-				}
-				
-				// log number of gates in a FoG entity
-				mEntity.getNode().count(newgate.getClass().getName(), true);
+			newgate.setID(gateID);
+			mGates.put(gateID.GetID(), newgate);
+			
+			// trigger first "state change" from nothing to added
+			mStateChangeCallback.update(newgate, null);
+			
+			// register callback for further state changes
+			newgate.addObserver(mStateChangeCallback);
+			
+			// log number of gates in a FoG entity
+			mEntity.getNode().count(newgate.getClass().getName(), true);
 
-				mLogger.log(this, newgate +" added");
-				return newgate.getGateID();
-			}
-			catch (NetworkException exc) {
-				newgate.setID(null);
-				mGates.remove(gateID.GetID());
-				
-				mLogger.err(this, "Error while adding " +newgate, exc);
-			}
+			mLogger.log(this, newgate +" added");
+			return newgate.getGateID();
 		}
 		
 		return null;
@@ -185,6 +190,7 @@ abstract public class GateContainer implements ForwardingNode
 
 			mLogger.log(this, oldgate +" removed");
 			oldgate.setID(null);
+			oldgate.deleteObserver(mStateChangeCallback);
 			
 			return true;
 		}
@@ -304,7 +310,7 @@ abstract public class GateContainer implements ForwardingNode
 		for(AbstractGate tGate : mGates.values()) {
 			tGate.refresh();
 			
-			if(tGate.getState() == GateState.DELETED) {
+			if(tGate.isDeleted()) {
 				// Gate no longer valid -> remove it
 				// Do the remove operation later, in order to preserve the
 				// iterator from the for loop.

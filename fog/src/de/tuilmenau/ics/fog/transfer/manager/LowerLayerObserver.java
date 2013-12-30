@@ -35,6 +35,7 @@ import de.tuilmenau.ics.fog.facade.DescriptionHelper;
 import de.tuilmenau.ics.fog.transfer.DummyForwardingElement;
 import de.tuilmenau.ics.fog.transfer.ForwardingElement;
 import de.tuilmenau.ics.fog.transfer.Gate;
+import de.tuilmenau.ics.fog.transfer.Gate.GateState;
 import de.tuilmenau.ics.fog.transfer.TransferPlaneObserver.NamingLevel;
 import de.tuilmenau.ics.fog.transfer.forwardingNodes.GateContainer;
 import de.tuilmenau.ics.fog.transfer.forwardingNodes.Multiplexer;
@@ -189,19 +190,11 @@ public class LowerLayerObserver extends LayerObserver
 				// avoid two peers starting at the same time to connect to each other
 				if((attachmentName.toString().compareTo(newNeighborName.toString()) < 0) || alreadyDelayed) {
 					synchronized(mMultiplexer) {
-						ReroutingGate[] backup = new ReroutingGate[1];
 						DirectDownGate downGate = checkDownGateAvailable(newNeighborName, null);
 						
 						// check, if DownGate already available
 						if(downGate == null) {
-							// if there is a backup for the best-effort gate, there might be more gates,
-							// which can be repaired?
-							if(backup[0] != null) {
-								getLogger().trace(this, "BE DownGate to neighbor available as rerouting gate. Maybe other gates can be repaired, too? Schedule event.");
-								
-								mEntity.getTimeBase().scheduleIn(1.0d, new RepairEvent(newNeighborName));
-							}
-
+							getLogger().log(this, "No gate to neigbor " +newNeighborName +" found. Creating new one.");
 							//
 							// Option (A):
 							// Request bidirectional connection without previous setup on node itself
@@ -216,7 +209,7 @@ public class LowerLayerObserver extends LayerObserver
 								createGateTo(newNeighborName, DescriptionHelper.createBE(false), null, null);
 							}
 							catch (NetworkException tExc) {
-								getLogger().warn(this, "Can not add down gate to neighbor " +newNeighborName +". Ignoring neighbor.", tExc);
+								getLogger().warn(this, "Can not add gate to neighbor " +newNeighborName +". Ignoring neighbor.", tExc);
 							}
 						} else {
 							// if it was no delayed try to setup relationship, trigger refresh
@@ -226,7 +219,7 @@ public class LowerLayerObserver extends LayerObserver
 								getLogger().log(this, "Refreshing DownGate " +downGate);
 								downGate.refresh();
 								
-								if(!downGate.isOperational()) {
+								if(downGate.getState() == GateState.ERROR) {
 									getLogger().warn(this, "Refreshed gate reports error. Setting up a new one.");
 									// deleting old and restart discovery
 									downGate.shutdown();

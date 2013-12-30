@@ -63,6 +63,24 @@ public class ContinuationHandler<CallingObject> implements IContinuation<Calling
 			mContinuations.add(pContinuation);
 		}
 	}
+	
+	public void remove(IContinuation<CallingObject> pContinuation)
+	{
+		if(mContinuation == pContinuation) {
+			mContinuation = null;
+			
+			// if there are more than one continuation, the single field has to be valid
+			if(mContinuations != null) {
+				if(mContinuations.size() > 0) {
+					mContinuation = mContinuations.removeFirst();
+				}
+			}
+		} else {
+			if(mContinuations != null) {
+				mContinuations.remove(pContinuation);
+			}
+		}
+	}
 
 	@Override
 	public void fire()

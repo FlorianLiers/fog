@@ -13,6 +13,9 @@
  ******************************************************************************/
 package de.tuilmenau.ics.fog.transfer.gates;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import net.rapi.Description;
 import net.rapi.Identity;
 import net.rapi.Name;
@@ -31,7 +34,7 @@ import de.tuilmenau.ics.fog.util.Logger;
 import de.tuilmenau.ics.fog.util.Timer;
 
 
-public abstract class AbstractGate implements Gate, ForwardingElement
+public abstract class AbstractGate extends Observable implements Gate, ForwardingElement
 {
 	protected static final double UNUSED_TIMEOUT_SEC = Config.Transfer.GATE_UNUSED_TIMEOUT_SEC;
 	
@@ -186,7 +189,7 @@ public abstract class AbstractGate implements Gate, ForwardingElement
 	
 	public boolean isReadyToReceive()
 	{
-		return (mState == GateState.OPERATE) || (mState == GateState.INIT);
+		return (mState == GateState.OPERATE) || (mState == GateState.INIT) || (mState == GateState.SHUTDOWN);
 	}
 	
 	public boolean isOperational()
@@ -196,9 +199,8 @@ public abstract class AbstractGate implements Gate, ForwardingElement
 	
 	public boolean isDeleted()
 	{
-		return (mState == GateState.DELETED) || (mState == GateState.SHUTDOWN);
+		return (mState == GateState.DELETED);
 	}
-
 	
 	public Description getDescription()
 	{
@@ -217,15 +219,33 @@ public abstract class AbstractGate implements Gate, ForwardingElement
 		else mDescription = null;
 	}
 	
+	private class ObserverToContinuationProxy implements Observer
+	{
+		public ObserverToContinuationProxy(IContinuation<Gate> continuation)
+		{
+			this.continuation = continuation;
+			
+			addObserver(this);
+		}
+		
+		@Override
+		public void update(Observable gate, Object parameter)
+		{
+			// waiting caller has to register again, if it would
+			// like to wait for the next state change
+			deleteObserver(this);
+			
+			continuation.success((Gate) gate);
+		}
+		
+		private IContinuation<Gate> continuation;
+	}
+	
 	@Override
 	public void waitForStateChange(double maxWaitTimeSec, IContinuation<Gate> continuation)
 	{
 		if(continuation != null) {
-			if(mContinuationsStateChange == null) {
-				mContinuationsStateChange = new ContinuationHandler<Gate>(mEntity.getTimeBase(), maxWaitTimeSec, this);
-			}
-			
-			mContinuationsStateChange.add(continuation);
+			new ObserverToContinuationProxy(continuation);
 		}
 	}
 	
@@ -243,7 +263,12 @@ public abstract class AbstractGate implements Gate, ForwardingElement
 			mLogger.trace(this, "Gate state transition from " +mState +" to " +newState);
 			
 			// switch to new state
+			GateState oldState = mState;
 			mState = newState;
+			setChanged();
+			
+			// notify observer and inform waiting elements
+			notifyObservers(oldState);
 			
 			if(mContinuationsStateChange != null) {
 				// invalidate handler before calling continuations in order to
@@ -301,7 +326,7 @@ public abstract class AbstractGate implements Gate, ForwardingElement
 	@Override
 	final public void shutdown()
 	{
-		if(getState() != GateState.DELETED) {
+		if(!isDeleted()) {
 			if(mRefCounter > 1) {
 				mRefCounter--;
 			} else {
@@ -323,13 +348,13 @@ public abstract class AbstractGate implements Gate, ForwardingElement
 				
 				// did the gate switched directly to DELETED or is some
 				// more time required?
-				if(getState() != GateState.DELETED) {
+				if(!isDeleted()) {
 					// start timer for deleting internals of gate by force
 					Timer timer = new Timer(mEntity.getTimeBase(), new IEvent() {
 						@Override
 						public void fire()
 						{
-							if(getState() != GateState.DELETED) {
+							if(isDeleted()) {
 								mLogger.warn(AbstractGate.this, "Timeout while waiting for DELETED. Delete by force.");
 								delete();
 							}
@@ -421,7 +446,7 @@ public abstract class AbstractGate implements Gate, ForwardingElement
 		@Override
 		public void fire()
 		{
-			if(getState() != GateState.DELETED) {
+			if(!isDeleted()) {
 				// do not check for "<" since somebody might have reseted the counter
 				if(getNumberMessages(false) == mPacketCounter) {
 					if(mLastCheck) {
@@ -540,4 +565,5 @@ public abstract class AbstractGate implements Gate, ForwardingElement
 	
 	private ContinuationHandler<Gate> mContinuationsStateChange = null;
 	private UnusedGateTimeout mTimeout = null;
+
 }

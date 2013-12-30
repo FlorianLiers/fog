@@ -558,7 +558,7 @@ public class GraphViewer<NodeObject, LinkObject> implements Observer, Runnable
 					}
 				} else {
 					if(pLink instanceof Gate) {
-						if(!((Gate)pLink).isOperational()) {
+						if(!((Gate)pLink).isReadyToReceive()) {
 							return ERROR_EDGE_COLOR;
 						}
 					}
